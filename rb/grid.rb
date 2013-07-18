@@ -1,6 +1,6 @@
 class Grid
   attr_reader :rows, :cols, :cells
-  
+
   def initialize(rows, cols, cells = {})
     @rows = rows
     @cols = cols
@@ -23,14 +23,27 @@ class Grid
   def set(x, y, alive=true)
     @cells[[x,y]] = alive
   end
-  
+
+  def place(x, y, pattern)
+    r = pattern.split("\n").map { |row| row.split("") }
+    c = r.first.size
+    for y1 in 0...r.size
+      for x1 in 0...c
+        if r[y1][x1] != " "
+          set(x + x1, y + y1)
+        end
+      end
+    end
+    nil
+  end
+
   def get(x, y)
     @cells[[x,y]] ? true : false
   end
-  
+
   def to_s
     topbottom = "+" + "-" * @cols + "+"
-    
+
     lines = [topbottom]
 
     grid = []
@@ -43,40 +56,15 @@ class Grid
       lines << line
     end
 
-    # @cells.each do |row|
-    #   lines << "|" + row.map{|cell| cell ? "X" : " "}.join("") + "|"
-    # end
-    
     lines << topbottom
-    
+
     lines.join("\n")
   end
-  
-  def old_next_generation
-    output_grid = Grid.new(@rows, @cols)
 
-    for y in 0...@rows
-      for x in 0...@cols
-        n = Grid.live_neighbors(self, x, y).size
-        if get(x, y)
-          # dies if < 2 live neighbors or > 3
-          if n == 2 || n == 3
-            output_grid.set(x, y, true)
-          end
-        else
-          if n == 3
-            output_grid.set(x, y, true)
-          end
-        end
-      end
-    end
-    output_grid
-  end
-  
   def bounded_neighbors(n,m)
     [0, n-1].max..[n+1,m].min
   end
-  
+
   def next_generation
     new_living_cells = {}
 
@@ -122,7 +110,172 @@ class Grid
     Grid.new(rows, cols, new_living_cells)
   end
 
+  def prior_generations_3
+    solns_by_living_cell = {}
+    solns = []
+
+    # index_soln = lambda do |combo|
+    #   # find all compatible existing soln
+    #   for coord in combo
+    #     for existing_soln in solns_by_living_cell[coord]
+    #       existing_soln.append(combo)
+    #     end
+    #   end
+    # end
+
+    for cell in @cells.keys
+      b = []
+      for x in bounded_neighbors(cell[0], @cols)
+        for y in bounded_neighbors(cell[1], @rows)
+          b << [x,y] unless [x,y] == cell
+        end
+      end
+
+      these_solns = []
+
+      accumulate_solns = lambda do |combo|
+        these_solns << combo
+      end
+
+      # assume it was dead
+      Grid.for_each_combination(b, [], 3, &accumulate_solns)
+
+      # assume it was living 2
+      Grid.for_each_combination(b, [cell], 2, &accumulate_solns)
+
+      # assume it was living 3
+      Grid.for_each_combination(b, [cell], 3, &accumulate_solns)
+
+      if solns.empty?
+        solns = these_solns
+      else
+        # eliminate incompatible solns
+        # puts solns.inspect
+        # puts these_solns.inspect
+        # puts solns.product(these_solns).size
+        solns = solns.product(these_solns).select {|two_solns| compatible?(*two_solns)}.map { |two_solns| two_solns[0] + two_solns[1]}
+      end
+      puts solns.size
+    end
+
+    exit
+
+    # (0...@rows).each do |y|
+    #   (0...@cols).each do |x|
+    #     print ((cell_magnitudes[[x,y]] || "0").to_s ) + "\t"
+    #   end
+    #   puts
+    # end
+    # puts cell_magnitudes.inspect
+  end
+
+  def compatible?(l, r)
+    for x in r
+      return true if l.include?(x)
+    end
+    false
+  end
+
+  def prior_generations_2
+    cell_magnitudes = {}
+    
+    increment_mags = lambda do |combo|
+      for coord in combo
+        c = cell_magnitudes[coord]
+        c ||= 0
+        c += 1
+        cell_magnitudes[coord] = c
+      end
+    end
+
+    for cell in @cells.keys
+      b = []
+      # puts cell.inspect
+      for x in bounded_neighbors(cell[0], @cols)
+        for y in bounded_neighbors(cell[1], @rows)
+          b << [x,y] unless [x,y] == cell
+        end
+      end
+
+      # assume it was dead
+      Grid.for_each_combination(b, [], 3, &increment_mags)
+
+      # assume it was living 2
+      Grid.for_each_combination(b, [cell], 2, &increment_mags)
+
+      # assume it was living 3
+      Grid.for_each_combination(b, [cell], 3, &increment_mags)
+    end
+
+    # (0...@rows).each do |y|
+    #   (0...@cols).each do |x|
+    #     print ((cell_magnitudes[[x,y]] || "0").to_s ) + "\t"
+    #   end
+    #   puts
+    # end
+    # puts cell_magnitudes.inspect
+    
+    sorted_candidate_cells = cell_magnitudes.map { |coord, mag| [mag, coord] }.sort_by{|p| p[0]}.map { |pair| pair[1] }
+
+
+    puts sorted_candidate_cells.size
+    count = 0
+    Grid.for_each_combination(sorted_candidate_cells, [], sorted_candidate_cells.size / 2) do |living_cells|
+      count += 1
+      if count % 10000 == 0
+        puts count.to_f / 2**sorted_candidate_cells.size
+      end
+      cand_grid = Grid.from_cells(@rows, @cols, living_cells)
+
+      nxt_grid = cand_grid.next_generation
+      if nxt_grid == self
+        puts "found a candidate!"
+        puts cand_grid.to_s
+        exit
+        # candidate_prior_generations << living_cells
+      end
+    end
+    
+    exit
+  end
+
   def prior_generations
+    # puts "Found #{(cells_with_living_neighbors + cells_currently_living).uniq.size} living cells and cells that could have been living last iteration."
+
+    candidate_prior_generations = []
+    for_each_permutation(candidate_ancestor_cells()) do |living_cells|
+      cand_grid = Grid.from_cells(@rows, @cols, living_cells)
+
+      nxt_grid = cand_grid.next_generation
+      if nxt_grid == self
+        candidate_prior_generations << living_cells
+      end
+    end
+    candidate_prior_generations
+  end
+
+  def find_first_ancestor(depth)
+    # hey look at that, we're done
+    if depth == 0
+      return self
+    end
+    
+    for_each_permutation(candidate_ancestor_cells()) do |living_cells|
+      cand_grid = Grid.from_cells(@rows, @cols, living_cells)
+
+      nxt_grid = cand_grid.next_generation
+      if nxt_grid == self
+        # if this returns nil, continue searching. otherwise, return this because we're done.
+        a = cand_grid.find_first_ancestor(depth-1)
+        return a if a
+      end
+    end
+  
+    # didn't find an ancestor at depth requested
+    nil
+  end
+
+  def candidate_ancestor_cells
     cells_with_living_neighbors = []
     cells_currently_living = []
     for x in 0...@cols
@@ -131,27 +284,7 @@ class Grid
         cells_with_living_neighbors << [x, y] if Grid.live_neighbors(self, x, y).size > 0
       end
     end
-    # puts cells_with_living_neighbors.sort.map{|c| "(" + c.join(",") + ")"}.join(",")
-    # puts cells_currently_living.size
-    # puts cells_with_living_neighbors.size
-
-    count = 0
-    puts "Found #{(cells_with_living_neighbors + cells_currently_living).uniq.size} living cells and cells that could have been living last iteration."
-    for_each_permutation((cells_with_living_neighbors + cells_currently_living).uniq) do |living_cells|
-      # $stderr.puts living_cells.size
-      cand_grid = Grid.from_cells(@rows, @cols, living_cells)
-      # if cand_grid != Grid.from_cells(@rows, @cols, living_cells)
-      #   raise "== not implemented the way you think"
-      # end
-      nxt_grid = cand_grid.next_generation
-      if nxt_grid == self
-        puts "Found a candidate prior generation!"
-        puts cand_grid
-      end
-      count += 1
-    end
-    puts count
-    exit
+    (cells_with_living_neighbors + cells_currently_living).uniq
   end
 
   def for_each_permutation(l, so_far=[], &block)
@@ -162,8 +295,8 @@ class Grid
       nxt = l.shift
       # do the "not includes" branch first, as it will tend to allow us to
       # evaluate the options with the fewest possible living cells first
-      for_each_permutation(l, so_far, &block)
-      for_each_permutation(l, so_far + nxt, &block)
+      for_each_permutation(l, so_far.dup, &block)
+      for_each_permutation(l, so_far.dup << nxt, &block)
     end
   end
 
@@ -187,11 +320,21 @@ class Grid
     end
     
     def from_cells(rows, cols, list_of_cells)
-      g = Grid.new(rows, cols)
-      list_of_cells.each do |xy|
-        g.set(xy[0], xy[1])
+      Grid.new(rows, cols, list_of_cells.inject({}){|hsh, xy| hsh[xy] = true; hsh})
+    end
+
+    def for_each_combination(inputs, so_far = [], desired_length=nil, &block)
+      if desired_length == 0
+        block.call(so_far)
+      elsif desired_length > inputs.size
+        # prune this branch
+      else
+        inputs = inputs.dup
+        nxt = inputs.shift
+
+        for_each_combination(inputs, so_far.dup, desired_length, &block)
+        for_each_combination(inputs, so_far.dup << nxt, desired_length - 1, &block)
       end
-      g
     end
   end
 
@@ -207,6 +350,6 @@ if $0 == __FILE__
   g.set(1, 2)
   g.set(2, 2)
   10000.times do
-    g.old_next_generation
+    g.next_generation
   end
 end

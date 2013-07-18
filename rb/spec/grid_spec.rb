@@ -40,4 +40,40 @@ describe Grid do
     g.set(1,1)
     g.to_s.should == "+--+\n|X |\n| X|\n+--+"
   end
+  
+  it "should place complete patterns where specified" do
+    g = Grid.new(4, 4)
+    g.place(0, 0, "XX  \n  XX\n")
+    g.get(0,0).should == true
+    g.get(1,0).should == true
+    g.get(2,1).should == true
+    g.get(3,1).should == true
+    
+    g = Grid.new(6, 6)
+    g.place(2, 2, "XX  \n  XX")
+    g.get(2,2).should == true
+    g.get(3,2).should == true
+    g.get(4,3).should == true
+    g.get(5,3).should == true
+  end
+  
+  it "should compute combinations" do
+    combos = []
+    Grid.for_each_combination([1,2,3], [], 2) do |combo|
+      combos << combo
+    end
+    combos.should == [[2,3],[1,3],[1,2]]
+
+    combos = []
+    Grid.for_each_combination([1,2,3], [], 1) do |combo|
+      combos << combo
+    end
+    combos.should == [[3],[2],[1]]
+    
+    combos = []
+    Grid.for_each_combination([1,2,3], [], 3) do |combo|
+      combos << combo
+    end
+    combos.should == [[1,2,3]]
+  end
 end
