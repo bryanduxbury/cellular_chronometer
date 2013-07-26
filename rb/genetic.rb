@@ -1,6 +1,47 @@
 require "./grid.rb"
 require "./patterns.rb"
 
+class TargetGrid
+  attr_accessor :cols, :rows, :living_cells, :dead_cells
+
+  def initialize(cols, rows, living_cells, dead_cells)
+    @cols = cols
+    @rows = rows
+    @living_cells = living_cells
+    @dead_cells = dead_cells
+  end
+
+  def to_s
+    "living: #{@living_cells} dead: #{@dead_cells}"
+  end
+
+  class << self
+    def parse(str)
+      living_cells = []
+      dead_cells = []
+
+      rows = str.split("\n")
+      rownum = 0
+      rows.each do |row|
+        colnum = 0
+        row.split("").each do |char|
+          case char
+            when "X"
+              living_cells << Pt.new(colnum, rownum)
+
+            when " "
+              dead_cells << Pt.new(colnum, rownum)
+          end
+          colnum += 1
+        end
+        rownum += 1
+      end
+
+      TargetGrid.new(rows.map { |row| row.size }.max, rows.size, living_cells, dead_cells)
+    end
+  end
+end
+
 class Phenotype
   attr_accessor :cells
   attr_accessor :fitness
@@ -16,14 +57,27 @@ class Phenotype
         g = g.next_generation
       end
 
-      da = target.cells.keys - g.cells.keys
-      db = g.cells.keys - target.cells.keys
-      @fitness = [- 1 * (da.size + db.size), -1 * @cells.size]
+      missing_living_cells = target.living_cells - g.cells.keys
+      cells_that_should_be_dead = target.dead_cells & g.cells.keys
+      # extraneous_cells = target.dead_cells.keys g.cells.keys - 
+      @fitness = [-1 * missing_living_cells.size, -1 * cells_that_should_be_dead.size, -1 * @cells.size]
     end
   end
   
   def ==(other)
     other.cells.sort == cells.sort
+  end
+  
+  class << self
+    def random(ex, ey, num_init_cells)
+      cells = {}
+      until cells.size == num_init_cells
+        pt = Pt.new(rand(ex), rand(ey))
+        cells[pt] = true unless cells[pt]
+      end
+
+      Phenotype.new(cells.keys)
+    end
   end
 end
 
@@ -37,23 +91,20 @@ class Trainer
   end
 
   def train(target_pattern)
-    ex, ey = determine_extents(target_pattern)
-    target_grid = Grid.new(ey, ex)
-    target_grid.place(0, 0, target_pattern)
+    
+    # target_grid = Grid.new(ey, ex)
+    # target_grid.place(0, 0, target_pattern)
     puts target_pattern
+    target_grid = TargetGrid.parse(target_pattern)
     puts target_grid.to_s
+
+    ex, ey = target_grid.cols, target_grid.rows
 
     # generate init pop
     pop = []
     @pop_size.times do
-      phenotype = []
-      for x in 0..ex
-        for y in 0..ey
-          # 1/10 chance of each cell being alive. (trying to start from sparse options)
-          phenotype << [x,y] if rand(10) == 1
-        end
-      end
-      pop << Phenotype.new(phenotype)
+      # pop << Phenotype.random(ex, ey, ex * ey / 10 )
+      pop << Phenotype.random(ex, ey, target_grid.living_cells.size/2)
     end
 
     # puts "init pop:"
@@ -103,14 +154,8 @@ class Trainer
       end
       new_population = uniq_pop
       while new_population.size < @pop_size
-        phenotype = []
-        for x in 0..ex
-          for y in 0..ey
-            # coin flip to see if this cell will be alive
-            phenotype << [x,y] if rand(2) == 1
-          end
-        end
-        new_population << Phenotype.new(phenotype)
+        # new_population << Phenotype.random(ex, ey, ex * ey / 10 )
+        new_population << Phenotype.random(ex, ey, target_grid.living_cells.size/2)
       end
 
       pop = new_population
@@ -124,10 +169,6 @@ class Trainer
     best_ranked.each do |pheno|
       puts pheno.cells.inspect
       g = Grid.new(ey, ex, pheno.cells.inject({}) {|hsh, cell| hsh[cell] = true; hsh})
-
-      # @num_life_generations.times do
-      #   g = g.next_generation
-      # end
       puts g.to_s
     end
   end
@@ -142,17 +183,17 @@ class Trainer
       c += 1
       hist[ranked_pheno.fitness] = c
     end
-    puts hist.map { |fit, count| [fit, "#" * count] }.sort_by{|pair| pair[0]}.map{ |pair| pair.first.to_s + "=>" + pair.last }.join("\n")
+    puts hist.map { |fit, count| [fit, "#" * count] }.sort_by{|pair| pair[0]}.map{ |pair| pair.first.inspect + " => " + pair.last }.join("\n")
   end
 
   def mutate(pheno, ex, ey)
     new_cells = pheno.cells.dup
     if rand() < @chance_of_mutation
-      mx, my = rand(ex), rand(ey)
-      if new_cells.include?([mx,my])
-        new_cells.delete([mx,my])
+      pt = Pt.new(rand(ex), rand(ey))
+      if new_cells.include?(pt)
+        new_cells.delete(pt)
       else
-        new_cells << [mx,my]
+        new_cells << pt
       end
     end
     Phenotype.new(new_cells)
@@ -182,17 +223,6 @@ class Trainer
   def determine_extents(pattern)
     rows = pattern.split("\n")
     [rows.map { |row| row.size }.max, rows.size]
-  end
-
-  def fitness(individual, target)
-    g = Grid.new(target.rows, target.cols, individual.inject({}) {|hsh, cell| hsh[cell] = true; hsh})
-    @num_life_generations.times do
-      g = g.next_generation
-    end
-
-    da = target.cells.keys - g.cells.keys
-    db = g.cells.keys - target.cells.keys
-    return - 1 * (da.size + db.size)
   end
 end
 

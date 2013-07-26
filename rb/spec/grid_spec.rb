@@ -11,6 +11,7 @@ describe Grid do
   it "should get and set correctly" do
     g = Grid.new(4,4)
     g.set(0,0)
+    puts g.cells.inspect
     g.get(0,0).should == true
   end
   

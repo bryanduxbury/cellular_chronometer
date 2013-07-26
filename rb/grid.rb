@@ -1,27 +1,16 @@
+require "./pt.rb"
+
 class Grid
   attr_reader :rows, :cols, :cells
 
   def initialize(rows, cols, cells = {})
     @rows = rows
     @cols = cols
-    # @cells = blank_grid(rows, cols)
     @cells = cells
   end
 
-  def blank_grid(rows, cols)
-    cells = []
-    rows.times do
-      row = []
-      cols.times do
-        row << false
-      end
-      cells << row
-    end
-    cells
-  end
-
   def set(x, y, alive=true)
-    @cells[[x,y]] = alive
+    @cells[Pt.new(x,y)] = alive
   end
 
   def place(x, y, pattern)
@@ -38,7 +27,7 @@ class Grid
   end
 
   def get(x, y)
-    @cells[[x,y]] ? true : false
+    @cells[Pt.new(x,y)] ? true : false
   end
 
   def to_s
@@ -73,18 +62,18 @@ class Grid
     # print "input cells: "
     # puts @cells.inspect
     @cells.keys.each do |living_cell|
-      cx, cy = *living_cell
-      for x in bounded_neighbors(cx, @cols-1)
-        for y in bounded_neighbors(cy, @rows-1)
-          next if x == cx && y == cy
-
-          count_so_far = neighbor_count[[x,y]]
+      # cx, cy = *living_cell
+      for x in bounded_neighbors(living_cell.x, @cols-1)
+        for y in bounded_neighbors(living_cell.y, @rows-1)
+          next if x == living_cell.x && y == living_cell.y
+          pt = Pt.new(x,y)
+          count_so_far = neighbor_count[pt]
           if count_so_far.nil?
             count_so_far = 1
           else
             count_so_far += 1
           end
-          neighbor_count[[x,y]] = count_so_far
+          neighbor_count[pt] = count_so_far
         end
       end
     end
@@ -93,7 +82,7 @@ class Grid
     # puts neighbor_count.inspect
 
     neighbor_count.each do |coord, count|
-      if get(*coord)
+      if get(coord.x, coord.y)
         if count == 2 || count == 3
           new_living_cells[coord] = true
         end
@@ -176,9 +165,11 @@ class Grid
     false
   end
 
+  
+
   def prior_generations_2
     cell_magnitudes = {}
-    
+
     increment_mags = lambda do |combo|
       for coord in combo
         c = cell_magnitudes[coord]
