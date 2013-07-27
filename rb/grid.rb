@@ -30,6 +30,15 @@ class Grid
     @cells[Pt.new(x,y)] ? true : false
   end
 
+  def by_row
+    ret = {}
+    @rows.times do |idx|
+      ret[idx] = []
+    end
+    @cells.keys.each{|pt| ret[pt.y] << pt}
+    ret.keys.sort.map {|rownum| ret[rownum]}
+  end
+
   def to_s
     topbottom = "+" + "-" * @cols + "+"
 
