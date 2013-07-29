@@ -4,19 +4,19 @@ require "jcode"
 class DuparcPredecessor
   def initialize()
     # establish the 3x3 helpers
-    border = ((-1..1).to_a).product((-1..1).to_a) - [[0,0]]
-
-    @ma = []
-    @mb = []
-    @mc = []
-    for_each_combination(border, [], 2) do |sln|
-      @mc << sln
-      @ma << (sln.dup << [0,0])
-    end
-
-    for_each_combination(border, [], 3) do |sln|
-      @mb << (sln << [0,0])
-    end
+    # border = ((-1..1).to_a).product((-1..1).to_a) - [[0,0]]
+    # 
+    # @ma = []
+    # @mb = []
+    # @mc = []
+    # for_each_combination(border, [], 2) do |sln|
+    #   @mc << sln
+    #   @ma << (sln.dup << [0,0])
+    # end
+    # 
+    # for_each_combination(border, [], 3) do |sln|
+    #   @mb << (sln << [0,0])
+    # end
 
     @pg_by_edge_archetype = {}
     @pg_by_row_archetype = {}
@@ -25,90 +25,133 @@ class DuparcPredecessor
     # puts @mb.size
     # puts @mc.size
   end
-  
-  def prior_generations(grid)
-    
 
-    # now, on to the actual processing.
+  def prior_generations(grid)
     rows = grid.by_row
 
-    # start with the top row
-    top = rows.shift.map(&:x)
-    seeds = edge_priors(grid, top).map{|seed| to_bv_rows(seed, grid.cols)}
+    # start with the top 2 rows
+    top = [rows.shift.map(&:x)] + [rows.shift.map(&:x)]
+    seeds = edge_priors(grid, top).map{|seed| to_bv_rows(seed, 3, grid.cols)}
     puts "initial seeds from top row: #{seeds.size}"
+    puts seeds.inspect
 
     until rows.size == 1
       cur = rows.shift.map(&:x)
-      priors = row_priors(grid,cur).map{|prior| to_bv_rows(prior, grid.cols)}
+      priors = row_priors(grid,cur).dup.map{|prior| to_bv_rows(prior, 3, grid.cols)}
       puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []
-      seeds.each do |seed|
-        priors.each do |prior|
-          if seed[-2] == prior[0] && seed[-1] == prior[1]
-            new_seeds << (seed.dup << prior[2])
+      grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
+      # puts grouped_seeds.inspect
+      priors.each do |prior|
+        matches = grouped_seeds[prior[0..1]]
+        if matches
+          matches.each do |match|
+            new_seeds << (match.dup << prior[2])
           end
         end
       end
+      # seeds.sort_by{|seed| seed[-2..-1]}.each do |seed|
+      #   priors.sort_by{|prior| prior[0..1]}.each do |prior|
+      #     # break if (seed[-2] < prior[0])
+      #     puts "attempting to join #{seed.inspect} with #{prior.inspect}"
+      #     if seed[-2..-1] == prior[0..1]
+      #       puts "matched"
+      #       new_seeds << (seed.dup << prior[2])
+      #     end
+      #   end
+      # end
       seeds = new_seeds
       puts "new seeds from intersection with this row: #{seeds.size}"
     end
 
-    # tackle the bottom
-    bottom_row = rows.shift
-    bottom_priors = edge_priors(grid, top).reverse.map{|prior| to_bv_rows(prior, grid.cols)}
-    puts "priors for bottom row: #{bottom_priors.size}"
-
+    # the bottom row is irrelevant, because one of our seeds MUST be correct. we'll just round-trip them to filter the ones that don't work.
     final_solutions = []
     seeds.each do |seed|
-      priors.each do |prior|
-        if seed[-2] == prior[0] && seed[-1] == prior[1]
-          final_solutions << seed
-        end
+      cand_grid = Grid.from_cells(grid.rows, grid.cols, to_pt_list(seed))
+      if cand_grid.next_generation == grid
+        final_solutions << seed
       end
     end
 
+    # tackle the bottom
+    # bottom_row = rows.shift.map(&:x)
+    # if_it_were_top = edge_priors(grid, bottom_row)
+    # puts if_it_were_top.map{|prior| to_bv_rows(prior, 2, grid.cols)}.inspect
+    # bottom_priors = if_it_were_top.map{|prior| to_bv_rows(prior, 2, grid.cols).reverse}
+    # puts bottom_priors.inspect
+    # puts "priors for bottom row: #{bottom_priors.size}"
+    # 
+    # final_solutions = []
+    # 
+    # grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
+    # # puts grouped_seeds.inspect
+    # # puts bottom_priors.inspect
+    # bottom_priors.each do |prior|
+    #   matches = grouped_seeds[prior[0..1]]
+    #   if matches
+    #     matches.each do |match|
+    #       final_solutions << match
+    #     end
+    #   end
+    # end
+    # 
     puts "reached #{final_solutions.size} fully compliant solutions!"
-    # puts final_solutions.inspect
-    final_solutions
+    # # puts final_solutions.inspect
+    # # trns = to_pt_list(final_solutions)
+    # # puts trns.inspect
+    # # trns
+    final_solutions.map{|sln| to_pt_list(sln)}
   end
 
   private
 
-  def edge_priors(grid, cols)
-    edge_neighbors = (0...grid.cols).to_a.product((0..1).to_a).map{|xy| Pt.new(xy.first, xy.last)}
-
-    ret = @pg_by_edge_archetype[cols]
+  def edge_priors(grid, row1and2)
+    ret = @pg_by_edge_archetype[row1and2]
 
     unless ret
-      puts "need to calculate priors for archetype #{cols.inspect}"
+      row_neighbors = (0...grid.cols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
+
+      puts "need to calculate priors for edge archetype #{row1and2.inspect}"
       ret = []
 
-      for_each_combination(edge_neighbors, []) do |live_neighbors|
+      for_each_combination(row_neighbors, []) do |live_neighbors|
         # puts live_neighbors.inspect
-        tg = Grid.new(2, grid.cols)
+        tg = Grid.new(3, grid.cols)
         live_neighbors.each do |pt|
           tg.set(pt.x, pt.y)
         end
         ng = tg.next_generation
-        if ng.by_row.first.map(&:x).sort == cols
-          ret << live_neighbors
-        end
-      end
 
-      @pg_by_edge_archetype[cols] = ret
+        result_rows = ng.by_row
+
+        if result_rows[0].map(&:x).sort == row1and2[0] && result_rows[1].map(&:x).sort == row1and2[1]
+          ret << live_neighbors.dup
+        # else
+        #   puts tg
+        #   puts "doesn't lead to pattern #{row1and2.inspect}"
+        #   puts ng
+        end
+
+      end
+      @pg_by_edge_archetype[row1and2] = ret
+      # ret.each do |pts|
+      #   puts Grid.from_cells(3, grid.cols, pts)
+      # end
+      # 
+      # exit
     end
 
     ret
   end
 
   def row_priors(grid, cols)
-    row_neighbors = (0...grid.cols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
-
     ret = @pg_by_row_archetype[cols]
 
     unless ret
-      puts "need to calculate priors for archetype #{cols.inspect}"
+      row_neighbors = (0...grid.cols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
+
+      puts "need to calculate priors for row archetype #{cols.inspect}"
       ret = []
 
       for_each_combination(row_neighbors, []) do |live_neighbors|
@@ -119,7 +162,12 @@ class DuparcPredecessor
         ng = tg.next_generation
         if ng.by_row[1].map(&:x).sort == cols
           ret << live_neighbors
+        # else
+        #   puts tg
+        #   puts "doesn't lead to pattern #{cols.inspect}"
+        #   puts ng
         end
+        
       end
 
       @pg_by_row_archetype[cols] = ret
@@ -128,9 +176,23 @@ class DuparcPredecessor
     ret
   end
 
-  def to_bv_rows(points, numcols)
+  def to_pt_list(bv_rows)
+    pts = []
+    for y in 0...bv_rows.size
+      row = bv_rows[y]
+      next if row.nil?
+      for x in 0...(row.size)
+        if row[x...x+1] == "1"
+          pts << Pt.new(x,y)
+        end
+      end
+    end
+    pts
+  end
+
+  def to_bv_rows(points, numrows, numcols)
     by_row = points.group_by{|xy| xy.y}
-    by_row.keys.sort.map{|rownum| to_bv(by_row[rownum].map{|pt| pt.x}, numcols)}
+    (0...numrows).map{|rownum| to_bv((by_row[rownum] || []).map{|pt| pt.x}, numcols)}
   end
 
   def to_bv(lst, numcols)
@@ -181,8 +243,9 @@ if $0 == __FILE__
   #   g = g.next_generation
   # end
 
-  DuparcPredecessor.new.prior_generations(g).each do |sln|
-    puts "----"
-    puts sln.join("\n")
-  end
+  slns = DuparcPredecessor.new.prior_generations(g)
+  puts slns.group_by{|sln| sln.size}.map{|size, slns| [size, slns.size]}.inspect
+  # min_sln = slns.sort_by{|sln| sln.size}.first
+  
+  # puts min_sln.inspect
 end
