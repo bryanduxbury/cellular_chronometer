@@ -46,6 +46,49 @@ describe Grid do
     g.get(1,1).should == true
   end
 
+  it "shouldn't spontaneously generate cells" do
+pattern = <<-EOF
+###
+   
+###
+   
+   
+EOF
+    g = Grid.new(5,3)
+    g.place(0, 0, pattern)
+    
+    # puts g
+    
+    n = g.next_generation
+    
+    # puts n
+    
+    t = Grid.new(5,3)
+
+target = <<-EOF
+ # 
+   
+ # 
+ # 
+   
+EOF
+    t.place(0,0, target)
+    n.should == t
+  end
+
+  it "should behave correctly at the edges of the board" do
+    g = Grid.new(5,3)
+    g.set(2,3)
+    g.set(1,4)
+    g.set(2,4)
+    # puts g
+    target = Grid.from_cells(5, 3, [Pt.new(1,4), Pt.new(2,4), Pt.new(1,3), Pt.new(2,3)])
+    # puts target
+    # puts g.next_generation.inspect
+    g.next_generation.should == target
+  end
+  
+
   it "should to_s" do
     g = Grid.new(2, 2)
     g.set(0,0)

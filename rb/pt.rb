@@ -28,4 +28,8 @@ class Pt
   def hash
     x.hash + y.hash
   end
+
+  def translate(dx,dy)
+    Pt.new(x+dx,y+dy)
+  end
 end

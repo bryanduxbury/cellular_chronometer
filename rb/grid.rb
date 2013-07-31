@@ -107,6 +107,10 @@ class Grid
 
   class << self
     def from_cells(rows, cols, list_of_cells)
+      for cell in list_of_cells
+        raise "#{cell} is out of bounds!" if cell.x < 0 || cell.x >= cols
+        raise "#{cell} is out of bounds!" if cell.y < 0 || cell.y >= rows
+      end
       Grid.new(rows, cols, list_of_cells.inject({}){|hsh, xy| hsh[xy] = true; hsh})
     end
   end

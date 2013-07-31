@@ -1,7 +1,6 @@
 require "./grid.rb"
-require "jcode"
 
-class DuparcPredecessor
+class DuparcAtaviser
   def initialize()
     # establish the 3x3 helpers
     # border = ((-1..1).to_a).product((-1..1).to_a) - [[0,0]]
@@ -19,6 +18,7 @@ class DuparcPredecessor
     # end
 
     @pg_by_edge_archetype = {}
+    @pg_by_bottom_edge_archetype = {}
     @pg_by_row_archetype = {}
     
     # puts @ma.size
@@ -29,138 +29,136 @@ class DuparcPredecessor
   def prior_generations(grid)
     rows = grid.by_row
 
-    # start with the top 2 rows
-    top = [rows.shift.map(&:x)] + [rows.shift.map(&:x)]
-    seeds = edge_priors(grid, top).map{|seed| to_bv_rows(seed, 3, grid.cols)}
+    # pull off the first row to make the initial seeds
+    seeds = row_priors(grid.cols+2, rows.shift.map { |pt| pt.translate(1,0).x }).map { |seed| to_bv_rows(seed, 3, grid.cols + 2) }
     puts "initial seeds from top row: #{seeds.size}"
-    puts seeds.inspect
 
-    until rows.size == 1
-      cur = rows.shift.map(&:x)
-      priors = row_priors(grid,cur).dup.map{|prior| to_bv_rows(prior, 3, grid.cols)}
+    until rows.empty?
+      cur = rows.shift.map{|pt|pt.translate(1,0).x}
+      #   # puts cur.inspect
+      priors = row_priors(grid.cols + 2, cur).map{|prior| to_bv_rows(prior, 3, grid.cols+2)}
       puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []
       grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
-      # puts grouped_seeds.inspect
+      #   # puts grouped_seeds.inspect
       priors.each do |prior|
+        # puts prior.inspect
         matches = grouped_seeds[prior[0..1]]
         if matches
           matches.each do |match|
-            new_seeds << (match.dup << prior[2])
+            merged = (match.dup << prior[2])
+            # puts Grid.from_cells(grid.rows, grid.cols, to_pt_list(merged))
+            new_seeds << merged
           end
         end
       end
-      # seeds.sort_by{|seed| seed[-2..-1]}.each do |seed|
-      #   priors.sort_by{|prior| prior[0..1]}.each do |prior|
-      #     # break if (seed[-2] < prior[0])
-      #     puts "attempting to join #{seed.inspect} with #{prior.inspect}"
-      #     if seed[-2..-1] == prior[0..1]
-      #       puts "matched"
-      #       new_seeds << (seed.dup << prior[2])
-      #     end
-      #   end
-      # end
       seeds = new_seeds
       puts "new seeds from intersection with this row: #{seeds.size}"
     end
 
-    # the bottom row is irrelevant, because one of our seeds MUST be correct. we'll just round-trip them to filter the ones that don't work.
-    final_solutions = []
-    seeds.each do |seed|
-      cand_grid = Grid.from_cells(grid.rows, grid.cols, to_pt_list(seed))
-      if cand_grid.next_generation == grid
-        final_solutions << seed
-      end
-    end
+    puts "reached #{seeds.size} final seeds!"
+    seeds.map { |seed| to_pt_list(seed) }
+
+    # start with the top 2 rows
+    # top = [rows.shift.map(&:x)] + [rows.shift.map(&:x)]
+    # seeds = edge_priors(grid, top).map{|seed| to_bv_rows(seed, 3, grid.cols)}
+    # puts "initial seeds from top row: #{seeds.size}"
+    # # seeds.each do |seed|
+    # #   puts Grid.from_cells(grid.rows, grid.cols, to_pt_list(seed))
+    # # end
+    # 
+    # until rows.size == 1
+    #   cur = rows.shift.map(&:x)
+    #   # puts cur.inspect
+    #   priors = row_priors(grid,cur).dup.map{|prior| to_bv_rows(prior, 3, grid.cols)}
+    #   puts "partial priors for next row: #{priors.size}"
+    # 
+    #   new_seeds = []
+    #   grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
+    #   # puts grouped_seeds.inspect
+    #   priors.each do |prior|
+    #     # puts prior.inspect
+    #     matches = grouped_seeds[prior[0..1]]
+    #     if matches
+    #       matches.each do |match|
+    #         merged = (match.dup << prior[2])
+    #         # puts Grid.from_cells(grid.rows, grid.cols, to_pt_list(merged))
+    #         new_seeds << merged
+    #       end
+    #     end
+    #   end
+    #   seeds = new_seeds
+    #   puts "new seeds from intersection with this row: #{seeds.size}"
+    # end
+    # 
+    # # puts rows.inspect 
+    # # 
+    # # the bottom row is irrelevant, because one of our seeds MUST be correct. 
+    # # we'll just round-trip them to filter the ones that don't work.
+    # final_solutions = []
+    # seeds.each do |seed|
+    #   cand_grid = Grid.from_cells(grid.rows, grid.cols, to_pt_list(seed))
+    #   next_grid = cand_grid.next_generation
+    #   
+    #   # puts cand_grid
+    #   # puts "turns into"
+    #   # puts next_grid
+    #   if cand_grid.next_generation == grid
+    #     # puts "which is a match!"
+    #     final_solutions << seed
+    #   end
+    # end
 
     # tackle the bottom
-    # bottom_row = rows.shift.map(&:x)
-    # if_it_were_top = edge_priors(grid, bottom_row)
-    # puts if_it_were_top.map{|prior| to_bv_rows(prior, 2, grid.cols)}.inspect
-    # bottom_priors = if_it_were_top.map{|prior| to_bv_rows(prior, 2, grid.cols).reverse}
-    # puts bottom_priors.inspect
+    # bottom_rows = [rows.shift.map(&:x)] + [rows.shift.map(&:x)]
+    # bottom_priors = bottom_edge_priors(grid, bottom_rows).map{|prior| to_bv_rows(prior, 3, grid.cols)}
     # puts "priors for bottom row: #{bottom_priors.size}"
-    # 
     # final_solutions = []
     # 
+    # puts "seeds"
+    # puts seeds.sort.inspect
     # grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
-    # # puts grouped_seeds.inspect
-    # # puts bottom_priors.inspect
+    # puts grouped_seeds.inspect
+    # puts "priors"
+    # puts bottom_priors.sort.inspect
     # bottom_priors.each do |prior|
     #   matches = grouped_seeds[prior[0..1]]
     #   if matches
     #     matches.each do |match|
-    #       final_solutions << match
+    #       final_solutions << (match.dup << prior[2])
     #     end
     #   end
     # end
-    # 
-    puts "reached #{final_solutions.size} fully compliant solutions!"
+
+    # puts "reached #{final_solutions.size} fully compliant solutions!"
     # # puts final_solutions.inspect
     # # trns = to_pt_list(final_solutions)
     # # puts trns.inspect
     # # trns
-    final_solutions.map{|sln| to_pt_list(sln)}
+    # final_solutions.map{|sln| to_pt_list(sln)}
   end
 
   private
 
-  def edge_priors(grid, row1and2)
-    ret = @pg_by_edge_archetype[row1and2]
-
-    unless ret
-      row_neighbors = (0...grid.cols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
-
-      puts "need to calculate priors for edge archetype #{row1and2.inspect}"
-      ret = []
-
-      for_each_combination(row_neighbors, []) do |live_neighbors|
-        # puts live_neighbors.inspect
-        tg = Grid.new(3, grid.cols)
-        live_neighbors.each do |pt|
-          tg.set(pt.x, pt.y)
-        end
-        ng = tg.next_generation
-
-        result_rows = ng.by_row
-
-        if result_rows[0].map(&:x).sort == row1and2[0] && result_rows[1].map(&:x).sort == row1and2[1]
-          ret << live_neighbors.dup
-        # else
-        #   puts tg
-        #   puts "doesn't lead to pattern #{row1and2.inspect}"
-        #   puts ng
-        end
-
-      end
-      @pg_by_edge_archetype[row1and2] = ret
-      # ret.each do |pts|
-      #   puts Grid.from_cells(3, grid.cols, pts)
-      # end
-      # 
-      # exit
-    end
-
-    ret
-  end
-
-  def row_priors(grid, cols)
+  # cols should be colnums 1 <= x < numcols-1
+  def row_priors(numcols, cols)
     ret = @pg_by_row_archetype[cols]
 
     unless ret
-      row_neighbors = (0...grid.cols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
+      row_neighbors = (0...numcols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
 
       puts "need to calculate priors for row archetype #{cols.inspect}"
       ret = []
 
       for_each_combination(row_neighbors, []) do |live_neighbors|
-        tg = Grid.new(3, grid.cols)
+        tg = Grid.new(3, numcols)
         live_neighbors.each do |xy|
           tg.set(xy.x, xy.y)
         end
         ng = tg.next_generation
-        if ng.by_row[1].map(&:x).sort == cols
+        # puts ng
+        if ng.by_row[1].map(&:x) - [0, numcols-1] == cols
           ret << live_neighbors
         # else
         #   puts tg
