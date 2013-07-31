@@ -1,9 +1,9 @@
 require "./grid.rb"
-require "./duparc_predecessor.rb"
+require "./duparc_ataviser.rb"
 
 class Search
   def initialize
-    ataviser = DuparcPredecessor.new
+    @ataviser = DuparcAtaviser.new
   end
   
   def find_predecessor_sequence(num_priors, target_pattern_file)
@@ -26,7 +26,7 @@ class Search
       # we'll have to select the narrowest one that actually works.
 
       # search for the target grid. the ataviser will look one extra cell in each direction.
-      prior_generations = ataviser.prior_generations(target_grid)
+      prior_generations = @ataviser.prior_generations(target_grid)
       
       # no priors, we've reached a dead end.
       # i don't really think this can happen.
@@ -86,6 +86,11 @@ class Search
       rownum += 1
     end
 
-    Grid.from_cells(rows.size, rows.map { |row| row.size }.max)
+    Grid.from_cells(rows.size, rows.map { |row| row.size }.max, living_cells)
   end
+end
+
+
+if $0 == __FILE__
+  Search.new.find_predecessor_sequence(ARGV.shift, ARGV.shift)
 end

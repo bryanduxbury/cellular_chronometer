@@ -1,11 +1,7 @@
-         
-         
-         
-   XXX   
-     X   
-   XXX   
-   X     
-   XXX   
-         
-         
-         
+    
+ XX 
+  X 
+ XX 
+ X  
+ XX 
+    

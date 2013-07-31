@@ -26,17 +26,21 @@ class DuparcAtaviser
     # puts @mc.size
   end
 
-  def prior_generations(grid)
+  def prior_generations(grid, extra=0)
     rows = grid.by_row
 
     # pull off the first row to make the initial seeds
-    seeds = row_priors(grid.cols+2, rows.shift.map { |pt| pt.translate(1,0).x }).map { |seed| to_bv_rows(seed, 3, grid.cols + 2) }
+    seeds = row_priors(grid.cols,extra, rows.shift.map { |pt| pt.translate(extra,0).x }).map { |seed| to_bv_rows(seed, 3, grid.cols, extra) }
+    if extra == 0
+      # filter out seeds that have nonzero top row
+      seeds = seeds.select {|seed| seed.first == "0" * grid.cols}
+    end
     puts "initial seeds from top row: #{seeds.size}"
 
     until rows.empty?
-      cur = rows.shift.map{|pt|pt.translate(1,0).x}
+      cur = rows.shift.map{|pt|pt.translate(extra,0).x}
       #   # puts cur.inspect
-      priors = row_priors(grid.cols + 2, cur).map{|prior| to_bv_rows(prior, 3, grid.cols+2)}
+      priors = row_priors(grid.cols, extra, cur).map{|prior| to_bv_rows(prior, 3, grid.cols, extra)}
       puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []
@@ -57,108 +61,46 @@ class DuparcAtaviser
       puts "new seeds from intersection with this row: #{seeds.size}"
     end
 
+    if extra == 0
+      # filter out seeds that have nonzero bottom row
+      seeds = seeds.select {|seed| seed.last == "0" * grid.cols}.map { |seed| seed[1..-2] }
+    end
+
     puts "reached #{seeds.size} final seeds!"
     seeds.map { |seed| to_pt_list(seed) }
-
-    # start with the top 2 rows
-    # top = [rows.shift.map(&:x)] + [rows.shift.map(&:x)]
-    # seeds = edge_priors(grid, top).map{|seed| to_bv_rows(seed, 3, grid.cols)}
-    # puts "initial seeds from top row: #{seeds.size}"
-    # # seeds.each do |seed|
-    # #   puts Grid.from_cells(grid.rows, grid.cols, to_pt_list(seed))
-    # # end
-    # 
-    # until rows.size == 1
-    #   cur = rows.shift.map(&:x)
-    #   # puts cur.inspect
-    #   priors = row_priors(grid,cur).dup.map{|prior| to_bv_rows(prior, 3, grid.cols)}
-    #   puts "partial priors for next row: #{priors.size}"
-    # 
-    #   new_seeds = []
-    #   grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
-    #   # puts grouped_seeds.inspect
-    #   priors.each do |prior|
-    #     # puts prior.inspect
-    #     matches = grouped_seeds[prior[0..1]]
-    #     if matches
-    #       matches.each do |match|
-    #         merged = (match.dup << prior[2])
-    #         # puts Grid.from_cells(grid.rows, grid.cols, to_pt_list(merged))
-    #         new_seeds << merged
-    #       end
-    #     end
-    #   end
-    #   seeds = new_seeds
-    #   puts "new seeds from intersection with this row: #{seeds.size}"
-    # end
-    # 
-    # # puts rows.inspect 
-    # # 
-    # # the bottom row is irrelevant, because one of our seeds MUST be correct. 
-    # # we'll just round-trip them to filter the ones that don't work.
-    # final_solutions = []
-    # seeds.each do |seed|
-    #   cand_grid = Grid.from_cells(grid.rows, grid.cols, to_pt_list(seed))
-    #   next_grid = cand_grid.next_generation
-    #   
-    #   # puts cand_grid
-    #   # puts "turns into"
-    #   # puts next_grid
-    #   if cand_grid.next_generation == grid
-    #     # puts "which is a match!"
-    #     final_solutions << seed
-    #   end
-    # end
-
-    # tackle the bottom
-    # bottom_rows = [rows.shift.map(&:x)] + [rows.shift.map(&:x)]
-    # bottom_priors = bottom_edge_priors(grid, bottom_rows).map{|prior| to_bv_rows(prior, 3, grid.cols)}
-    # puts "priors for bottom row: #{bottom_priors.size}"
-    # final_solutions = []
-    # 
-    # puts "seeds"
-    # puts seeds.sort.inspect
-    # grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
-    # puts grouped_seeds.inspect
-    # puts "priors"
-    # puts bottom_priors.sort.inspect
-    # bottom_priors.each do |prior|
-    #   matches = grouped_seeds[prior[0..1]]
-    #   if matches
-    #     matches.each do |match|
-    #       final_solutions << (match.dup << prior[2])
-    #     end
-    #   end
-    # end
-
-    # puts "reached #{final_solutions.size} fully compliant solutions!"
-    # # puts final_solutions.inspect
-    # # trns = to_pt_list(final_solutions)
-    # # puts trns.inspect
-    # # trns
-    # final_solutions.map{|sln| to_pt_list(sln)}
   end
 
   private
 
   # cols should be colnums 1 <= x < numcols-1
-  def row_priors(numcols, cols)
+  def row_priors(numcols, extra, cols)
     ret = @pg_by_row_archetype[cols]
 
     unless ret
-      row_neighbors = (0...numcols).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
+      row_neighbors = (0...(numcols+extra*2)).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
 
       puts "need to calculate priors for row archetype #{cols.inspect}"
+      total = 2**row_neighbors.size
+      count = 0
+
       ret = []
 
       for_each_combination(row_neighbors, []) do |live_neighbors|
-        tg = Grid.new(3, numcols)
+        count += 1
+        print "\r#{(count.to_f / total * 100).to_i}% complete"
+        tg = Grid.new(3, numcols + extra*2)
         live_neighbors.each do |xy|
           tg.set(xy.x, xy.y)
         end
+        # puts tg
+        # puts "yields"
         ng = tg.next_generation
         # puts ng
-        if ng.by_row[1].map(&:x) - [0, numcols-1] == cols
+        # puts ng
+        extra_cells = (0...extra).to_a + (0...extra).map { |x| -1 - x }
+        # puts extra
+        # puts extra_cells.inspect
+        if ng.by_row[1].map(&:x) - extra_cells == cols
           ret << live_neighbors
         # else
         #   puts tg
@@ -167,7 +109,7 @@ class DuparcAtaviser
         end
         
       end
-
+      puts
       @pg_by_row_archetype[cols] = ret
     end
 
@@ -188,14 +130,14 @@ class DuparcAtaviser
     pts
   end
 
-  def to_bv_rows(points, numrows, numcols)
+  def to_bv_rows(points, numrows, numcols, extra)
     by_row = points.group_by{|xy| xy.y}
-    (0...numrows).map{|rownum| to_bv((by_row[rownum] || []).map{|pt| pt.x}, numcols)}
+    (0...numrows).map{|rownum| to_bv((by_row[rownum] || []).map{|pt| pt.x}, numcols, extra)}
   end
 
-  def to_bv(lst, numcols)
+  def to_bv(lst, numcols, extra)
     ret = ""
-    for x in 0...numcols
+    for x in 0...(numcols+extra*2)
       ret << (lst.include?(x) ? "1" : "0")
     end
     ret
