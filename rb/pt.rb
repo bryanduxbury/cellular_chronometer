@@ -21,7 +21,7 @@ class Pt
     if x == other.x
       y <=> other.y
     else
-      x <=> y
+      x <=> other.x
     end
   end
 

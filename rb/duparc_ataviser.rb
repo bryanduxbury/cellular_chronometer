@@ -1,7 +1,8 @@
 require "./grid.rb"
 
 class DuparcAtaviser
-  def initialize()
+  def initialize(row_ataviser)
+    @row_ataviser = row_ataviser
     # establish the 3x3 helpers
     # border = ((-1..1).to_a).product((-1..1).to_a) - [[0,0]]
     # 
@@ -17,9 +18,9 @@ class DuparcAtaviser
     #   @mb << (sln << [0,0])
     # end
 
-    @pg_by_edge_archetype = {}
-    @pg_by_bottom_edge_archetype = {}
-    @pg_by_row_archetype = {}
+    # @pg_by_edge_archetype = {}
+    # @pg_by_bottom_edge_archetype = {}
+    # @pg_by_row_archetype = {}
     
     # puts @ma.size
     # puts @mb.size
@@ -30,7 +31,7 @@ class DuparcAtaviser
     rows = grid.by_row
 
     # pull off the first row to make the initial seeds
-    seeds = row_priors(grid.cols,extra, rows.shift.map { |pt| pt.translate(extra,0).x }).map { |seed| to_bv_rows(seed, 3, grid.cols, extra) }
+    seeds = @row_ataviser.atavise(grid.cols, extra, rows.shift.map { |pt| pt.translate(extra,0).x }).map { |seed| to_bv_rows(seed, 3, grid.cols, extra) }
     if extra == 0
       # filter out seeds that have nonzero top row
       seeds = seeds.select {|seed| seed.first == "0" * grid.cols}
@@ -71,50 +72,6 @@ class DuparcAtaviser
   end
 
   private
-
-  # cols should be colnums 1 <= x < numcols-1
-  def row_priors(numcols, extra, cols)
-    ret = @pg_by_row_archetype[cols]
-
-    unless ret
-      row_neighbors = (0...(numcols+extra*2)).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
-
-      puts "need to calculate priors for row archetype #{cols.inspect}"
-      total = 2**row_neighbors.size
-      count = 0
-
-      ret = []
-
-      for_each_combination(row_neighbors, []) do |live_neighbors|
-        count += 1
-        print "\r#{(count.to_f / total * 100).to_i}% complete"
-        tg = Grid.new(3, numcols + extra*2)
-        live_neighbors.each do |xy|
-          tg.set(xy.x, xy.y)
-        end
-        # puts tg
-        # puts "yields"
-        ng = tg.next_generation
-        # puts ng
-        # puts ng
-        extra_cells = (0...extra).to_a + (0...extra).map { |x| -1 - x }
-        # puts extra
-        # puts extra_cells.inspect
-        if ng.by_row[1].map(&:x) - extra_cells == cols
-          ret << live_neighbors
-        # else
-        #   puts tg
-        #   puts "doesn't lead to pattern #{cols.inspect}"
-        #   puts ng
-        end
-        
-      end
-      puts
-      @pg_by_row_archetype[cols] = ret
-    end
-
-    ret
-  end
 
   def to_pt_list(bv_rows)
     pts = []

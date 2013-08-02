@@ -21,21 +21,6 @@ describe DuparcAtaviser do
     priors = da.prior_generations(g, 1)
     priors.size.should == 84
   end
-  
-  it "should determine row priors" do
-    g = Grid.new(1,1)
-    g.set(0,0)
-    results = DuparcAtaviser.new.send(:row_priors, 1, 1, [1])
-    results.size.should == 84
-  end
-  
-  # it "should correctly determine edge priors" do
-  #   results = DuparcAtaviser.new.send(:edge_priors, Grid.new(3,3), [1])
-  #   results.should include([Pt.new(0,0), Pt.new(1,0), Pt.new(2,0)])
-  #   results.should include([Pt.new(0,1), Pt.new(1,0), Pt.new(2,0)])
-  #   results.should include([Pt.new(0,1), Pt.new(1,0), Pt.new(2,1)])
-  #   results.should include([Pt.new(0,1), Pt.new(1,1), Pt.new(2,1)])
-  # end
 
   # it "should convert pointlists to "
 
