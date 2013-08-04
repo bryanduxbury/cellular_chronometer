@@ -13,9 +13,9 @@ class IntersectingRowAtaviser
       pts = combo.map{|xy| Pt.new(xy.first, xy.last)}
       prior = Grid.from_cells(3, 3, pts)
       if prior.next_generation.get(1,1)
-        @ends_up_living << by_col(3, 3, pts)
+        @ends_up_living << by_col(pts, 3)
       else
-        @ends_up_dead << by_col(3, 3, pts)
+        @ends_up_dead << by_col(pts, 3)
       end
     end
 
@@ -69,14 +69,14 @@ class IntersectingRowAtaviser
       if extra_row_width==0
         # #the uniq is necessary because 
         # seeds = seeds.map{|seed| seed[1..-2]}.uniq
-        seeds = seeds.select{|seed| seed.first == "000" && seed.last == "000"}.map{|seed| seed[1..-2]}
+        seeds = seeds.select{|seed| seed.first == 0 && seed.last == 0}.map{|seed| seed[1..-2]}
       end
 
       # puts "seeds size: #{seeds.size}"
       # puts "seeds unique size: #{seeds.uniq.size}"
 
 
-      ret = seeds.map { |seed| to_bv_rows(to_pt_list(seed), 3, row_width, extra_row_width) }
+      ret = seeds.map { |seed| Pt.pts_to_bv_rows(from_cols(seed), 3) }
       @cache[[row_width, extra_row_width, living_cols]] = ret
     end
     ret
@@ -84,35 +84,12 @@ class IntersectingRowAtaviser
 
   private
 
-  def by_col(numcols, numrows, pts)
-    cols = []
-    (0...numcols).each do |col|
-      colstr = ""
-      (0...numrows).each do |row|
-        if pts.select{|pt| pt == Pt.new(col, row)}.size == 0
-          colstr << "0"
-        else
-          colstr << "1"
-        end
-      end
-      cols << colstr
-    end
-    cols
+  def by_col(pts, numcols)
+    Pt.pts_to_bv_rows(pts.map { |pt| pt.flip }, numcols)
   end
 
-  def to_pt_list(cols)
-    # puts cols.join("\n")
-    # puts
-    pts = []
-    (0...cols.size).each do |x|
-      col = cols[x]
-      (0...col.size).each do |y|
-        if col[y] == "1"
-          pts << Pt.new(x, y)
-        end
-      end
-    end
-    pts
+  def from_cols(cols)
+    Pt.bv_rows_to_pts(cols).map(&:flip)
   end
 
   def for_each_combination(inputs, so_far = [], desired_length=nil, &block)
@@ -127,23 +104,6 @@ class IntersectingRowAtaviser
       for_each_combination(inputs, so_far.dup, desired_length, &block)
       for_each_combination(inputs, so_far.dup << nxt, desired_length.nil? ? nil : desired_length - 1, &block)
     end
-  end
-
-  def to_bv_rows(points, numrows, numcols, extra)
-    Pt.pts_to_bv_rows(points, numrows)
-    # by_row = points.group_by{|xy| xy.y}
-    # (0...numrows).map{|rownum| to_bv((by_row[rownum] || []).map{|pt| pt.x}, numcols, extra)}
-  end
-
-  def to_bv(lst, numcols, extra)
-    # ret = ""
-    ret = 0
-    for x in 0...(numcols+extra*2)
-      if lst.include?(x)
-        ret = ret | (1 << x)
-      end
-    end
-    ret
   end
 end
 
