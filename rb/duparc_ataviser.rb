@@ -3,114 +3,124 @@ require "./grid.rb"
 class DuparcAtaviser
   def initialize(row_ataviser)
     @row_ataviser = row_ataviser
-    # establish the 3x3 helpers
-    # border = ((-1..1).to_a).product((-1..1).to_a) - [[0,0]]
-    # 
-    # @ma = []
-    # @mb = []
-    # @mc = []
-    # for_each_combination(border, [], 2) do |sln|
-    #   @mc << sln
-    #   @ma << (sln.dup << [0,0])
-    # end
-    # 
-    # for_each_combination(border, [], 3) do |sln|
-    #   @mb << (sln << [0,0])
-    # end
-
-    # @pg_by_edge_archetype = {}
-    # @pg_by_bottom_edge_archetype = {}
-    # @pg_by_row_archetype = {}
-    
-    # puts @ma.size
-    # puts @mb.size
-    # puts @mc.size
   end
 
   def prior_generations(grid, extra=0)
+    # prior_generations_bfs(grid, extra)
+    prior_generations_dfs(grid, extra)
+  end
+
+  def prior_generations_bfs(grid, extra=0)
     rows = grid.by_row
 
     # pull off the first row to make the initial seeds
-    seeds = @row_ataviser.atavise(grid.cols, extra, rows.shift.map { |pt| pt.translate(extra,0).x }).map { |seed| to_bv_rows(seed, 3, grid.cols, extra) }
+    seeds = @row_ataviser.atavise(grid.cols, extra, rows.shift.map { |pt| pt.translate(extra,0).x })
+    puts "seeds size: #{seeds.size}"
+    puts "uniq seeds size: #{seeds.uniq.size}"
     if extra == 0
       # filter out seeds that have nonzero top row
-      seeds = seeds.select {|seed| seed.first == "0" * grid.cols}
+      seeds = seeds.select {|seed| seed.first == 0}
     end
     puts "initial seeds from top row: #{seeds.size}"
 
     until rows.empty?
       cur = rows.shift.map{|pt|pt.translate(extra,0).x}
       #   # puts cur.inspect
-      priors = row_priors(grid.cols, extra, cur).map{|prior| to_bv_rows(prior, 3, grid.cols, extra)}
+      priors = @row_ataviser.atavise(grid.cols, extra, cur)
       puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []
       grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
       #   # puts grouped_seeds.inspect
+      count = 0
       priors.each do |prior|
-        # puts prior.inspect
+        count +=1
+        print "\r#{(count.to_f/priors.size * 100).to_i}%"
+
         matches = grouped_seeds[prior[0..1]]
         if matches
           matches.each do |match|
             merged = (match.dup << prior[2])
-            # puts Grid.from_cells(grid.rows, grid.cols, to_pt_list(merged))
             new_seeds << merged
           end
         end
       end
-      seeds = new_seeds
+      puts
+
+      seeds = new_seeds.uniq
       puts "new seeds from intersection with this row: #{seeds.size}"
     end
 
     if extra == 0
       # filter out seeds that have nonzero bottom row
-      seeds = seeds.select {|seed| seed.last == "0" * grid.cols}.map { |seed| seed[1..-2] }
+      seeds = seeds.select {|seed| seed.last == 0}.map { |seed| seed[1..-2] }
     end
 
     puts "reached #{seeds.size} final seeds!"
-    seeds.map { |seed| to_pt_list(seed) }
+    seeds.map { |seed| Pt.bv_rows_to_pts(seed) }
   end
 
-  private
-
-  def to_pt_list(bv_rows)
-    pts = []
-    for y in 0...bv_rows.size
-      row = bv_rows[y]
-      next if row.nil?
-      for x in 0...(row.size)
-        if row[x...x+1] == "1"
-          pts << Pt.new(x,y)
-        end
+  def prior_generations_dfs(grid, extra=0)
+    solutions = []
+    prior_generations_dfs_first_row(grid, extra) do |solution|
+      if extra > 0 || solution.select{|pt| pt.y == grid.rows}.size == 0
+        solutions << solution
+        # print "\r#{solutions.size} found so far"
       end
     end
-    pts
-  end
 
-  def to_bv_rows(points, numrows, numcols, extra)
-    by_row = points.group_by{|xy| xy.y}
-    (0...numrows).map{|rownum| to_bv((by_row[rownum] || []).map{|pt| pt.x}, numcols, extra)}
-  end
+    # if extra == 0
+      # trim solutions to size
+      # solutions = solutions.map{|solution| solution[1..-2]}
+    # end
 
-  def to_bv(lst, numcols, extra)
-    ret = ""
-    for x in 0...(numcols+extra*2)
-      ret << (lst.include?(x) ? "1" : "0")
+    puts "reached #{solutions.size} final results!"
+
+    solutions
+  end
+  
+  def prior_generations_dfs_first_row(grid, extra=0, &on_detect)
+    rows = grid.by_row
+
+    # pull off the first row to make the initial seeds
+    seeds = @row_ataviser.atavise(grid.cols, extra, rows.shift.map { |pt| pt.translate(extra,0).x })
+    if extra == 0
+      # filter out seeds that have nonzero top row
+      seeds = seeds.select {|seed| seed.first == 0}
     end
-    ret
+    # puts "initial seeds from top row: #{seeds.size}"
+    # puts seeds.inspect
+
+    seeds.each do |seed|
+      prior_generations_dfs_driver(grid, rows, extra, seed, &on_detect)
+    end
+    # puts
+
   end
 
-  def for_each_combination(inputs, so_far = [], desired_length=nil, &block)
-    if desired_length == 0 || (desired_length.nil? && inputs.empty?)
-      block.call(so_far)
-    elsif !desired_length.nil? && desired_length > inputs.size
-      # prune this branch
+  def prior_generations_dfs_driver(grid, rows, extra, so_far, &on_completion)
+    if rows.empty?
+      if extra == 0 
+        # only accept solutions with an empty final row
+        if so_far[-1] == 0
+          # trim solutions to size
+          on_completion.call(Pt.bv_rows_to_pts(so_far[1..-2]))
+        end
+      else
+        on_completion.call(Pt.bv_rows_to_pts(so_far))
+      end
     else
-      inputs = inputs.dup
-      nxt = inputs.shift
+      cur = rows.first.map{|pt|pt.translate(extra,0).x}
 
-      for_each_combination(inputs, so_far.dup, desired_length, &block)
-      for_each_combination(inputs, so_far.dup << nxt, desired_length.nil? ? nil : desired_length - 1, &block)
+      priors = @row_ataviser.atavise(grid.cols, extra, cur)
+      # puts "partial priors for next row: #{priors.size}"
+
+      priors.each do |prior|
+        if so_far[-2..-1] == prior[0..1]
+          merged = (so_far.dup << prior[2])
+          prior_generations_dfs_driver(grid, rows[1..-1], extra, merged, &on_completion)
+        end
+      end
     end
   end
 end

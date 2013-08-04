@@ -10,15 +10,36 @@ class Search
   
   def find_predecessor_sequence(num_priors, target_pattern_file)
     target_grid = load_target_pattern(target_pattern_file)
-    
-    results = find(target_grid, num_priors)
-    results.reverse.each do |result|
-      puts result
+    transposed = false
+    if target_grid.cols > target_grid.rows
+      transposed = true
+      target_grid = Grid.from_cells(target_grid.cols, target_grid.rows, target_grid.by_row.flatten.map(&:flip))
+    end
+
+    result = find_dfs(target_grid, num_priors, 0)
+
+    if result.nil?
+      raise "Couldn't find any constrained solutions. Expanding by 1 cell."
+      # result = find_dfs(target_grid, num_priors, 1)
+      # if result.nil?
+      #   raise "Couldn't find anything expanded by one, either. Quitting."
+      # end
+    end
+
+    if transposed
+      result = Grid.from_cells(result.cols, result.rows, result.by_row.flatten.map(&:flip))
     end
     
-    puts "----"
+    # puts result
     
-    g = results.last
+    # results = find(target_grid, num_priors)
+    # results.reverse.each do |result|
+    #   puts result
+    # end
+    # 
+    # puts "----"
+    # 
+    g = result
     puts g
     (num_priors + 2).times do
       n = g.next_generation
@@ -28,6 +49,32 @@ class Search
   end
 
   private
+
+  def find_dfs(target_grid, num_priors, extras)
+    # puts "starting step #{num_priors}"
+    if num_priors == 0
+      return target_grid
+      # puts "step 0:"
+      #       puts target_grid
+      #       return true
+    end
+    @ataviser.prior_generations_dfs_first_row(target_grid, extras) do |solution|
+      # puts "Step #{num_priors} potential match:"
+      prior = Grid.from_cells(target_grid.rows+extras*2, target_grid.cols+extras*2, solution)
+      # puts prior
+      result = find_dfs(prior, num_priors - 1, extras)
+      unless result.nil?
+        return result
+        # puts "step #{num_priors}:"
+        # puts prior
+        # return true
+      # else
+        # puts "Popped back up to step #{num_priors}, continuing at that level"
+      end
+    end
+    nil
+    # puts "didn't find any priors!"
+  end
 
   def find(target_grid, num_priors)
     if num_priors == 0
@@ -118,6 +165,8 @@ class Search
 end
 
 
-if $0 == __FILE__
+# if $0 == __FILE__
+  # require "rubygems"
+  # require "ruby-prof"
   Search.new.find_predecessor_sequence(ARGV.shift.to_i, ARGV.shift)
-end
+# end

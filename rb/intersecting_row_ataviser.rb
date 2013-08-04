@@ -1,6 +1,4 @@
 require "./grid.rb"
-# require "./duparc_ataviser.rb"
-
 
 class IntersectingRowAtaviser
   def initialize
@@ -15,11 +13,14 @@ class IntersectingRowAtaviser
       pts = combo.map{|xy| Pt.new(xy.first, xy.last)}
       prior = Grid.from_cells(3, 3, pts)
       if prior.next_generation.get(1,1)
-        @ends_up_living << pts
+        @ends_up_living << by_col(3, 3, pts)
       else
-        @ends_up_dead << pts
+        @ends_up_dead << by_col(3, 3, pts)
       end
     end
+
+    @ends_up_living.uniq!
+    @ends_up_dead.uniq!
 
     # puts "number of priors for living cell: #{@ends_up_living.size}"
     # puts "number of priors for dead cell: #{@ends_up_dead.size}"
@@ -29,16 +30,18 @@ class IntersectingRowAtaviser
     ret = @cache[[row_width, extra_row_width, living_cols]]
 
     unless ret
-      seeds = (living_cols.include?(extra_row_width) ? @ends_up_living.dup : @ends_up_dead.dup).map { |seed| by_col(3, 3, seed)}
+      seeds = living_cols.include?(extra_row_width) ? @ends_up_living.dup : @ends_up_dead.dup
 
-      puts "number of seeds: #{seeds.size}"
+      # puts "number of seeds: #{seeds.size}"
+      # puts "number of unique seeds: #{seeds.uniq.size}"
 
       ((extra_row_width + 1)...(row_width+extra_row_width)).each do |idx|
         # puts "working on col #{idx}"
         grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
         # puts grouped_seeds.keys.sort.inspect
-        cur_priors = (living_cols.include?(idx) ? @ends_up_living.dup : @ends_up_dead.dup).map { |seed| by_col(3, 3, seed)}
-
+        cur_priors = living_cols.include?(idx) ? @ends_up_living.dup : @ends_up_dead.dup
+        # puts "cur priors size:#{cur_priors.size}"
+        # puts "cur priors unique size: #{cur_priors.uniq.size}"
         new_seeds = []
 
         cur_priors.each do |prior|
@@ -57,15 +60,23 @@ class IntersectingRowAtaviser
           end
         end
 
+        # puts "new seeds size: #{new_seeds.size}"
+        # puts "new seeds unique size: #{new_seeds.uniq.size}"
+
         seeds = new_seeds
-        puts "new seeds size: #{seeds.size}"
       end
 
       if extra_row_width==0
-        seeds = seeds.map{|seed| seed[1..-2]}
+        # #the uniq is necessary because 
+        # seeds = seeds.map{|seed| seed[1..-2]}.uniq
+        seeds = seeds.select{|seed| seed.first == "000" && seed.last == "000"}.map{|seed| seed[1..-2]}
       end
 
-      ret = seeds.map { |seed| to_pt_list(seed) }
+      # puts "seeds size: #{seeds.size}"
+      # puts "seeds unique size: #{seeds.uniq.size}"
+
+
+      ret = seeds.map { |seed| to_bv_rows(to_pt_list(seed), 3, row_width, extra_row_width) }
       @cache[[row_width, extra_row_width, living_cols]] = ret
     end
     ret
@@ -118,6 +129,22 @@ class IntersectingRowAtaviser
     end
   end
 
+  def to_bv_rows(points, numrows, numcols, extra)
+    Pt.pts_to_bv_rows(points, numrows)
+    # by_row = points.group_by{|xy| xy.y}
+    # (0...numrows).map{|rownum| to_bv((by_row[rownum] || []).map{|pt| pt.x}, numcols, extra)}
+  end
+
+  def to_bv(lst, numcols, extra)
+    # ret = ""
+    ret = 0
+    for x in 0...(numcols+extra*2)
+      if lst.include?(x)
+        ret = ret | (1 << x)
+      end
+    end
+    ret
+  end
 end
 
 

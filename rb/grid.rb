@@ -39,22 +39,24 @@ class Grid
     ret.keys.sort.map {|rownum| ret[rownum]}
   end
 
-  def to_s
+  def to_s(show_border=true)
     topbottom = "+" + "-" * @cols + "+"
 
-    lines = [topbottom]
+    lines = []
+    lines << topbottom if show_border
 
     grid = []
     for y in 0...@rows
-      line = "|"
+      line = ""
+      line << "|" if show_border
       for x in 0...@cols
-        line << (get(x,y) ? "X" : " ")
+        line << (get(x,y) ? "#" : " ")
       end
-      line << "|"
+      line << "|" if show_border
       lines << line
     end
 
-    lines << topbottom
+    lines << topbottom if show_border
 
     lines.join("\n")
   end

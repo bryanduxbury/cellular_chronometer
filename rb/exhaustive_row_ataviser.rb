@@ -41,6 +41,8 @@ class ExhaustiveRowAtaviser
         
       end
       puts
+      
+      ret = ret.map { |pts| Pt.pts_to_bv_rows(pts, 3) }
       @cache[living_cols] = ret
     end
 

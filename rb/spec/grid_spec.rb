@@ -11,7 +11,7 @@ describe Grid do
   it "should get and set correctly" do
     g = Grid.new(4,4)
     g.set(0,0)
-    puts g.cells.inspect
+    # puts g.cells.inspect
     g.get(0,0).should == true
   end
 
@@ -93,19 +93,19 @@ EOF
     g = Grid.new(2, 2)
     g.set(0,0)
     g.set(1,1)
-    g.to_s.should == "+--+\n|X |\n| X|\n+--+"
+    g.to_s.should == "+--+\n|# |\n| #|\n+--+"
   end
 
   it "should place complete patterns where specified" do
     g = Grid.new(4, 4)
-    g.place(0, 0, "XX  \n  XX\n")
+    g.place(0, 0, "##  \n  ##\n")
     g.get(0,0).should == true
     g.get(1,0).should == true
     g.get(2,1).should == true
     g.get(3,1).should == true
     
     g = Grid.new(6, 6)
-    g.place(2, 2, "XX  \n  XX")
+    g.place(2, 2, "##  \n  ##")
     g.get(2,2).should == true
     g.get(3,2).should == true
     g.get(4,3).should == true
