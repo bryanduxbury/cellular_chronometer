@@ -16,29 +16,25 @@ class Search
       target_grid = Grid.from_cells(target_grid.cols, target_grid.rows, target_grid.by_row.flatten.map(&:flip))
     end
 
-    result = find_dfs(target_grid, num_priors, 0)
-
-    if result.nil?
-      raise "Couldn't find any constrained solutions. Expanding by 1 cell."
-      # result = find_dfs(target_grid, num_priors, 1)
-      # if result.nil?
-      #   raise "Couldn't find anything expanded by one, either. Quitting."
-      # end
-    end
+    # result = find_dfs(target_grid, num_priors, 0)
+    # 
+    # if result.nil?
+    #   raise "Couldn't find any constrained solutions. Expanding by 1 cell."
+    #   # result = find_dfs(target_grid, num_priors, 1)
+    #   # if result.nil?
+    #   #   raise "Couldn't find anything expanded by one, either. Quitting."
+    #   # end
+    # end
+    # 
+    
+    # puts result
+    
+    result = find(target_grid, num_priors)
 
     if transposed
       result = Grid.from_cells(result.cols, result.rows, result.by_row.flatten.map(&:flip))
     end
-    
-    # puts result
-    
-    # results = find(target_grid, num_priors)
-    # results.reverse.each do |result|
-    #   puts result
-    # end
-    # 
-    # puts "----"
-    # 
+
     g = result
     puts g
     (num_priors + 2).times do
@@ -79,7 +75,7 @@ class Search
   def find(target_grid, num_priors)
     if num_priors == 0
       # made it all the way to the end. return the grid we were passed.
-      []
+      target_grid
     else
       # compute prior generations
       # this will include some solutions that go outside the boundaries of the target grid
@@ -94,17 +90,19 @@ class Search
       # no priors means there were no solutions that fit within the bounds of the original target grid.
       # i don't really think this can happen.
       if prior_generations.empty?
-        puts "Found no prior generations within the bounds of original target grid. Expanding."
-
-        expanded = true
-
-        # expand search to include and extra border of 1. this will take a lot 
-        # longer, and we really prefer not to do it.
-        prior_generations = @ataviser.prior_generations(target_grid, 1)
-
-        if prior_generations.empty?
-          raise "Crap, even with an additional border of 1, couldn't find a prior generation!"
-        end
+        puts "Couldn't find a prior generation. Going back up a level."
+        return nil
+        
+        # puts "Found no prior generations within the bounds of original target grid. Expanding."
+        # expanded = true
+        # 
+        # # expand search to include and extra border of 1. this will take a lot 
+        # # longer, and we really prefer not to do it.
+        # prior_generations = @ataviser.prior_generations(target_grid, 1)
+        # 
+        # if prior_generations.empty?
+        #   raise "Crap, even with an additional border of 1, couldn't find a prior generation!"
+        # end
       end
       
             # 
@@ -119,8 +117,14 @@ class Search
       
       # hm, looks like we didn't find any constrained solutions.
       # let's move on to solutions that just work.
-      g = Grid.from_cells(target_grid.rows + (expanded ? 2 : 0), target_grid.cols + (expanded ? 2 : 0), prior_generations.first)
-      return [g] + find(g, num_priors-1)
+      prior_generations.each do |prior_generation|
+        g = Grid.from_cells(target_grid.rows + (expanded ? 2 : 0), target_grid.cols + (expanded ? 2 : 0), prior_generation)
+        result = find(g, num_priors-1)
+        unless result.nil?
+          return result
+        end
+      end
+      return nil
     end
   end
 
@@ -165,8 +169,8 @@ class Search
 end
 
 
-# if $0 == __FILE__
+if $0 == __FILE__
   # require "rubygems"
   # require "ruby-prof"
   Search.new.find_predecessor_sequence(ARGV.shift.to_i, ARGV.shift)
-# end
+end

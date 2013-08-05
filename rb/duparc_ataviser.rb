@@ -6,8 +6,8 @@ class DuparcAtaviser
   end
 
   def prior_generations(grid, extra=0)
-    # prior_generations_bfs(grid, extra)
-    prior_generations_dfs(grid, extra)
+    prior_generations_bfs(grid, extra)
+    # prior_generations_dfs(grid, extra)
   end
 
   def prior_generations_bfs(grid, extra=0)
@@ -15,40 +15,42 @@ class DuparcAtaviser
 
     # pull off the first row to make the initial seeds
     seeds = @row_ataviser.atavise(grid.cols, extra, rows.shift.map { |pt| pt.translate(extra,0).x })
-    puts "seeds size: #{seeds.size}"
-    puts "uniq seeds size: #{seeds.uniq.size}"
+    # puts "seeds size: #{seeds.size}"
+    # puts "uniq seeds size: #{seeds.uniq.size}"
     if extra == 0
       # filter out seeds that have nonzero top row
       seeds = seeds.select {|seed| seed.first == 0}
     end
-    puts "initial seeds from top row: #{seeds.size}"
+    # puts "initial seeds from top row: #{seeds.size}"
 
-    until rows.empty?
+    until rows.empty? || seeds.empty?
       cur = rows.shift.map{|pt|pt.translate(extra,0).x}
       #   # puts cur.inspect
       priors = @row_ataviser.atavise(grid.cols, extra, cur)
-      puts "partial priors for next row: #{priors.size}"
+      # puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []
       grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
+      seeds = nil
       #   # puts grouped_seeds.inspect
-      count = 0
+      # count = 0
       priors.each do |prior|
-        count +=1
-        print "\r#{(count.to_f/priors.size * 100).to_i}%"
+        # count +=1
+        # print "\r#{(count.to_f/priors.size * 100).to_i}%"
 
         matches = grouped_seeds[prior[0..1]]
         if matches
+          p2 = prior[2]
           matches.each do |match|
-            merged = (match.dup << prior[2])
+            merged = (match.dup << p2)
             new_seeds << merged
           end
         end
       end
-      puts
+      # puts
 
-      seeds = new_seeds.uniq
-      puts "new seeds from intersection with this row: #{seeds.size}"
+      seeds = new_seeds[0...5000000]
+      # puts "new seeds from intersection with this row: #{seeds.size}"
     end
 
     if extra == 0
@@ -56,7 +58,7 @@ class DuparcAtaviser
       seeds = seeds.select {|seed| seed.last == 0}.map { |seed| seed[1..-2] }
     end
 
-    puts "reached #{seeds.size} final seeds!"
+    # puts "reached #{seeds.size} final seeds!"
     seeds.map { |seed| Pt.bv_rows_to_pts(seed) }
   end
 
@@ -65,10 +67,10 @@ class DuparcAtaviser
     prior_generations_dfs_first_row(grid, extra) do |solution|
       if extra > 0 || solution.select{|pt| pt.y == grid.rows}.size == 0
         solutions << solution
-        # print "\r#{solutions.size} found so far"
+        print "\r#{solutions.size} found so far"
       end
     end
-
+    puts
     # if extra == 0
       # trim solutions to size
       # solutions = solutions.map{|solution| solution[1..-2]}

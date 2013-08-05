@@ -50,7 +50,7 @@ class IntersectingRowAtaviser
           # puts prior_left_two_columns.inspect
           (grouped_seeds[prior_left_two_columns] || []).each do |matched_seed|
             # puts matched_seed.join("\n")
-            new_seed = (matched_seed.dup << prior[2])
+            new_seed = (matched_seed + [prior[2]])
             # puts
             # puts new_seed.join("\n")
             # puts

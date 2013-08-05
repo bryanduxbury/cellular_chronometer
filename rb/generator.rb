@@ -41,7 +41,7 @@ class Generator
         cells = cells + [Pt.new(total_width - 1 - @gw - glyph_spacing - @gw - 2, @gh/2-1)]
         cells = cells + [Pt.new(total_width - 1 - @gw - glyph_spacing - @gw - 2, @gh/2-1 + 2)]
         cells = cells + (@glyphs[hours.to_s[1..2]].map { |cell| cell.translate(total_width - 1 - @gw - glyph_spacing - @gw - 3 - @gw, 0) })
-        cells = cells + (@glyphs[hours.to_s[0...1] == "1" ? "1" : ""].map { |cell| cell.translate(1, 0) })
+        cells = cells + (@glyphs[hours.to_s[0...1] == "1" ? "1" : "0"].map { |cell| cell.translate(1, 0) })
         output_grid = Grid.from_cells(@gh, total_width, cells)
         puts output_grid.to_s(false)
         
