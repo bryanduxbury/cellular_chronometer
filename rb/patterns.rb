@@ -1,7 +1,0 @@
-NUMBER_2 =<<EOF
-XXX
-  X
-XXX
-X  
-XXX
-EOF
