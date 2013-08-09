@@ -57,4 +57,10 @@ describe Pt do
 
     Pt.bv_rows_to_pts([0, 1 | 2 | 4]).should == pts
   end
+  
+  it "should automatically cache when using get" do
+    p1 = Pt.get(1,1)
+    p2 = Pt.get(1,1)
+    p1.object_id.should == p2.object_id
+  end
 end

@@ -1,11 +1,13 @@
 require "./grid.rb"
 require "./duparc_ataviser.rb"
+require "./hierarchical_duparc_ataviser.rb"
 require "./exhaustive_row_ataviser.rb"
 require "./intersecting_row_ataviser.rb"
 
 class Search
   def initialize
-    @ataviser = DuparcAtaviser.new(IntersectingRowAtaviser.new)
+    # @ataviser = DuparcAtaviser.new(IntersectingRowAtaviser.new)
+    @ataviser = HierarchicalDuparcAtaviser.new(IntersectingRowAtaviser.new)
   end
   
   def find_predecessor_sequence(num_priors, target_pattern_file)
@@ -31,16 +33,27 @@ class Search
     
     result = find(target_grid, num_priors)
 
-    if transposed
-      result = Grid.from_cells(result.cols, result.rows, result.by_row.flatten.map(&:flip))
-    end
+    if result.nil?
+      # puts "No priors found!"
+    else
+      File.open(target_pattern_file + "__back_#{num_priors}", "w+") do |file|
+        if transposed
+          result = Grid.from_cells(result.cols, result.rows, result.by_row.flatten.map(&:flip))
+        end
 
-    g = result
-    puts g
-    (num_priors + 2).times do
-      n = g.next_generation
-      puts n
-      g = n
+        file.puts result.to_bitvector.inspect
+        file.puts target_grid.to_bitvector.inspect
+        file.puts result
+
+        # g = result
+        # puts g
+        # (num_priors + 2).times do
+        #   n = g.next_generation
+        #   puts n
+        #   g = n
+        # end
+
+      end
     end
   end
 
@@ -85,12 +98,12 @@ class Search
       expanded = false
 
       # search for the target grid. the ataviser will look one extra cell in each direction.
-      prior_generations = @ataviser.prior_generations(target_grid)
+      prior_generations = @ataviser.prior_generations(target_grid, 0)
       
       # no priors means there were no solutions that fit within the bounds of the original target grid.
       # i don't really think this can happen.
       if prior_generations.empty?
-        puts "Couldn't find a prior generation. Going back up a level."
+        # puts "Couldn't find a prior generation. Going back up a level."
         return nil
         
         # puts "Found no prior generations within the bounds of original target grid. Expanding."
@@ -170,7 +183,10 @@ end
 
 
 if $0 == __FILE__
-  # require "rubygems"
-  # require "ruby-prof"
-  Search.new.find_predecessor_sequence(ARGV.shift.to_i, ARGV.shift)
+  num_priors = ARGV.shift.to_i
+  s = Search.new
+  until ARGV.empty?
+    s.find_predecessor_sequence(num_priors, ARGV.shift)
+    print "."
+  end
 end

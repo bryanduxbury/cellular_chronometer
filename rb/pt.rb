@@ -52,7 +52,7 @@ class Pt
       colnum = 0
       until bv == 0
         if bv & 1 == 1
-          pts << Pt.new(colnum, rownum)
+          pts << Pt.get(colnum, rownum)
         end
         bv = bv >> 1
         colnum += 1
@@ -61,5 +61,24 @@ class Pt
     end
 
     pts
+  end
+
+  def self.get(x,y)
+    @cache = (0..500).map {[]} unless @cache
+
+    pt = nil
+    col = @cache[x]
+    # unless col.nil?
+      pt = col[y]
+      if pt.nil?
+        pt = Pt.new(x,y)
+        @cache[x][y] = pt
+      end
+    # else
+    #   pt = Pt.new(x,y)
+    #   @cache[x] = []
+    #   @cache[x][y] = pt
+    # end
+    pt
   end
 end

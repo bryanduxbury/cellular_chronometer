@@ -39,6 +39,29 @@ class Grid
     ret.keys.sort.map {|rownum| ret[rownum]}
   end
 
+  def to_bitvector
+    out = []
+    cur = 0
+    count = 0
+    for y in 0...rows
+      for x in 0...cols
+        if get(x,y)
+          cur |= (1 << count)
+        end
+        count+=1
+        if count == 64
+          out << cur
+          cur = 0
+          count = 0
+        end
+      end
+    end
+    if count > 0
+      out << cur
+    end
+    out
+  end
+
   def to_s(show_border=true)
     topbottom = "+" + "-" * @cols + "+"
 
