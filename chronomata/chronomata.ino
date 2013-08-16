@@ -3,9 +3,6 @@
 #include "states.h"
 #include "life.h"
 
-#define NUM_ROWS 5
-#define NUM_COLS 25
-
 Charlie plex(&PORTC, &DDRC, 0, 8, &PORTD, &DDRD, 0, 4);
 
 // index of the minute we want to display
@@ -47,7 +44,7 @@ void loop() {
       // standard sequence, move forward
       if ((millis() - startMillis) % 1000 == 0) {
         uint64_t newLow, newHigh;
-        next_generation(displayLow, displayHigh, &newLow, &newHigh, NUM_ROWS, NUM_COLS);
+        next_generation(displayLow, displayHigh, &newLow, &newHigh);
         displayLow = newLow;
         displayHigh = newHigh;
         if (displayLow == targetLow[thisMinute] && displayHigh == targetHigh[thisMinute]) {
