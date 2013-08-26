@@ -2,7 +2,7 @@
 #define __CHARLIE_H__
 
 #include "Arduino.h"
-#include "ObjPin.h"
+//#include "ObjPin.h"
 
 
 class Charlie {
