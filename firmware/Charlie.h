@@ -24,7 +24,7 @@ class Charlie {
     uint8_t dmask2;
     uint8_t vmask2;
     volatile uint8_t duty;
-    volatile uint8_t pending_duty;
+    // volatile uint8_t pending_duty;
   };
 
   volatile uint8_t *d1;

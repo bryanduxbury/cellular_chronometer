@@ -2,20 +2,12 @@
 #ifndef __BITVECTOR_H__
 #define __BITVECTOR_H__
 
-boolean test(uint64_t bvLow, uint64_t bvHigh, uint8_t bitNum) {
-  if (bitNum >= 64) {
-    return bvHigh & (1 << (bitNum - 64));
-  } else {
-    return bvLow & (1 << bitNum);
-  }
+boolean test(uint8_t* vect, uint8_t bitNum) {
+  return vect[bitNum / 8] & (1 << (bitNum % 8));
 }
 
-void set(uint64_t* bvLow, uint64_t* bvHigh, uint8_t bitNum) {
-  if (bitNum >= 64) {
-    *bvHigh &= (1 << (bitNum - 64));
-  } else {
-    *bvLow &= (1 << bitNum);
-  }
+void set(uint8_t* vect, uint8_t bitNum) {
+  vect[bitNum / 8] |= (1 << (bitNum % 8));
 }
 
 #endif

@@ -49,7 +49,7 @@ class Grid
           cur |= (1 << count)
         end
         count+=1
-        if count == 64
+        if count == 8
           out << cur
           cur = 0
           count = 0

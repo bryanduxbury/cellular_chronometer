@@ -30,15 +30,19 @@ Charlie::Charlie(volatile uint8_t *directionReg1,
       LedDefn defn1;
       defn1.dmask1 = _BV(startBit1+i) | _BV(startBit1+j);
       defn1.vmask1 = _BV(startBit1+i);
+      defn1.dmask2 = 0;
+      defn1.vmask2 = 0;
       defn1.duty = 0;
-      defn1.pending_duty = 0;
+      // defn1.pending_duty = 0;
       *cur++ = defn1;
 
       LedDefn defn2;
       defn2.dmask1 = _BV(startBit1+i) | _BV(startBit1+j);
       defn2.vmask1 = _BV(startBit1+j);
+      defn2.dmask2 = 0;
+      defn2.vmask2 = 0;
       defn2.duty = 0;
-      defn2.pending_duty = 0;
+      // defn2.pending_duty = 0;
       *cur++ = defn2;
     }
     // ... and then get all of the msb pins
@@ -49,7 +53,7 @@ Charlie::Charlie(volatile uint8_t *directionReg1,
       defn1.dmask2 = _BV(startBit2+j);
       defn1.vmask2 = 0;
       defn1.duty = 0;
-      defn1.pending_duty = 0;
+      // defn1.pending_duty = 0;
       *cur++ = defn1;
 
       LedDefn defn2;
@@ -57,9 +61,8 @@ Charlie::Charlie(volatile uint8_t *directionReg1,
       defn2.vmask1 = 0;
       defn2.dmask2 = _BV(startBit2+j);
       defn2.vmask2 = _BV(startBit2+j);
-      
       defn2.duty = 0;
-      defn2.pending_duty = 0;
+      // defn2.pending_duty = 0;
       *cur++ = defn2;
     }
   }
@@ -68,19 +71,23 @@ Charlie::Charlie(volatile uint8_t *directionReg1,
     // ... get each of the other msb pins
     for (int j = i+1; j < numPins2; j++) {
       LedDefn defn1;
+      defn1.dmask1 = 0;
+      defn1.vmask1 = 0;
       defn1.dmask2 = _BV(startBit2+i) | _BV(startBit2+j);
       defn1.vmask2 = _BV(startBit2+i);
       defn1.duty = 0;
-      defn1.pending_duty = 0;
+      // defn1.pending_duty = 0;
       *cur++ = defn1;
 
       LedDefn defn2;
+      defn2.dmask1 = 0;
+      defn2.vmask1 = 0;
       defn2.dmask2 = _BV(startBit2+i) | _BV(startBit2+j);
       defn2.vmask2 = _BV(startBit2+j);
       defn2.duty = 0;
-      defn2.pending_duty = 0;
+      // defn2.pending_duty = 0;
       *cur++ = defn2;
-    }   
+    }
   }
 }
 
@@ -98,7 +105,7 @@ void Charlie::tick() {
   }
   
   // if tickCount reaches 16, it's time to reset tickCount and move on to the next LED
-  if (tickCount==16) {
+  if (tickCount==8) {
     tickCount = 0;
 
     // wrap around from end to beginning if necessary

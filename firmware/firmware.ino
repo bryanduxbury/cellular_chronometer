@@ -11,41 +11,44 @@ volatile uint16_t currentMinute = 0;
 volatile uint32_t elapsedMicros = 0;
 
 // the current state of all the cells displayed
-uint64_t displayLow;
-uint64_t displayHigh;
+uint8_t currentDisplay[16];
 
 void setup() {
   Timer1.initialize(1);
   Timer1.attachInterrupt(tickISR, 1);
-  // 
-  testLeds();
+
+  // testLeds();
 }
 
-void testLeds() {
-  // for (int x = 0; x < 125; x++) {
-  //   plex.setDuty(x, 8);
-  // }
-  for (int y = 0; y < NUM_ROWS; y++) {
-    for (int x = 0; x < NUM_COLS; x++) {
-      plex.setDuty(XY2ORD(x, y), 8);
-    }
-    delay(500);
-    for (int x = 0; x < NUM_COLS; x++) {
-      plex.setDuty(XY2ORD(x, y), 0);
-    }
-  }
-}
+// void testLeds() {
+//   for (int y = 0; y < NUM_ROWS; y++) {
+//     for (int x = 0; x < NUM_COLS; x++) {
+//       plex.setDuty(XY2ORD(x, y), 8);
+//     }
+//     delay(500);
+//     for (int x = 0; x < NUM_COLS; x++) {
+//       plex.setDuty(XY2ORD(x, y), 0);
+//     }
+//   }
+// }
 
 void loop() { 
-  // DDRD |= _BV(0);
-  // DDRD |= _BV(1);
-  // PORTD |= _BV(0);
-  // delay(200);
-  // PORTD &= ~_BV(0);
-  // PORTD |= _BV(1);
-  // delay(200);
-  // PORTD &= ~_BV(1);
-
+  for (int duty = 0; duty <= 8; duty ++) {
+    for (int x = 0; x < NUM_COLS; x++) {
+      for (int y = 0; y < NUM_ROWS; y++) {
+        plex.setDuty(XY2ORD(x,y), duty);
+      }
+    }
+    delay(125);
+  }
+  for (int duty = 7; duty >= 0; duty --) {
+    for (int x = 0; x < NUM_COLS; x++) {
+      for (int y = 0; y < NUM_ROWS; y++) {
+        plex.setDuty(XY2ORD(x,y), duty);
+      }
+    }
+    delay(125);
+  }
   
   // plex.tick();
   // pinMode(0, OUTPUT);
