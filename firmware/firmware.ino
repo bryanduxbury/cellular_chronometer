@@ -1,7 +1,14 @@
 #include "Charlie.h"
 #include "TimerOne.h"
-#include "states.h"
+// #include "states.cpp"
 #include "life.h"
+#include <avr/pgmspace.h>
+
+uint8_t PROGMEM initialStates[] = {
+  119, 119, 59, 13, 160, 181, 67, 180, 8, 49, 152, 207, 113, 215, 18, 2,
+  119, 119, 67, 13, 160, 69, 67, 180, 104, 54, 152, 207, 117, 215, 146, 20
+};
+uint8_t PROGMEM targetStates[] =  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
 
@@ -21,7 +28,11 @@ void setup() {
   pinMode(9, INPUT);
   digitalWrite(9, HIGH);
 
+  pinMode(10, INPUT);
+  digitalWrite(10, HIGH);
+
   // testLeds();
+  memcpy_PF(currentDisplay, initialStates, 16);
 }
 
 // void testLeds() {
@@ -36,30 +47,13 @@ void setup() {
 //   }
 // }
 
-void loop() {
-  // plex.clear();
-  // memset(tempDisplay, 0, sizeof(currentDisplay));
-  // set(tempDisplay, XY2ORD(10, 2));
-  // uint8_t living_count = living_neighbors(tempDisplay, 10, 2);
-  // for (int i = 0; i < living_count; i++) {
-  //   set(tempDisplay, i);
-  // }
-  // 
-  // if (test(tempDisplay, XY2ORD(10,2))) {
-  //   set(tempDisplay, XY2ORD(0,1));
-  // }
-  // 
-  // // if (test(tempDisplay, 0)) {
-  // //   set(tempDisplay, 1);
-  // // }
-  // // set(tempDisplay, 8);
-  // // set(tempDisplay, 16);
-  // // set(tempDisplay, 32);
-  // // set(tempDisplay, 64);
-  // setDisplay(tempDisplay, 8);
-  // 
-  // delay(25000);
+void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
+  for (int i = 0; i < count; i++) {
+    dest[i] = pgm_read_byte(pgmSrc++);
+  }
+}
 
+void loop() {
   plex.clear();
   setDisplay(currentDisplay, 8);
   
@@ -68,37 +62,20 @@ void loop() {
       memset(tempDisplay, 0, sizeof(currentDisplay));
       next_generation(currentDisplay, tempDisplay);
       memcpy(currentDisplay, tempDisplay, sizeof(currentDisplay));
-      delay(1000);
+      delay(100);
+      break;
+    } else if (digitalRead(10) == LOW) {
+      currentMinute++;
+      if (currentMinute == 2) {
+        currentMinute = 0;
+      }
+      memcpy_PF(currentDisplay, initialStates + currentMinute * 16, 16);
+      delay(100);
       break;
     }
     delay(10);
   }
 
-  // for (int duty = 0; duty <= 8; duty ++) {
-  //   for (int x = 0; x < NUM_COLS; x++) {
-  //     for (int y = 0; y < NUM_ROWS; y++) {
-  //       plex.setDuty(XY2ORD(x,y), duty);
-  //     }
-  //   }
-  //   delay(125);
-  // }
-  // for (int duty = 7; duty >= 0; duty --) {
-  //   for (int x = 0; x < NUM_COLS; x++) {
-  //     for (int y = 0; y < NUM_ROWS; y++) {
-  //       plex.setDuty(XY2ORD(x,y), duty);
-  //     }
-  //   }
-  //   delay(125);
-  // }
-  
-  // plex.tick();
-  // pinMode(0, OUTPUT);
-  // pinMode(1, OUTPUT);
-  // digitalWrite(1, LOW);
-  // digitalWrite(0, HIGH);
-  // delay(1000);
-  // digitalWrite(0, LOW);
-  // delay(1000);
   // uint16_t thisMinute = 0;
   // 
   // uint32_t startMillis = 0;
