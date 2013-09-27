@@ -11,11 +11,15 @@ volatile uint16_t currentMinute = 0;
 volatile uint32_t elapsedMicros = 0;
 
 // the current state of all the cells displayed
-uint8_t currentDisplay[16];
+uint8_t currentDisplay[16] = {119, 119, 59, 13, 160, 181, 67, 180, 8, 49, 152, 207, 113, 215, 18, 2};
+uint8_t tempDisplay[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void setup() {
   Timer1.initialize(1);
   Timer1.attachInterrupt(tickISR, 1);
+
+  pinMode(9, INPUT);
+  digitalWrite(9, HIGH);
 
   // testLeds();
 }
@@ -32,23 +36,60 @@ void setup() {
 //   }
 // }
 
-void loop() { 
-  for (int duty = 0; duty <= 8; duty ++) {
-    for (int x = 0; x < NUM_COLS; x++) {
-      for (int y = 0; y < NUM_ROWS; y++) {
-        plex.setDuty(XY2ORD(x,y), duty);
-      }
+void loop() {
+  // plex.clear();
+  // memset(tempDisplay, 0, sizeof(currentDisplay));
+  // set(tempDisplay, XY2ORD(10, 2));
+  // uint8_t living_count = living_neighbors(tempDisplay, 10, 2);
+  // for (int i = 0; i < living_count; i++) {
+  //   set(tempDisplay, i);
+  // }
+  // 
+  // if (test(tempDisplay, XY2ORD(10,2))) {
+  //   set(tempDisplay, XY2ORD(0,1));
+  // }
+  // 
+  // // if (test(tempDisplay, 0)) {
+  // //   set(tempDisplay, 1);
+  // // }
+  // // set(tempDisplay, 8);
+  // // set(tempDisplay, 16);
+  // // set(tempDisplay, 32);
+  // // set(tempDisplay, 64);
+  // setDisplay(tempDisplay, 8);
+  // 
+  // delay(25000);
+
+  plex.clear();
+  setDisplay(currentDisplay, 8);
+  
+  while(true) {
+    if (digitalRead(9) == LOW) {
+      memset(tempDisplay, 0, sizeof(currentDisplay));
+      next_generation(currentDisplay, tempDisplay);
+      memcpy(currentDisplay, tempDisplay, sizeof(currentDisplay));
+      delay(1000);
+      break;
     }
-    delay(125);
+    delay(10);
   }
-  for (int duty = 7; duty >= 0; duty --) {
-    for (int x = 0; x < NUM_COLS; x++) {
-      for (int y = 0; y < NUM_ROWS; y++) {
-        plex.setDuty(XY2ORD(x,y), duty);
-      }
-    }
-    delay(125);
-  }
+
+  // for (int duty = 0; duty <= 8; duty ++) {
+  //   for (int x = 0; x < NUM_COLS; x++) {
+  //     for (int y = 0; y < NUM_ROWS; y++) {
+  //       plex.setDuty(XY2ORD(x,y), duty);
+  //     }
+  //   }
+  //   delay(125);
+  // }
+  // for (int duty = 7; duty >= 0; duty --) {
+  //   for (int x = 0; x < NUM_COLS; x++) {
+  //     for (int y = 0; y < NUM_ROWS; y++) {
+  //       plex.setDuty(XY2ORD(x,y), duty);
+  //     }
+  //   }
+  //   delay(125);
+  // }
   
   // plex.tick();
   // pinMode(0, OUTPUT);
@@ -99,18 +140,11 @@ void loop() {
   // }
 }
 
-void setDisplay(uint64_t lowbits, uint64_t highbits, uint8_t duty) {
-  int counter = 0;
-  uint64_t cur = lowbits;
+void setDisplay(uint8_t* state, uint8_t duty) {
   for (int y = 0; y < NUM_ROWS; y++) {
     for (int x = 0; x < NUM_COLS; x++) {
-      if (cur & (1 << counter)) {
+      if (test(state, x + y * NUM_COLS)) {
         plex.setDuty(XY2ORD(x, y), duty);
-      }
-      counter++;
-      if (counter == 64) {
-        counter = 0;
-        cur = highbits;
       }
     }
   }

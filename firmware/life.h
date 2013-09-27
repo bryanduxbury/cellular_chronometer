@@ -39,13 +39,19 @@ void next_generation(uint8_t* inState, uint8_t* outState) {
 uint8_t living_neighbors(uint8_t* vect, uint8_t x, uint8_t y) {
   uint8_t living_count = 0;
   for (int dy = -1; dy <= 1; dy++) {
-    for (int dx = -1; dx <= 1; dx++){
-      // all the extra bounds checking deals with running off the edge of the border in either direction
-      // plus ignoring self
-      if (dx + x >= 0 && dx + x < NUM_COLS && dy + y >= 0 && dy + y < NUM_ROWS && !(dx == 0 && dy == 0)) {
-        if (test(vect, XY2ORD(x,y))) {
-          living_count++;
-        }
+    for (int dx = -1; dx <= 1; dx++) {
+      if (dx == 0 && dy == 0) {
+        continue;
+      }
+      if (dx + x < 0 || dx + x >= NUM_COLS) {
+        continue;
+      }
+      if (dy + y < 0 || dy + y >= NUM_ROWS) {
+        continue;
+      }
+
+      if (test(vect, XY2ORD(dx + x, dy + y))) {
+        living_count++;
       }
     }
   }
