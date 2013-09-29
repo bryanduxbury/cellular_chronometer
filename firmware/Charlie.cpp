@@ -105,7 +105,7 @@ void Charlie::tick() {
   }
   
   // if tickCount reaches 16, it's time to reset tickCount and move on to the next LED
-  if (tickCount==8) {
+  if (tickCount==4) {
     tickCount = 0;
 
     // wrap around from end to beginning if necessary

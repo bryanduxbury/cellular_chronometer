@@ -4,11 +4,11 @@
 #include "life.h"
 #include <avr/pgmspace.h>
 
-uint8_t PROGMEM initialStates[] = {
-  119, 119, 59, 13, 160, 181, 67, 180, 8, 49, 152, 207, 113, 215, 18, 2,
-  119, 119, 67, 13, 160, 69, 67, 180, 104, 54, 152, 207, 117, 215, 146, 20
+uint32_t initialStates[] PROGMEM = {
+  41348846, 62234636, 8673824, 7595532, 4348654,
+  42397422, 54894604, 53762592, 24372748, 43145966
 };
-uint8_t PROGMEM targetStates[] =  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
 
@@ -18,8 +18,12 @@ volatile uint16_t currentMinute = 0;
 volatile uint32_t elapsedMicros = 0;
 
 // the current state of all the cells displayed
-uint8_t currentDisplay[16] = {119, 119, 59, 13, 160, 181, 67, 180, 8, 49, 152, 207, 113, 215, 18, 2};
-uint8_t tempDisplay[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+uint32_t display1[7] = {0};
+uint32_t display2[7] = {0};
+
+uint32_t *front;
+uint32_t *back;
+
 
 void setup() {
   Timer1.initialize(1);
@@ -32,20 +36,22 @@ void setup() {
   digitalWrite(10, HIGH);
 
   // testLeds();
-  memcpy_PF(currentDisplay, initialStates, 16);
+  front = display1;
+  back = display2;
+  memcpy_PF32(front+1, initialStates, 5);
 }
 
-// void testLeds() {
-//   for (int y = 0; y < NUM_ROWS; y++) {
-//     for (int x = 0; x < NUM_COLS; x++) {
-//       plex.setDuty(XY2ORD(x, y), 8);
-//     }
-//     delay(500);
-//     for (int x = 0; x < NUM_COLS; x++) {
-//       plex.setDuty(XY2ORD(x, y), 0);
-//     }
-//   }
-// }
+void testLeds() {
+  for (int y = 0; y < NUM_ROWS; y++) {
+    for (int x = 0; x < NUM_COLS; x++) {
+      plex.setDuty(XY2ORD(x, y), 8);
+    }
+    delay(500);
+    for (int x = 0; x < NUM_COLS; x++) {
+      plex.setDuty(XY2ORD(x, y), 0);
+    }
+  }
+}
 
 void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
   for (int i = 0; i < count; i++) {
@@ -53,15 +59,23 @@ void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
   }
 }
 
+void memcpy_PF32(uint32_t *dest, uint32_t *pgmSrc, uint8_t count) {
+  for (int i = 0; i < count; i++) {
+    dest[i] = (uint32_t) pgm_read_dword(pgmSrc++);
+  }
+}
+
 void loop() {
   plex.clear();
-  setDisplay(currentDisplay, 8);
+  setDisplay(front, 4);
   
   while(true) {
     if (digitalRead(9) == LOW) {
-      memset(tempDisplay, 0, sizeof(currentDisplay));
-      next_generation(currentDisplay, tempDisplay);
-      memcpy(currentDisplay, tempDisplay, sizeof(currentDisplay));
+      memset(back, 0, sizeof(display1));
+      next_generation32(front, back);
+      uint32_t *temp = back;
+      back = front;
+      front = temp;
       delay(100);
       break;
     } else if (digitalRead(10) == LOW) {
@@ -69,7 +83,7 @@ void loop() {
       if (currentMinute == 2) {
         currentMinute = 0;
       }
-      memcpy_PF(currentDisplay, initialStates + currentMinute * 16, 16);
+      memcpy_PF32(front+1, initialStates + currentMinute * 5, 5);
       delay(100);
       break;
     }
@@ -117,11 +131,11 @@ void loop() {
   // }
 }
 
-void setDisplay(uint8_t* state, uint8_t duty) {
-  for (int y = 0; y < NUM_ROWS; y++) {
-    for (int x = 0; x < NUM_COLS; x++) {
-      if (test(state, x + y * NUM_COLS)) {
-        plex.setDuty(XY2ORD(x, y), duty);
+void setDisplay(uint32_t* state, uint8_t duty) {
+  for (int y = 1; y <= NUM_ROWS; y++) {
+    for (int x = 1; x <= NUM_COLS; x++) {
+      if (test32(state, y, x)) {
+        plex.setDuty(XY2ORD(x-1, y-1), duty);
       }
     }
   }

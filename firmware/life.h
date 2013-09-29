@@ -58,4 +58,65 @@ uint8_t living_neighbors(uint8_t* vect, uint8_t x, uint8_t y) {
   return living_count;
 }
 
+// map from set bits to number of bits set for 0-7
+const uint8_t lookup[] = {
+  0, // 000
+  1, // 001
+  1, // 010
+  2, // 011
+  1, // 100
+  2, // 101
+  2, // 110
+  3  // 111
+};
+
+// const uint8_t lookup[] = {
+//   1, // 000
+//   1, // 001
+//   1, // 010
+//   1, // 011
+//   1, // 100
+//   1, // 101
+//   1, // 110
+//   1  // 111
+// };
+
+
+const uint32_t mask1 = 7;
+const uint32_t mask2 = 5;
+
+// uint32_t scratch[NUM_ROWS+2] = {0}
+
+bool test32(uint32_t *rows, uint8_t rowIdx, uint8_t colIdx) {
+  return (rows[rowIdx] & (((uint32_t)1) << colIdx)) != 0;
+}
+
+void set32(uint32_t *rows, uint8_t rowIdx, uint8_t colIdx) {
+  rows[rowIdx] |= (((uint32_t)1) << colIdx);
+}
+
+uint8_t do_lookup(uint32_t row, uint8_t colIdx, uint32_t mask) {
+  return lookup[(row >> (colIdx - 1)) & mask];
+}
+
+void next_generation32(uint32_t *inRows, uint32_t *outRows) {
+  // calculate living neighbors
+  for (int y = 1; y <= NUM_ROWS; y++) {
+    for (int x = 1; x <= NUM_COLS; x++) {
+      uint8_t living_neighbors = do_lookup(inRows[y-1], x, mask1) // row above
+        + do_lookup(inRows[y], x, mask2) // same row
+        + do_lookup(inRows[y+1], x, mask1); // row below
+      if (test32(inRows, y, x)) {
+        if (living_neighbors == 2 || living_neighbors == 3) {
+          set32(outRows, y, x);
+        }
+      } else {
+        if (living_neighbors == 3) {
+          set32(outRows, y, x);
+        }
+      }
+    }
+  }
+}
+
 #endif
