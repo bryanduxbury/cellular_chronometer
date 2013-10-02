@@ -17,6 +17,8 @@ faceplate_hole_d = 0.5;
 foot_height = 4;
 foot_base_width = 10;
 foot_bottom_width = 8;
+foot_corner_r = 1.5;
+function foot_theta() = sqrt(foot_height*foot_height+(foot_base_width - foot_bottom_width)*(foot_base_width - foot_bottom_width));
 
 function face_width() = num_cols * led_spacing + 2 * outside_gutter;
 function face_height() = num_rows * led_spacing + 2 * outside_gutter;
@@ -47,12 +49,24 @@ module _aa_battery() {
 }
 
 module foot() {
-  polygon(points=[
-    [-foot_base_width/2, 0],
-    [foot_base_width/2, 0],
-    [foot_bottom_width/2, -foot_height],
-    [-foot_bottom_width/2, -foot_height]
-  ]);
+  !assign(dy=foot_corner_r)
+  assign(dx=dy/cos(foot_theta())) 
+  assign(b = tan(foot_theta()) * dy)
+  assign(m_dx = cos(foot_theta()) * foot_corner_r)
+  assign(m_dy = sin(foot_theta()) * foot_corner_r)
+  {
+    echo ("short h", short_h);
+    echo("mdx", m_dx);
+    echo("mdy", m_dy);
+    polygon(points=[
+      [0, 0],
+      [foot_base_width/2, 0],
+      [foot_bottom_width/2 - (dx - b) + m_dx, -foot_height + dy - m_dy],
+      [foot_bottom_width/2 - (dx - b), -foot_height],
+      [0, -foot_height]
+    ]);
+    translate([foot_bottom_width/2 - dx + b, -foot_height + dy, 0]) circle(r=foot_corner_r, $fn=72);
+  }
 }
 
 module baffle() {
