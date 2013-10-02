@@ -4,36 +4,36 @@ class HierarchicalDuparcAtaviser
     @cache = {}
   end
   
-  def prior_generations(grid, extras=0, selector=:any)
-    by_rows = grid.by_row.map { |row| row.map { |pt| pt.translate(extras, 0).x } }
+  def prior_generations(grid, selector=:any)
+    by_rows = grid.by_row.map { |row| row.map { |pt| pt.translate(1, 0).x } }
 
-    prior_bvs = atavise(by_rows, grid.cols, extras, selector)
+    prior_bvs = atavise(by_rows, grid.cols, selector)
     # puts "done atavising, just wrapping things up now"
     
-    if extras == 0
-      prior_bvs.select! {|prior| prior.first == 0 && prior.last == 0}
-      prior_bvs.map! { |prior| prior[1..-1] }
-    end
+    # if extras == 0
+    #   prior_bvs.select! {|prior| prior.first == 0 && prior.last == 0}
+    #   prior_bvs.map! { |prior| prior[1..-1] }
+    # end
     
     # puts "ended up with #{prior_bvs.size} final solutions"
     
     prior_bvs.map { |bv| Pt.bv_rows_to_pts(bv) }
   end
   
-  def atavise(rows, numcols, extras, selector)
+  def atavise(rows, numcols, selector)
     if @cache[rows]
       return @cache[rows]
     end
     # puts "input rows #{rows.inspect}"
     if rows.size == 1
-      @row_ataviser.atavise(numcols, extras, rows.first)
+      @row_ataviser.atavise(numcols, rows.first)
     else
       top_rows = rows[0...rows.size/2]
       # puts "top rows: #{top_rows.inspect}"
       bottom_rows = rows[rows.size/2..-1]
       # puts "bottom rows #{bottom_rows.inspect}"
-      top_priors = atavise(top_rows, numcols, extras, selector)
-      bottom_priors = atavise(bottom_rows, numcols, extras, selector)
+      top_priors = atavise(top_rows, numcols, selector)
+      bottom_priors = atavise(bottom_rows, numcols, selector)
 
       # puts "top priors: #{top_priors.size} bottom_priors: #{bottom_priors.size}"
       # puts "top uniq priors: #{top_priors.uniq.size} bottom_priors: #{bottom_priors.uniq.size}"
