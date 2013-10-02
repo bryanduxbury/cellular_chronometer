@@ -5,28 +5,28 @@ class DuparcAtaviser
     @row_ataviser = row_ataviser
   end
 
-  def prior_generations(grid, extra=0)
-    prior_generations_bfs(grid, extra)
+  def prior_generations(grid)
+    prior_generations_bfs(grid)
     # prior_generations_dfs(grid, extra)
   end
 
-  def prior_generations_bfs(grid, extra=0)
+  def prior_generations_bfs(grid)
     rows = grid.by_row
 
     # pull off the first row to make the initial seeds
-    seeds = @row_ataviser.atavise(grid.cols, extra, rows.shift.map { |pt| pt.translate(extra,0).x })
+    seeds = @row_ataviser.atavise(grid.cols, rows.shift.map { |pt| pt.translate(1,0).x })
     # puts "seeds size: #{seeds.size}"
     # puts "uniq seeds size: #{seeds.uniq.size}"
-    if extra == 0
-      # filter out seeds that have nonzero top row
-      seeds = seeds.select {|seed| seed.first == 0}
-    end
+    # if extra == 0
+    #       # filter out seeds that have nonzero top row
+    #       seeds = seeds.select {|seed| seed.first == 0}
+    #     end
     # puts "initial seeds from top row: #{seeds.size}"
 
     until rows.empty? || seeds.empty?
-      cur = rows.shift.map{|pt|pt.translate(extra,0).x}
+      cur = rows.shift.map{|pt|pt.translate(1,0).x}
       #   # puts cur.inspect
-      priors = @row_ataviser.atavise(grid.cols, extra, cur)
+      priors = @row_ataviser.atavise(grid.cols, cur)
       # puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []
@@ -53,10 +53,10 @@ class DuparcAtaviser
       # puts "new seeds from intersection with this row: #{seeds.size}"
     end
 
-    if extra == 0
-      # filter out seeds that have nonzero bottom row
-      seeds = seeds.select {|seed| seed.last == 0}.map { |seed| seed[1..-2] }
-    end
+    # if extra == 0
+    #   # filter out seeds that have nonzero bottom row
+    #   seeds = seeds.select {|seed| seed.last == 0}.map { |seed| seed[1..-2] }
+    # end
 
     # puts "reached #{seeds.size} final seeds!"
     seeds.map { |seed| Pt.bv_rows_to_pts(seed) }

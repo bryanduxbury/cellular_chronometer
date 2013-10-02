@@ -5,15 +5,15 @@ require File.expand_path(File.dirname(__FILE__) + "/../intersecting_row_ataviser
 describe DuparcAtaviser do
   ataviser = IntersectingRowAtaviser.new
 
-  it "should explore within the specified region only" do
-    g = Grid.new(1,1)
-    g.set(0,0)
-  
-    da = DuparcAtaviser.new(ataviser)
-  
-    priors = da.prior_generations(g, 0)
-    priors.size.should == 0
-  end
+  # it "should explore within the specified region only" do
+  #   g = Grid.new(1,1)
+  #   g.set(0,0)
+  # 
+  #   da = DuparcAtaviser.new(ataviser)
+  # 
+  #   priors = da.prior_generations(g, 0)
+  #   priors.size.should == 0
+  # end
 
   it "should explore within a 1-bigger border" do
     g = Grid.new(1,1)
@@ -21,7 +21,7 @@ describe DuparcAtaviser do
     
     da = DuparcAtaviser.new(ataviser)
     
-    priors = da.prior_generations(g, 1)
+    priors = da.prior_generations(g)
     priors.size.should == 140
   end
 
@@ -37,6 +37,6 @@ describe DuparcAtaviser do
     # puts priors.size
     # puts priors.uniq.inspect
     # puts priors.map { |cells| Grid.from_cells(3,3,cells) }.join("\n")
-    priors.map { |prior| prior.sort }.include?([Pt.new(0, 1), Pt.new(1, 1), Pt.new(2, 1)].sort).should == true
+    priors.map { |prior| prior.sort }.include?([Pt.new(0, 1), Pt.new(1, 1), Pt.new(2, 1)].map{|pt| pt.translate(1,1)}.sort).should == true
   end
 end
