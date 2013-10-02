@@ -5,11 +5,11 @@ class ExhaustiveRowAtaviser
     @cache = {}
   end
   
-  def atavise(row_width, extra_row_width, living_cols)
+  def atavise(row_width, living_cols)
     ret = @cache[living_cols]
 
     unless ret
-      row_neighbors = (0...(row_width+extra_row_width*2)).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
+      row_neighbors = (0...(row_width+2)).to_a.product((0..2).to_a).map{|xy| Pt.new(xy.first, xy.last)}
 
       puts "need to calculate priors for row archetype #{living_cols.inspect}"
       total = 2**row_neighbors.size
@@ -17,13 +17,13 @@ class ExhaustiveRowAtaviser
 
       ret = []
 
-      extra_cells = (0...extra_row_width).to_a + (0...extra_row_width).map { |x| row_width+extra_row_width*2 - 1 - x }
+      extra_cells = (0...1).to_a + (0...1).map { |x| row_width+2 - 1 - x }
 
       for_each_combination(row_neighbors) do |live_neighbors|
         count += 1
         print "\r#{(count.to_f / total * 100).to_i}% complete"
 
-        tg = Grid.new(3, row_width + extra_row_width*2)
+        tg = Grid.new(3, row_width + 2)
         live_neighbors.each do |xy|
           tg.set(xy.x, xy.y)
         end

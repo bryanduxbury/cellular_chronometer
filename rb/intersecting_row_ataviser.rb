@@ -1,9 +1,10 @@
 require "./grid.rb"
 
 class IntersectingRowAtaviser
-  def initialize
+  def initialize(solution_filter = nil)
+    @solution_filter = solution_filter || proc {true}
     @cache = {}
-    
+
     neighbors = (0..2).to_a.product((0..2).to_a)# - [[1,1]]
 
     # prior generations where the center cell ends up alive
@@ -26,16 +27,16 @@ class IntersectingRowAtaviser
     # puts "number of priors for dead cell: #{@ends_up_dead.size}"
   end
 
-  def atavise(row_width, extra_row_width, living_cols)
-    ret = @cache[[row_width, extra_row_width, living_cols]]
+  def atavise(row_width, living_cols)
+    ret = @cache[[row_width, living_cols]]
 
     unless ret
-      seeds = living_cols.include?(extra_row_width) ? @ends_up_living.dup : @ends_up_dead.dup
+      seeds = living_cols.include?(1) ? @ends_up_living.dup : @ends_up_dead.dup
 
       # puts "number of seeds: #{seeds.size}"
       # puts "number of unique seeds: #{seeds.uniq.size}"
 
-      ((extra_row_width + 1)...(row_width+extra_row_width)).each do |idx|
+      ((2)...(row_width+1)).each do |idx|
         # puts "working on col #{idx}"
         grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
         # puts grouped_seeds.keys.sort.inspect
@@ -54,7 +55,7 @@ class IntersectingRowAtaviser
             # puts
             # puts new_seed.join("\n")
             # puts
-            # puts Grid.from_cells(3, row_width + extra_row_width*2, new_seed)
+            # puts Grid.from_cells(3, row_width + 2, new_seed)
 
             new_seeds << new_seed
           end
@@ -66,18 +67,14 @@ class IntersectingRowAtaviser
         seeds = new_seeds
       end
 
-      if extra_row_width==0
-        # #the uniq is necessary because 
-        # seeds = seeds.map{|seed| seed[1..-2]}.uniq
-        seeds = seeds.select{|seed| seed.first == 0 && seed.last == 0}.map{|seed| seed[1..-2]}
-      end
+      seeds = seeds.select {|seed| @solution_filter.call(seed)}
 
       # puts "seeds size: #{seeds.size}"
       # puts "seeds unique size: #{seeds.uniq.size}"
 
 
       ret = seeds.map { |seed| Pt.pts_to_bv_rows(from_cols(seed), 3) }
-      @cache[[row_width, extra_row_width, living_cols]] = ret
+      @cache[[row_width, living_cols]] = ret
     end
     ret
   end
