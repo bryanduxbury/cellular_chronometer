@@ -13,11 +13,11 @@ describe IntersectingRowAtaviser do
     ea = ExhaustiveRowAtaviser.new
 
     i = ia.atavise(1,[1]).map(&:sort).sort
-    e = ea.atavise(1,1,[1]).map(&:sort).sort
+    e = ea.atavise(1,[1]).map(&:sort).sort
     i.should == e
 
     i = ia.atavise(2, [1,2]).map(&:sort).sort
-    e = ea.atavise(2, 1, [1,2]).map(&:sort).sort
+    e = ea.atavise(2, [1,2]).map(&:sort).sort
     i.should == e
   end
 
