@@ -7,7 +7,19 @@ require "./intersecting_row_ataviser.rb"
 class Search
   def initialize
     # @ataviser = DuparcAtaviser.new(IntersectingRowAtaviser.new)
-    @ataviser = HierarchicalDuparcAtaviser.new(IntersectingRowAtaviser.new)
+    dead_edge_filter = proc {|solution| solution.select{|row| (row & 0x41) != 0}.empty? }
+    tubular_edge_filter = proc do |solution|
+      ret = true
+      solution.each do |row|
+        if row & 0x01 != ((row >> 5) & 0x01) || ((row >> 1) & 0x01) != ((row >> 6) & 0x01)
+          ret = false
+          break
+        end
+      end
+      ret
+    end
+    # filter = nil
+    @ataviser = HierarchicalDuparcAtaviser.new(IntersectingRowAtaviser.new(tubular_edge_filter))
   end
   
   def find_predecessor_sequence(num_priors, target_pattern_file)
@@ -34,7 +46,8 @@ class Search
     result = find(target_grid, num_priors)
 
     if result.nil?
-      # puts "No priors found!"
+      # $stderr.puts "No priors found!"
+      false
     else
       File.open(target_pattern_file + "__back_#{num_priors}", "w+") do |file|
         if transposed
@@ -54,6 +67,7 @@ class Search
         # end
 
       end
+      true
     end
   end
 
@@ -90,48 +104,30 @@ class Search
       # made it all the way to the end. return the grid we were passed.
       target_grid
     else
-      # compute prior generations
-      # this will include some solutions that go outside the boundaries of the target grid
-      # in the case that there are no solutions that do keep the target boundaries, 
-      # we'll have to select the narrowest one that actually works.
-
-      expanded = false
-
       # search for the target grid. the ataviser will look one extra cell in each direction.
-      prior_generations = @ataviser.prior_generations(target_grid, 0)
-      
+      prior_generations = @ataviser.prior_generations(target_grid)
+
       # no priors means there were no solutions that fit within the bounds of the original target grid.
       # i don't really think this can happen.
       if prior_generations.empty?
         # puts "Couldn't find a prior generation. Going back up a level."
         return nil
-        
-        # puts "Found no prior generations within the bounds of original target grid. Expanding."
-        # expanded = true
-        # 
-        # # expand search to include and extra border of 1. this will take a lot 
-        # # longer, and we really prefer not to do it.
-        # prior_generations = @ataviser.prior_generations(target_grid, 1)
-        # 
-        # if prior_generations.empty?
-        #   raise "Crap, even with an additional border of 1, couldn't find a prior generation!"
-        # end
       end
-      
-            # 
-            # 
-            # # first, find all the solutions that have an empty border
-            # constrained_solutions = prior_generations.select{|prior| empty_border?(prior)}
-            # 
-            # if constrained_solutions.any?
-        # excellent! let's use the first constrained solution and recurse
-        # return [prior] + find(prior, num_priors-1)
-      # end
-      
-      # hm, looks like we didn't find any constrained solutions.
-      # let's move on to solutions that just work.
+
       prior_generations.each do |prior_generation|
-        g = Grid.from_cells(target_grid.rows + (expanded ? 2 : 0), target_grid.cols + (expanded ? 2 : 0), prior_generation)
+        g = Grid.from_cells(target_grid.rows + 2, target_grid.cols + 2, prior_generation)
+        toroidal = true
+        for lr in [[0, target_grid.rows], [1, target_grid.rows+1]]
+          (0...target_grid.cols).each do |col_idx|
+            unless g.get(col_idx, lr.first) == g.get(col_idx, lr.last)
+              toroidal = false
+            end
+          end
+        end
+        next unless toroidal
+        g = g.subgrid(1, 1, target_grid.cols, target_grid.rows)
+
+        # next unless empty_border?(g)
         result = find(g, num_priors-1)
         unless result.nil?
           return result
@@ -182,11 +178,23 @@ class Search
 end
 
 
-if $0 == __FILE__
+# if $0 == __FILE__
+
+require "rubygems"
+require "ruby-prof"
+# RubyProf.start
+
   num_priors = ARGV.shift.to_i
   s = Search.new
   until ARGV.empty?
-    s.find_predecessor_sequence(num_priors, ARGV.shift)
-    print "."
+    if s.find_predecessor_sequence(num_priors, ARGV.shift)
+      print "+"
+    else
+      print "-"
+    end
   end
-end
+# result = RubyProf.stop
+# printer = RubyProf::GraphHtmlPrinter.new(result)
+# out = File.new("profile2.html", "w")
+# printer.print(out)
+# end

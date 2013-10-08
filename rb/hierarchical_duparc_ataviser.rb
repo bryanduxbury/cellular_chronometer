@@ -17,16 +17,18 @@ class HierarchicalDuparcAtaviser
     
     # puts "ended up with #{prior_bvs.size} final solutions"
     
+    @cache = {}
     prior_bvs.map { |bv| Pt.bv_rows_to_pts(bv) }
   end
   
   def atavise(rows, numcols, selector)
     if @cache[rows]
+      puts "cache hit!"
       return @cache[rows]
     end
     # puts "input rows #{rows.inspect}"
     if rows.size == 1
-      @row_ataviser.atavise(numcols, rows.first)
+      @row_ataviser.atavise(numcols+2, rows.first)
     else
       top_rows = rows[0...rows.size/2]
       # puts "top rows: #{top_rows.inspect}"
@@ -58,11 +60,20 @@ class HierarchicalDuparcAtaviser
           b.keys.each do |bottom|
             bottom_first = b[bottom].first
             co_matches << (top_first + bottom_first[2..-1])
+            break if co_matches.size == 100000
           end
+          break if co_matches.size == 100000
+        end
+        if co_matches.size == 100000
+          # print "!"
+          break
         end
       end
+      if co_matches.size > 1000000
+        puts "Trimming intermediate results from #{co_matches.size} to 1000000!"
+        co_matches = co_matches[0...1000000]
+      end
       
-      co_matches = co_matches[0...10000000]
       
       # if selector == :any
       #   culled_grouped_tops = {}

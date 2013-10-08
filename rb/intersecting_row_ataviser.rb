@@ -28,58 +28,71 @@ class IntersectingRowAtaviser
   end
 
   def atavise(row_width, living_cols)
+    # RubyProf.pause
     ret = @cache[[row_width, living_cols]]
 
     unless ret
       seeds = living_cols.include?(1) ? @ends_up_living.dup : @ends_up_dead.dup
-
       # puts "number of seeds: #{seeds.size}"
       # puts "number of unique seeds: #{seeds.uniq.size}"
+      
+      if row_width > 3
+        (2...(row_width-1)).each do |idx|
+          # puts "working on col #{idx}"
+          grouped_seeds = seeds.uniq.group_by{|seed| seed[-2..-1]}
+          # puts grouped_seeds.keys.sort.inspect
+          cur_priors = living_cols.include?(idx) ? @ends_up_living.dup : @ends_up_dead.dup
+          # puts "cur priors size:#{cur_priors.size}"
+          # puts "cur priors unique size: #{cur_priors.uniq.size}"
+          new_seeds = []
 
-      ((2)...(row_width+1)).each do |idx|
-        # puts "working on col #{idx}"
-        grouped_seeds = seeds.group_by{|seed| seed[-2..-1]}
-        # puts grouped_seeds.keys.sort.inspect
-        cur_priors = living_cols.include?(idx) ? @ends_up_living.dup : @ends_up_dead.dup
-        # puts "cur priors size:#{cur_priors.size}"
-        # puts "cur priors unique size: #{cur_priors.uniq.size}"
-        new_seeds = []
+          cur_priors.each do |prior|
+            prior_left_two_columns = prior[0..1]
+            # puts "left two columns:"
+            # puts prior_left_two_columns.inspect
+            (grouped_seeds[prior_left_two_columns] || []).each do |matched_seed|
+              # puts matched_seed.join("\n")
+              new_seed = (matched_seed + [prior[2]])
+              # puts
+              # puts new_seed.join("\n")
+              # puts
+              # puts Grid.from_cells(3, row_width + 2, new_seed)
 
-        cur_priors.each do |prior|
-          prior_left_two_columns = prior[0..1]
-          # puts "left two columns:"
-          # puts prior_left_two_columns.inspect
-          (grouped_seeds[prior_left_two_columns] || []).each do |matched_seed|
-            # puts matched_seed.join("\n")
-            new_seed = (matched_seed + [prior[2]])
-            # puts
-            # puts new_seed.join("\n")
-            # puts
-            # puts Grid.from_cells(3, row_width + 2, new_seed)
-
-            new_seeds << new_seed
+              new_seeds << new_seed
+            end
           end
+          # puts "new seeds size: #{new_seeds.size}"
+          # puts "new seeds unique size: #{new_seeds.uniq.size}"
+
+          seeds = new_seeds
         end
-
-        # puts "new seeds size: #{new_seeds.size}"
-        # puts "new seeds unique size: #{new_seeds.uniq.size}"
-
-        seeds = new_seeds
       end
 
-      seeds = seeds.select {|seed| @solution_filter.call(seed)}
-
       # puts "seeds size: #{seeds.size}"
-      # puts "seeds unique size: #{seeds.uniq.size}"
 
-
-      ret = seeds.map { |seed| Pt.pts_to_bv_rows(from_cols(seed), 3) }
+      ret = seeds.map { |seed| IntersectingRowAtaviser.cols_to_rows(seed, row_width) }.select{|result| @solution_filter.call(result)}
+      # puts "after filter: #{ret.size}"
+      # puts "uniq: #{ret.uniq.size}"
       @cache[[row_width, living_cols]] = ret
     end
+    # RubyProf.resume
     ret
   end
 
   private
+
+  def self.cols_to_rows(bvs_by_col, num_cols)
+    # always 3 rows, since we're row atavising
+    # puts "input: " + bvs_by_col.inspect
+    bvs_by_row = [0,0,0]
+    (0...num_cols).each do |col_idx|
+      bvs_by_row[0] = (bvs_by_row[0] | (((bvs_by_col[col_idx] & 1)) << col_idx))
+      bvs_by_row[1] = (bvs_by_row[1] | (((bvs_by_col[col_idx] & 2)) << (col_idx - 1)))
+      bvs_by_row[2] = (bvs_by_row[2] | (((bvs_by_col[col_idx] & 4)) << (col_idx - 2)))
+    end
+    # puts "output: " + bvs_by_row.inspect
+    bvs_by_row
+  end
 
   def by_col(pts, numcols)
     Pt.pts_to_bv_rows(pts.map { |pt| pt.flip }, numcols)

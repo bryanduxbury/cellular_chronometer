@@ -68,17 +68,11 @@ class Pt
 
     pt = nil
     col = @cache[x]
-    # unless col.nil?
-      pt = col[y]
-      if pt.nil?
-        pt = Pt.new(x,y)
-        @cache[x][y] = pt
-      end
-    # else
-    #   pt = Pt.new(x,y)
-    #   @cache[x] = []
-    #   @cache[x][y] = pt
-    # end
+    pt = col[y]
+    if pt.nil?
+      pt = Pt.new(x,y)
+      @cache[x][y] = pt
+    end
     pt
   end
 end

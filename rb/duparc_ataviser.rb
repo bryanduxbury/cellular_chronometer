@@ -14,7 +14,7 @@ class DuparcAtaviser
     rows = grid.by_row
 
     # pull off the first row to make the initial seeds
-    seeds = @row_ataviser.atavise(grid.cols, rows.shift.map { |pt| pt.translate(1,0).x })
+    seeds = @row_ataviser.atavise(grid.cols+2, rows.shift.map { |pt| pt.translate(1,0).x })
     # puts "seeds size: #{seeds.size}"
     # puts "uniq seeds size: #{seeds.uniq.size}"
     # if extra == 0
@@ -26,7 +26,7 @@ class DuparcAtaviser
     until rows.empty? || seeds.empty?
       cur = rows.shift.map{|pt|pt.translate(1,0).x}
       #   # puts cur.inspect
-      priors = @row_ataviser.atavise(grid.cols, cur)
+      priors = @row_ataviser.atavise(grid.cols+2, cur)
       # puts "partial priors for next row: #{priors.size}"
 
       new_seeds = []

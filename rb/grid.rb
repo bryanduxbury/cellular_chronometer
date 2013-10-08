@@ -130,6 +130,10 @@ class Grid
     @cells == other.cells
   end
 
+  def subgrid(x1, y1, x2, y2)
+    Grid.from_cells(y2-y1+1, x2-x1+1, @cells.keys.select{|cell| cell.x >= x1 && cell.x <= x2 && cell.y >= y1 && cell.y <= y2}.map{|pt| pt.translate(-x1, -y1)})
+  end
+
   class << self
     def from_cells(rows, cols, list_of_cells)
       for cell in list_of_cells
