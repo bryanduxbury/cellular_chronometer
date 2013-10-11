@@ -50,12 +50,12 @@ public class IntersectingRowAtaviser implements RowAtaviser {
         solutions.add(copy(seed));
       }
     } else {
-      for (int[] seed : endsUpLiving) {
+      for (int[] seed : endsUpDead) {
         solutions.add(copy(seed));
       }
     }
 
-    for (int i = 2; i < rowWidth - 2; i++) {
+    for (int i = 2; i < rowWidth - 1; i++) {
       List<int[]> newSolutions = new ArrayList<int[]>();
       List<int[]> rhs = null;
       if ((row & (1 << i)) != 0) {
@@ -82,20 +82,20 @@ public class IntersectingRowAtaviser implements RowAtaviser {
     return finalSolutions;
   }
 
-  private static int[] colsToRows(int[] byCol) {
+  static int[] colsToRows(int[] byCol) {
     int[] byRow = new int[] {0,0,0};
     for (int i = 0; i < byCol.length; i++) {
-      byRow[0] = (byRow[0] | (((byCol[i] & 1)) << i));
-      byRow[1] = (byRow[1] | (((byCol[i] & 2)) << (i - 1)));
-      byRow[2] = (byRow[2] | (((byCol[i] & 4)) << (i - 2)));
+      byRow[0] = (byRow[0] | (((byCol[i] & 1) >> 0) << i));
+      byRow[1] = (byRow[1] | (((byCol[i] & 2) >> 1) << i));
+      byRow[2] = (byRow[2] | (((byCol[i] & 4) >> 2) << i));
     }
     return byRow;
   }
 
-  private static int[] merge(int[] lhs, int[] rhs) {
+  static int[] merge(int[] lhs, int[] rhs) {
     int[] result = new int[lhs.length+1];
     System.arraycopy(lhs, 0, result, 0, lhs.length);
-    result[result.length] = rhs[2];
+    result[result.length-1] = rhs[2];
     return result;
   }
 
@@ -111,5 +111,19 @@ public class IntersectingRowAtaviser implements RowAtaviser {
     int[] temp = new int[ints.length];
     System.arraycopy(ints, 0, temp, 0, ints.length);
     return temp;
+  }
+
+  // benchmarking purposes only!
+  public static void main(String[] args) {
+    IntersectingRowAtaviser a = new IntersectingRowAtaviser();
+    long startTime = System.currentTimeMillis();
+    for (int trial = 0; trial < 10; trial++) {
+      for (int i = 0; i < 32; i++) {
+        a.atavise(7, i << 1);
+      }
+    }
+
+    long endTime = System.currentTimeMillis();
+    System.out.println(endTime-startTime);
   }
 }
