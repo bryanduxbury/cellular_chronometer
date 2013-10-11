@@ -113,7 +113,9 @@ class Search
         # puts "Couldn't find a prior generation. Going back up a level."
         return nil
       end
-
+      
+      # puts "found #{prior_generations.size} prior generations"
+      # non_toroidal_count = 0
       prior_generations.each do |prior_generation|
         g = Grid.from_cells(target_grid.rows + 2, target_grid.cols + 2, prior_generation)
         toroidal = true
@@ -124,12 +126,18 @@ class Search
             end
           end
         end
-        next unless toroidal
+        unless toroidal
+          # non_toroidal_count += 1
+          # print "\rskipping non-toroidal (count: #{non_toroidal_count}/#{prior_generations.size})"
+          next
+        end
         g = g.subgrid(1, 1, target_grid.cols, target_grid.rows)
 
         # next unless empty_border?(g)
         result = find(g, num_priors-1)
-        unless result.nil?
+        if result.nil?
+          # puts "\ncouldn't find a prior for this solution at depth #{num_priors}"
+        else
           return result
         end
       end

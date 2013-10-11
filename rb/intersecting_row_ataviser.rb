@@ -25,6 +25,7 @@ class IntersectingRowAtaviser
 
     # puts "number of priors for living cell: #{@ends_up_living.size}"
     # puts "number of priors for dead cell: #{@ends_up_dead.size}"
+    exit
   end
 
   def atavise(row_width, living_cols)
