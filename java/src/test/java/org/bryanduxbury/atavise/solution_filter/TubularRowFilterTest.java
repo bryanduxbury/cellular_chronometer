@@ -1,4 +1,4 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.solution_filter;
 
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.junit.Test;
