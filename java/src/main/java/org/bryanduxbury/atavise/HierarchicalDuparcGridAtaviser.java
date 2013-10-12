@@ -92,7 +92,7 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
   // benchmarking only!
   public static void main(String[] args) {
     HierarchicalDuparcGridAtaviser a =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser());
+        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
     long startTime = System.currentTimeMillis();
     //for (int trial = 0; trial < 10; trial++) {
       for (int i = 0; i < 1; i++) {
