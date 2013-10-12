@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 public class IntersectingRowAtaviserTest {
@@ -60,6 +61,26 @@ public class IntersectingRowAtaviserTest {
   @Test
   public void testColsToRows() {
     int[] rows = IntersectingRowAtaviser.colsToRows(new int[] {4, 4, 4});
-    assertTrue(Arrays.equals(new int[]{0,0,7}, rows));
+    assertTrue(Arrays.equals(new int[] {0, 0, 7}, rows));
+  }
+
+  @Test
+  public void testWithFilter() {
+    IntersectingRowAtaviser a = new IntersectingRowAtaviser(new SolutionFilter() {
+      @Override public boolean keep(int rowWidth, int[] rows) {
+        return ! Arrays.equals(rows, new int[]{0,0,14});
+      }
+    });
+    List<int[]> priors = a.atavise(5, 4);
+
+    boolean found = false;
+
+    for (int[] prior : priors) {
+      if (Arrays.equals(prior, new int[] {0, 0, 14})) {
+        found = true;
+      }
+    }
+
+    assertFalse("Should have filtered the specified case!", found);
   }
 }

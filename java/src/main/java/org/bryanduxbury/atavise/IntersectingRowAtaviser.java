@@ -12,6 +12,8 @@ public class IntersectingRowAtaviser implements RowAtaviser {
   private final List<int[]> endsUpLiving = new ArrayList<int[]>();
 
   private static final int[] TABLE = {0, 1, 1, 2, 1, 2, 2, 3};
+  private final SolutionFilter solutionFilter;
+
   private static int numLiving(int bitvector) {
     return TABLE[bitvector & 0x07];
   }
@@ -21,6 +23,11 @@ public class IntersectingRowAtaviser implements RowAtaviser {
   }
 
   public IntersectingRowAtaviser() {
+    this(new RetainAll());
+  }
+
+  public IntersectingRowAtaviser(SolutionFilter solutionFilter) {
+    this.solutionFilter = solutionFilter;
     for (int i = 0; i < 512; i++) {
       int count = numLiving(i) + numLiving((i >> 3) & 0x5) + numLiving(i >> 6);
 
@@ -77,7 +84,10 @@ public class IntersectingRowAtaviser implements RowAtaviser {
 
     List<int[]> finalSolutions = new ArrayList<int[]>(solutions.size());
     for (int[] solution : solutions) {
-      finalSolutions.add(colsToRows(solution));
+      int[] byRow = colsToRows(solution);
+      if (solutionFilter.keep(rowWidth, byRow)) {
+        finalSolutions.add(byRow);
+      }
     }
     return finalSolutions;
   }
