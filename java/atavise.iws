@@ -10,10 +10,10 @@
     <file path="$PROJECT_DIR$/../../java/refinery/apps/src/main/java/com/squareup/refinery/apps/sawmill/service/LogCreateLiterConverter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381414705706" ignored="false" />
     <file path="$PROJECT_DIR$/../../java/refinery/batmobile/util/pom.xml" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381414740549" ignored="false" />
     <file path="/Dummy.txt" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381467064240" ignored="false" />
-    <file path="/fragment.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381499753425" ignored="false" />
+    <file path="/fragment.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381547284416" ignored="false" />
     <file path="/IntersectingRowAtaviserTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381516105093" ignored="false" />
     <file path="/GridAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381468218839" ignored="false" />
-    <file path="/HierarchicalDuparcGridAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381504046518" ignored="false" />
+    <file path="/HierarchicalDuparcGridAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381554347282" ignored="false" />
     <file path="/HierarchicalDuparcGridAtaviserTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381506796036" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -114,16 +114,16 @@
       <file leaf-file-name="IntersectingRowAtaviser.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/IntersectingRowAtaviser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="23" selection-start="1665" selection-end="1665" vertical-scroll-proportion="0.0">
+            <state line="126" column="42" selection-start="3290" selection-end="3553" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IntersectingRowAtaviserTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="IntersectingRowAtaviserTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/IntersectingRowAtaviserTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="20" selection-start="228" selection-end="228" vertical-scroll-proportion="0.17573221">
+            <state line="9" column="20" selection-start="228" selection-end="228" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -131,13 +131,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HierarchicalDuparcGridAtaviser.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="HierarchicalDuparcGridAtaviser.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="58" selection-start="638" selection-end="638" vertical-scroll-proportion="0.0">
+            <state line="11" column="0" selection-start="248" selection-end="248" vertical-scroll-proportion="0.2347084">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2331#2361#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FourInts.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/FourInts.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="0" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -145,7 +155,7 @@
       <file leaf-file-name="HierarchicalDuparcGridAtaviserTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="0" selection-start="1427" selection-end="1427" vertical-scroll-proportion="0.0">
+            <state line="9" column="13" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -165,10 +175,12 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/RowAtaviser.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/GridAtaviser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviser.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/IntersectingRowAtaviser.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/IntersectingRowAtaviserTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/TwoInts.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/FourInts.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviser.java" />
       </list>
     </option>
   </component>
@@ -296,6 +308,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -311,54 +324,23 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.IntersectingRowAtaviserTest">
-    <configuration default="false" name="HierarchicalDuparcGridAtaviserTest.testAtaviseVerticalBlinker" type="JUnit" factoryName="JUnit" temporary="true">
-      <module name="java" />
+  <component name="RunManager" selected="Application.HierarchicalDuparcGridAtaviser">
+    <configuration default="false" name="HierarchicalDuparcGridAtaviser" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.HierarchicalDuparcGridAtaviser" />
+      <option name="VM_PARAMETERS" value="-Xmx2048m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.bryanduxbury.atavise" />
-      <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.HierarchicalDuparcGridAtaviserTest" />
-      <option name="METHOD_NAME" value="testAtaviseVerticalBlinker" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="IntersectingRowAtaviserTest.testVerticalBlinkerElements" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="java" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.bryanduxbury.atavise" />
-      <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.IntersectingRowAtaviserTest" />
-      <option name="METHOD_NAME" value="testVerticalBlinkerElements" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
       <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
       </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -420,6 +402,28 @@
       <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.IntersectingRowAtaviserTest" />
       <option name="METHOD_NAME" value="testSingleCell" />
       <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="HierarchicalDuparcGridAtaviserTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="java" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="org.bryanduxbury.atavise" />
+      <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.HierarchicalDuparcGridAtaviserTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -523,19 +527,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.HierarchicalDuparcGridAtaviserTest.testAtaviseVerticalBlinker" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testVerticalBlinkerElements" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testColsToRows" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testSingleCell" />
+      <item index="0" class="java.lang.String" itemvalue="Application.HierarchicalDuparcGridAtaviser" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testColsToRows" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testSingleCell" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.HierarchicalDuparcGridAtaviserTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testSingleCell" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testColsToRows" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testVerticalBlinkerElements" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.HierarchicalDuparcGridAtaviserTest.testAtaviseVerticalBlinker" />
+        <item index="0" class="java.lang.String" itemvalue="Application.HierarchicalDuparcGridAtaviser" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.HierarchicalDuparcGridAtaviserTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testSingleCell" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.IntersectingRowAtaviserTest.testColsToRows" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -570,7 +574,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964131" sideWeight="0.6710875" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32891247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -717,36 +721,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="58" selection-start="638" selection-end="638" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1427" selection-end="1427" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/IntersectingRowAtaviser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="23" selection-start="1665" selection-end="1665" vertical-scroll-proportion="0.0">
+        <state line="126" column="42" selection-start="3290" selection-end="3553" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/IntersectingRowAtaviserTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="20" selection-start="228" selection-end="228" vertical-scroll-proportion="0.17573221">
+        <state line="9" column="20" selection-start="228" selection-end="228" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/TwoInts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="34" selection-end="34" vertical-scroll-proportion="0.032967035">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/FourInts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="248" selection-end="248" vertical-scroll-proportion="0.2347084">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2331#2361#0" expanded="true" />
           </folding>
         </state>
       </provider>
