@@ -25,7 +25,6 @@ class IntersectingRowAtaviser
 
     # puts "number of priors for living cell: #{@ends_up_living.size}"
     # puts "number of priors for dead cell: #{@ends_up_dead.size}"
-    exit
   end
 
   def atavise(row_width, living_cols)
@@ -122,16 +121,23 @@ end
 if $0 == __FILE__
   a = IntersectingRowAtaviser.new
   
-  srand(1)
-  width = 5
-  100.times do
-    living_cols = []
-    until living_cols.size == 3
-      col = rand(width)
-      living_cols << col unless living_cols.include?(col)
+  # srand(1)
+  #   width = 5
+  #   100.times do
+  #     living_cols = []
+  #     until living_cols.size == 3
+  #       col = rand(width)
+  #       living_cols << col unless living_cols.include?(col)
+  #     end
+  #     puts living_cols.inspect
+  #     a.atavise(5, 1, living_cols)
+  #   end
+  starttime = Time.now.to_f
+  for trial in 0...10
+    for i in 0...32
+      a.atavise(5, (i << 1).to_s(2).reverse.split("").each_with_index.map {|x, i| x == "1" ? i : nil}.compact)
     end
-    puts living_cols.inspect
-    a.atavise(5, 1, living_cols)
   end
-  
+  endtime = Time.now.to_f
+  puts endtime-starttime
 end

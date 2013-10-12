@@ -17,6 +17,7 @@ describe IntersectingRowAtaviser do
     i.should == e
   
     i = ia.atavise(4, [1,2]).map(&:sort).sort
+    puts i.size
     e = ea.atavise(2, [1,2]).map(&:sort).sort
     i.should == e
   end
