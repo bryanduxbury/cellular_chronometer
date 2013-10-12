@@ -19,7 +19,6 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
   }
 
   private List<int[]> internalAtavise(int cols, int rows, int[] grid, int startRow, int endRow) {
-    System.out.println("!");
     if (endRow - startRow == 1) {
       // cool, down to one row
       // row-atavise it
@@ -28,39 +27,51 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
       //return index(rowPriors);
     }
 
+    // compute the midpoint for recursing
     int mid = (endRow - startRow) / 2 + startRow;
 
+    // compute the top half
     List<int[]> topPriors = internalAtavise(cols, rows, grid, startRow, mid);
+    // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> topsByBottom =
         indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
+    topPriors = null;
+
+    // compute the results for the bottom half
     List<int[]> bottomPriors = internalAtavise(cols, rows, grid, mid, endRow);
+    // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> bottomsByTops =
         indexBy(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
+    bottomPriors = null;
 
+    // compute the intersection of all tops and bottoms
     List<int[]> newSolutions = new ArrayList<int[]>();
 
+    // for each unique bottom in the top set...
+    OUTER:
     for (Map.Entry<TwoInts, Map<TwoInts, int[]>> top : topsByBottom.entrySet()) {
+      // ... get the set of matching solutions in the bottom set ...
       Map<TwoInts, int[]> matchingBottoms = bottomsByTops.get(top.getKey());
+      // ... if there are any matches ...
       if (matchingBottoms != null) {
+        // ... then for each unique top in the tops with matching bottoms ...
         for (int[] left : top.getValue().values()) {
+          // ... and for each unique bottom in bottoms with matching tops ...
           for (int [] right : matchingBottoms.values()) {
+            // ... add a new solution to the result set
             newSolutions.add(merge(left, right));
+            if (newSolutions.size() == 100000) {
+              break OUTER;
+            }
           }
         }
       }
     }
 
+    // if the number of solutions has gotten bigger than 100K, trim it.
     if (newSolutions.size() > 100000) {
       newSolutions = newSolutions.subList(0, 100000);
     }
-
-    //for (int[] top : topPriors) {
-    //  for (int[] bottom : bottomPriors) {
-    //    if (top[top.length-2] == bottom[0] && top[top.length-1] == bottom[1]) {
-    //      newSolutions.add(merge(top, bottom));
-    //    }
-    //  }
-    //}
 
     return newSolutions;
   }
