@@ -1,4 +1,6 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.solution_filter;
+
+import org.bryanduxbury.atavise.solution_filter.SolutionFilter;
 
 public class TubularRowFilter implements SolutionFilter {
   @Override public boolean keep(int rowWidth, int[] rows) {

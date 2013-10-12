@@ -2,6 +2,7 @@ package org.bryanduxbury.atavise;
 
 import java.util.Arrays;
 import java.util.List;
+import org.bryanduxbury.atavise.solution_filter.SolutionFilter;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

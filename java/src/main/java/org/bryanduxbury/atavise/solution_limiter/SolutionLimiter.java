@@ -1,4 +1,4 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.solution_limiter;
 
 import java.util.Collection;
 

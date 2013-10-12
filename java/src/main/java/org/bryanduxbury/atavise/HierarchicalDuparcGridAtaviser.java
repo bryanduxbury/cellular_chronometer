@@ -1,10 +1,12 @@
 package org.bryanduxbury.atavise;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
+import org.bryanduxbury.atavise.solution_limiter.Aggressive;
+import org.bryanduxbury.atavise.solution_limiter.SolutionLimiter;
 
 public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
 

@@ -1,5 +1,6 @@
 package org.bryanduxbury.atavise;
 
+import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertFalse;

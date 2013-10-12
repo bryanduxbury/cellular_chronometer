@@ -1,6 +1,6 @@
 package org.bryanduxbury.atavise;
 
-class FourInts {
+public final class FourInts {
   private final int a;
   private final int b;
   private final int c;

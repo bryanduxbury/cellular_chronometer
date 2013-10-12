@@ -1,10 +1,9 @@
 package org.bryanduxbury.atavise;
 
 import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import org.bryanduxbury.atavise.solution_filter.RetainAll;
+import org.bryanduxbury.atavise.solution_filter.SolutionFilter;
 
 public class IntersectingRowAtaviser implements RowAtaviser {
 

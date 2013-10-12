@@ -3,6 +3,7 @@ package org.bryanduxbury.atavise;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.bryanduxbury.atavise.solution_limiter.AllSolutions;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
