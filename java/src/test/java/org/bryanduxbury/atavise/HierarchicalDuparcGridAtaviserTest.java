@@ -1,6 +1,7 @@
 package org.bryanduxbury.atavise;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.junit.Test;
 
@@ -13,8 +14,8 @@ public class HierarchicalDuparcGridAtaviserTest {
   public void testAtaviseHorizontalBlinker() {
     int[] grid = new int[]{0,7,0};
     HierarchicalDuparcGridAtaviser a =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser());
-    List<int[]> results = a.atavise(3, 3, grid);
+        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(), new AllSolutions.Factory());
+    Collection<int[]> results = a.atavise(3, 3, grid);
 
     boolean found = false;
 
@@ -32,8 +33,8 @@ public class HierarchicalDuparcGridAtaviserTest {
   public void testAtaviseVerticalBlinker() {
     int[] grid = new int[]{2,2,2};
     HierarchicalDuparcGridAtaviser a =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser());
-    List<int[]> results = a.atavise(3, 3, grid);
+        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(), new AllSolutions.Factory());
+    Collection<int[]> results = a.atavise(3, 3, grid);
 
     boolean found = false;
 
