@@ -6,7 +6,7 @@ public final class FourInts {
   private final int c;
   private final int d;
 
-  FourInts(int a, int b, int c, int d) {
+  public FourInts(int a, int b, int c, int d) {
     this.a = a;
     this.b = b;
     this.c = c;

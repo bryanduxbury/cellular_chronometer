@@ -1,0 +1,88 @@
+package org.bryanduxbury.atavise;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
+import org.bryanduxbury.atavise.solution_limiter.Aggressive;
+
+public class Searcher {
+
+  private final HierarchicalDuparcGridAtaviser ataviser;
+
+  public Searcher() {
+    ataviser =
+        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()),
+            new Aggressive.Factory(100000));
+  }
+
+  private void search(int numPriors, String gridFilePath) throws IOException {
+    // load target from gridFilePath
+    Grid targetGrid = Grid.fromFile(gridFilePath);
+
+    if (targetGrid.getWidth() > targetGrid.getHeight()) {
+      targetGrid = targetGrid.transpose();
+    }
+
+    // run find() recursively
+    int[] result = find(targetGrid, numPriors);
+
+    if (result == null) {
+      System.out.print("-");
+      return;
+    } else {
+      System.out.print("+");
+    }
+  }
+
+  private int[] find(Grid targetGrid, int numPriors) {
+    if (numPriors == 0) {
+      return targetGrid.getCells();
+    } else {
+      Collection<int[]> priors = ataviser.atavise(targetGrid);
+
+      for (int[] prior : priors) {
+        if (!isToroidal(prior)) {
+          continue;
+        }
+
+        Grid newTargetGrid = new Grid(stripBorder(prior, targetGrid.getWidth()), targetGrid.getWidth());
+        int[] result = find(newTargetGrid, numPriors - 1);
+        if (result != null) {
+          return result;
+        }
+      }
+
+      return null;
+    }
+  }
+
+  private int[] stripBorder(int[] prior, int width) {
+    int[] stripped = new int[prior.length - 2];
+    int mask = 0;
+    for (int i = 1; i <= width; i++) {
+      mask |= (1 << i);
+    }
+    for (int i = 0; i < prior.length - 2; i++) {
+      stripped[i] = (prior[i+1] & mask) >> 1;
+    }
+    return stripped;
+  }
+
+  private boolean isToroidal(int[] cells) {
+    return cells[0] == cells[cells.length - 2] && cells[1] == cells[cells.length - 1];
+  }
+
+  public static void main(String[] args) throws IOException {
+    Searcher s = new Searcher();
+
+    int numPriors = Integer.parseInt(args[0]);
+    for (int i = 1; i < args.length; i++) {
+      s.search(numPriors, args[i]);
+    }
+    System.out.println();
+  }
+}

@@ -16,7 +16,7 @@ public class HierarchicalDuparcGridAtaviserTest {
     int[] grid = new int[]{0,7,0};
     HierarchicalDuparcGridAtaviser a =
         new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(), new AllSolutions.Factory());
-    Collection<int[]> results = a.atavise(3, 3, grid);
+    Collection<int[]> results = a.atavise(new Grid(grid, 3));
 
     boolean found = false;
 
@@ -35,7 +35,7 @@ public class HierarchicalDuparcGridAtaviserTest {
     int[] grid = new int[]{2,2,2};
     HierarchicalDuparcGridAtaviser a =
         new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(), new AllSolutions.Factory());
-    Collection<int[]> results = a.atavise(3, 3, grid);
+    Collection<int[]> results = a.atavise(new Grid(grid, 3));
 
     boolean found = false;
 

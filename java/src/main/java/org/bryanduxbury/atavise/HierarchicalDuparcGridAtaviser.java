@@ -18,17 +18,17 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     this.solnLimiterFactory = solnLimiterFactory;
   }
 
-  @Override public Collection<int[]> atavise(int cols, int rows, int[] grid) {
-    Collection<int[]> results = internalAtavise(cols, rows, grid, 0, grid.length);
+  @Override public Collection<int[]> atavise(Grid grid) {
+    Collection<int[]> results = internalAtavise(grid, 0, grid.getHeight());
 
     return results;
   }
 
-  private Collection<int[]> internalAtavise(int cols, int rows, int[] grid, int startRow, int endRow) {
+  private Collection<int[]> internalAtavise(Grid grid, int startRow, int endRow) {
     if (endRow - startRow == 1) {
       // cool, down to one row
       // row-atavise it
-      List<int[]> rowPriors = rowAtaviser.atavise(cols + 2, grid[startRow] << 1);
+      List<int[]> rowPriors = rowAtaviser.atavise(grid.getWidth() + 2, grid.getCells()[startRow] << 1);
       return rowPriors;
       //return index(rowPriors);
     }
@@ -37,14 +37,14 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     int mid = (endRow - startRow) / 2 + startRow;
 
     // compute the top half
-    Collection<int[]> topPriors = internalAtavise(cols, rows, grid, startRow, mid);
+    Collection<int[]> topPriors = internalAtavise(grid, startRow, mid);
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> topsByBottom =
         indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
     topPriors = null;
 
     // compute the results for the bottom half
-    Collection<int[]> bottomPriors = internalAtavise(cols, rows, grid, mid, endRow);
+    Collection<int[]> bottomPriors = internalAtavise(grid, mid, endRow);
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> bottomsByTops =
         indexBy(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
@@ -114,7 +114,7 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
       for (int i = 0; i < 1; i++) {
         int[] s0101 =
             {0, 0, 31, 17, 31, 0, 0, 18, 31, 16, 0, 0, 10, 0, 0, 31, 17, 31, 0, 0, 18, 31, 16, 0, 0};
-        System.out.print(a.atavise(5, 25, s0101).size());
+        System.out.print(a.atavise(new Grid(s0101, 5)).size());
         System.out.println(" priors!");
       }
     //}
