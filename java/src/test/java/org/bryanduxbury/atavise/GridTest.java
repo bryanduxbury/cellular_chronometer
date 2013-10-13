@@ -36,4 +36,22 @@ public class GridTest {
     // transpose call
     assertTrue("loaded correct data", Arrays.equals(S0101, grid.transpose().getCells()));
   }
+
+  @Test
+  public void testNextGeneration() {
+    Grid g1 = new Grid(new int[] {0, 7, 0}, 3);
+    Grid g2 = g1.nextGeneration();
+    assertEquals(3, g1.getWidth());
+    assertEquals(3, g1.getHeight());
+    assertTrue(Arrays.equals(new int[]{2, 2, 2}, g2.getCells()));
+  }
+
+  @Test
+  public void testMakeToroidal() {
+    Grid g1 = new Grid(new int[]{0, 7, 0}, 3);
+    Grid g2 = g1.makeToroidal();
+    assertEquals(5, g2.getHeight());
+    assertEquals(5, g2.getWidth());
+    assertTrue(Arrays.equals(new int[]{0, 0, 31, 0, 0}, g2.getCells()));
+  }
 }

@@ -17,7 +17,7 @@ public class Searcher {
   public Searcher() {
     ataviser =
         new HierarchicalDuparcGridAtaviser(new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter())),
-            new Aggressive.Factory(300000));
+            new Aggressive.Factory(1000000));
   }
 
   private void search(int numPriors, String gridFilePath) throws IOException {
@@ -55,18 +55,18 @@ public class Searcher {
       return targetGrid.getCells();
     } else {
       Collection<int[]> priors = ataviser.atavise(targetGrid);
-
+      System.out.println(numPriors + " -> " + priors.size());
       for (int[] prior : priors) {
         if (!isToroidal(prior)) {
           continue;
         }
-        System.out.println("toroidal!");
+        //System.out.println("toroidal!");
         Grid newTargetGrid = new Grid(stripBorder(prior, targetGrid.getWidth()), targetGrid.getWidth());
         int[] result = find(newTargetGrid, numPriors - 1);
         if (result != null) {
           return result;
         }
-        System.out.println("... but no prior at level " + numPriors);
+        //System.out.println("... but no prior at level " + numPriors);
       }
 
       return null;

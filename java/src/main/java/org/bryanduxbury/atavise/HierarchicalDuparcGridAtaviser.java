@@ -1,9 +1,12 @@
 package org.bryanduxbury.atavise;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_limiter.Aggressive;
 import org.bryanduxbury.atavise.solution_limiter.SolutionLimiter;
@@ -19,32 +22,41 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
   }
 
   @Override public Collection<int[]> atavise(Grid grid) {
-    Collection<int[]> results = internalAtavise(grid, 0, grid.getHeight());
+    Collection<int[]> results = internalAtavise(grid, 0, grid.getHeight(), null);
 
     return results;
   }
 
-  private Collection<int[]> internalAtavise(Grid grid, int startRow, int endRow) {
+  private Collection<int[]> internalAtavise(Grid grid, int startRow, int endRow,
+      Set<TwoInts> spoilers) {
     if (endRow - startRow == 1) {
       // cool, down to one row
       // row-atavise it
       List<int[]> rowPriors = rowAtaviser.atavise(grid.getWidth() + 2, grid.getCells()[startRow] << 1);
+      if (spoilers != null) {
+        List<int[]> filtered = new ArrayList<int[]>();
+        for (int[] prior : rowPriors) {
+          if (spoilers.contains(new TwoInts(prior[0], prior[1]))) {
+            filtered.add(prior);
+          }
+        }
+        rowPriors = filtered;
+      }
       return rowPriors;
-      //return index(rowPriors);
     }
 
     // compute the midpoint for recursing
     int mid = (endRow - startRow) / 2 + startRow;
 
     // compute the top half
-    Collection<int[]> topPriors = internalAtavise(grid, startRow, mid);
+    Collection<int[]> topPriors = internalAtavise(grid, startRow, mid, null);
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> topsByBottom =
         indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
     topPriors = null;
 
     // compute the results for the bottom half
-    Collection<int[]> bottomPriors = internalAtavise(grid, mid, endRow);
+    Collection<int[]> bottomPriors = internalAtavise(grid, mid, endRow, /*topsByBottom.keySet()*/ null);
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> bottomsByTops =
         indexBy(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
@@ -107,8 +119,9 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
 
   // benchmarking only!
   public static void main(String[] args) {
-    HierarchicalDuparcGridAtaviser a =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()), new Aggressive.Factory(100000));
+    HierarchicalDuparcGridAtaviser a = new HierarchicalDuparcGridAtaviser(
+        new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter())),
+        new Aggressive.Factory(100000));
     long startTime = System.currentTimeMillis();
     //for (int trial = 0; trial < 10; trial++) {
       for (int i = 0; i < 1; i++) {
