@@ -1,11 +1,12 @@
 package org.bryanduxbury.atavise;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_limiter.Aggressive;
 
@@ -15,8 +16,8 @@ public class Searcher {
 
   public Searcher() {
     ataviser =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()),
-            new Aggressive.Factory(100000));
+        new HierarchicalDuparcGridAtaviser(new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter())),
+            new Aggressive.Factory(300000));
   }
 
   private void search(int numPriors, String gridFilePath) throws IOException {
@@ -34,8 +35,19 @@ public class Searcher {
       System.out.print("-");
       return;
     } else {
+      writeResult(targetGrid, result, gridFilePath, numPriors);
       System.out.print("+");
     }
+  }
+
+  private void writeResult(Grid targetGrid, int[] result, String gridFilePath, int numPriors)
+      throws FileNotFoundException {
+    File f = new File(gridFilePath + "__back_" + numPriors);
+    f.delete();
+    PrintWriter pw = new PrintWriter(new FileOutputStream(f));
+    pw.println(Arrays.toString(targetGrid.getCells()));
+    pw.println(Arrays.toString(result));
+    pw.close();
   }
 
   private int[] find(Grid targetGrid, int numPriors) {
@@ -48,12 +60,13 @@ public class Searcher {
         if (!isToroidal(prior)) {
           continue;
         }
-
+        System.out.println("toroidal!");
         Grid newTargetGrid = new Grid(stripBorder(prior, targetGrid.getWidth()), targetGrid.getWidth());
         int[] result = find(newTargetGrid, numPriors - 1);
         if (result != null) {
           return result;
         }
+        System.out.println("... but no prior at level " + numPriors);
       }
 
       return null;
@@ -79,10 +92,13 @@ public class Searcher {
   public static void main(String[] args) throws IOException {
     Searcher s = new Searcher();
 
+    long startTime = System.currentTimeMillis();
     int numPriors = Integer.parseInt(args[0]);
     for (int i = 1; i < args.length; i++) {
       s.search(numPriors, args[i]);
     }
     System.out.println();
+    long endTime = System.currentTimeMillis();
+    System.out.println("Elapsed ms: " + (endTime - startTime));
   }
 }
