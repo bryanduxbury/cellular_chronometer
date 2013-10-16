@@ -11,7 +11,7 @@ class Search
     tubular_edge_filter = proc do |solution|
       ret = true
       solution.each do |row|
-        if row & 0x01 != ((row >> 5) & 0x01) || ((row >> 1) & 0x01) != ((row >> 6) & 0x01)
+        if (row & 0x01) != ((row >> 5) & 0x01) || ((row >> 1) & 0x01) != ((row >> 6) & 0x01)
           ret = false
           break
         end
@@ -58,13 +58,22 @@ class Search
         file.puts target_grid.to_bitvector.inspect
         file.puts result
 
-        # g = result
-        # puts g
-        # (num_priors + 2).times do
-        #   n = g.next_generation
-        #   puts n
-        #   g = n
-        # end
+        puts "------------"
+
+        g = result
+        puts g
+        (num_priors + 2).times do
+          n = g.make_toroidal
+          puts "toroided --------"
+          puts n
+          n = n.next_generation
+          puts "next ------------"
+          puts n
+          n = n.subgrid(1,1,result.cols,result.rows)
+          puts "trimmed ---------"
+          puts n
+          g = n
+        end
 
       end
       true
@@ -107,19 +116,28 @@ class Search
       # search for the target grid. the ataviser will look one extra cell in each direction.
       prior_generations = @ataviser.prior_generations(target_grid)
 
+      puts "#{num_priors} -> #{prior_generations.size}"
+      
       # no priors means there were no solutions that fit within the bounds of the original target grid.
       # i don't really think this can happen.
       if prior_generations.empty?
         # puts "Couldn't find a prior generation. Going back up a level."
         return nil
       end
-      
+
+      # f = File.new("priors_dump_rb.txt", "w")
+      # prior_generations.each do |prior_generation|
+      #   g = Grid.from_cells(target_grid.rows + 2, target_grid.cols + 2, prior_generation)
+      #   f.puts g.to_row_vectors.inspect
+      # end
+      # f.close
+
       # puts "found #{prior_generations.size} prior generations"
       # non_toroidal_count = 0
       prior_generations.each do |prior_generation|
         g = Grid.from_cells(target_grid.rows + 2, target_grid.cols + 2, prior_generation)
         toroidal = true
-        for lr in [[0, target_grid.rows], [1, target_grid.rows+1]]
+        for lr in [[0, g.rows-2], [1, g.rows-1]]
           (0...target_grid.cols).each do |col_idx|
             unless g.get(col_idx, lr.first) == g.get(col_idx, lr.last)
               toroidal = false
@@ -131,16 +149,17 @@ class Search
           # print "\rskipping non-toroidal (count: #{non_toroidal_count}/#{prior_generations.size})"
           next
         end
-        g = g.subgrid(1, 1, target_grid.cols, target_grid.rows)
-
+        g = g.subgrid(1, 1, g.cols-2, g.rows-2)
         # next unless empty_border?(g)
         result = find(g, num_priors-1)
         if result.nil?
           # puts "\ncouldn't find a prior for this solution at depth #{num_priors}"
         else
+          # puts g
           return result
         end
       end
+
       return nil
     end
   end

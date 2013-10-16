@@ -39,6 +39,20 @@ class Grid
     ret.keys.sort.map {|rownum| ret[rownum]}
   end
 
+  def to_row_vectors
+    out = []
+    for y in 0...rows
+      cur = 0
+      for x in 0...cols
+        if get(x, y)
+          cur = cur | (1 << x)
+        end
+      end
+      out << cur
+    end
+    out
+  end
+
   def to_bitvector
     out = []
     cur = 0
@@ -60,6 +74,15 @@ class Grid
       out << cur
     end
     out
+  end
+
+  def make_toroidal
+    new_cells = @cells.keys.map{|pt| pt.translate(1,1)}
+    new_cells += @cells.keys.select{|pt| pt.y == 0}.map{|pt| Pt.new(pt.translate(1,1).x, @rows+1)}
+    new_cells += @cells.keys.select{|pt| pt.y == (@rows - 1)}.map{|pt| Pt.new(pt.translate(1,1).x, 0)}
+    new_cells += new_cells.select{|pt| pt.x == 1}.map{|pt| Pt.new(@cols+1, pt.y)}
+    new_cells += new_cells.select{|pt| pt.x == (@cols + 1)}.map{|pt| Pt.new(0, pt.y)}
+    Grid.from_cells(@rows + 2, @cols + 2, new_cells)
   end
 
   def to_s(show_border=true)

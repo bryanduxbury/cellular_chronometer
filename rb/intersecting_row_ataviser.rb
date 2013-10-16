@@ -71,7 +71,7 @@ class IntersectingRowAtaviser
       # puts "seeds size: #{seeds.size}"
 
       ret = seeds.map { |seed| IntersectingRowAtaviser.cols_to_rows(seed, row_width) }.select{|result| @solution_filter.call(result)}
-      # puts "after filter: #{ret.size}"
+      puts "after filter: #{ret.size}"
       # puts "uniq: #{ret.uniq.size}"
       @cache[[row_width, living_cols]] = ret
     end

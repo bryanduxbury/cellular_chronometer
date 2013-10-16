@@ -58,16 +58,16 @@ class HierarchicalDuparcAtaviser
         b = bottoms.group_by{|prior| prior[-2..-1]}
 
         a.keys.each do |top|
-          top_first = a[top].first
+          top_first = a[top].sort.first
           b.keys.each do |bottom|
-            bottom_first = b[bottom].first
+            bottom_first = b[bottom].sort.first
             co_matches << (top_first + bottom_first[2..-1])
-            break if co_matches.size == 100000
+            break if co_matches.size == 200000
           end
-          break if co_matches.size == 100000
+          break if co_matches.size == 200000
         end
-        if co_matches.size == 100000
-          # print "!"
+        if co_matches.size == 200000
+          print "!"
           break
         end
       end

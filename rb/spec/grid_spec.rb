@@ -118,4 +118,10 @@ EOF
     g.set(1,1)
     g.by_row.should == [[],[Pt.new(1,1)],[]]
   end
+
+  # it "should toroid-ize" do
+  #   g = Grid.from_cells(5,5, [Pt.new(0,0), Pt.new(4,4)])
+  #   gt = g.make_toroidal
+  #   puts gt
+  # end
 end
