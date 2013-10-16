@@ -88,6 +88,7 @@ public class IntersectingRowAtaviser implements RowAtaviser {
         finalSolutions.add(byRow);
       }
     }
+
     return finalSolutions;
   }
 

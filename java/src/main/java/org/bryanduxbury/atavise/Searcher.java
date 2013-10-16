@@ -7,17 +7,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
+import org.bryanduxbury.atavise.solution_filter.HackyTubeFilter;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_limiter.Aggressive;
+import org.bryanduxbury.atavise.solution_limiter.HardLimit;
 
 public class Searcher {
 
   private final HierarchicalDuparcGridAtaviser ataviser;
 
   public Searcher() {
-    ataviser =
-        new HierarchicalDuparcGridAtaviser(new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter())),
-            new Aggressive.Factory(1000000));
+    Aggressive.Factory slf = new Aggressive.Factory(1000000);
+    //HardLimit.Factory slf = new HardLimit.Factory(1000000);
+    CachingRowAtaviser rowAtaviser =
+        new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
+    ataviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, slf);
+    //ataviser = new CachingHDGA(rowAtaviser, slf);
   }
 
   private void search(int numPriors, String gridFilePath) throws IOException {
@@ -33,7 +38,6 @@ public class Searcher {
 
     if (result == null) {
       System.out.print("-");
-      return;
     } else {
       writeResult(targetGrid, result, gridFilePath, numPriors);
       System.out.print("+");
@@ -42,6 +46,23 @@ public class Searcher {
 
   private void writeResult(Grid targetGrid, int[] result, String gridFilePath, int numPriors)
       throws FileNotFoundException {
+
+    //Grid g = new Grid(result, targetGrid.getWidth()).transpose();
+    //for (int i = 0; i < numPriors; i++) {
+    //  System.out.println(" start ------------------- ");
+    //  System.out.println(g);
+    //  g = g.makeToroidal();
+    //  System.out.println(" toroided ------------------- ");
+    //  System.out.println(g);
+    //  g = g.nextGeneration();
+    //  System.out.println(" next ------------------- ");
+    //  System.out.println(g);
+    //  g = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
+    //}
+    //
+    //System.out.println(" final --------------------");
+    //System.out.println(g);
+
     File f = new File(gridFilePath + "__back_" + numPriors);
     f.delete();
     PrintWriter pw = new PrintWriter(new FileOutputStream(f));
@@ -55,15 +76,33 @@ public class Searcher {
       return targetGrid.getCells();
     } else {
       Collection<int[]> priors = ataviser.atavise(targetGrid);
-      System.out.println(numPriors + " -> " + priors.size());
+
+      //try {
+      //  PrintWriter pw = new PrintWriter(new FileOutputStream("/Users/duxbury/Development/charlietime/java/priors_dump_java.txt", true));
+      //  for (int[] prior : priors) {
+      //    pw.println(new Grid(prior, targetGrid.getWidth() + 2).toBitvector());
+      //  }
+      //} catch (FileNotFoundException e) {
+      //  // TODO: generated exception handler
+      //  throw new RuntimeException(e);
+      //}
+
+
+      //System.out.println(numPriors + " -> " + priors.size());
       for (int[] prior : priors) {
+        Grid g = new Grid(prior, targetGrid.getWidth()+2);
         if (!isToroidal(prior)) {
+          //System.out.println("Not toroidal:");
+          //System.out.println(g);
           continue;
         }
-        //System.out.println("toroidal!");
-        Grid newTargetGrid = new Grid(stripBorder(prior, targetGrid.getWidth()), targetGrid.getWidth());
+
+        //System.out.println("toroidal:");
+        //System.out.println(g);
+        Grid newTargetGrid = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
         int[] result = find(newTargetGrid, numPriors - 1);
         if (result != null) {
+          //System.out.println(newTargetGrid);
           return result;
         }
         //System.out.println("... but no prior at level " + numPriors);
@@ -71,18 +110,6 @@ public class Searcher {
 
       return null;
     }
-  }
-
-  private int[] stripBorder(int[] prior, int width) {
-    int[] stripped = new int[prior.length - 2];
-    int mask = 0;
-    for (int i = 1; i <= width; i++) {
-      mask |= (1 << i);
-    }
-    for (int i = 0; i < prior.length - 2; i++) {
-      stripped[i] = (prior[i+1] & mask) >> 1;
-    }
-    return stripped;
   }
 
   private boolean isToroidal(int[] cells) {

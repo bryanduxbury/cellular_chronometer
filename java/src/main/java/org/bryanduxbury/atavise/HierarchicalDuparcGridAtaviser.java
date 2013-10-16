@@ -2,6 +2,8 @@ package org.bryanduxbury.atavise;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +29,7 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     return results;
   }
 
-  private Collection<int[]> internalAtavise(Grid grid, int startRow, int endRow,
+  protected Collection<int[]> internalAtavise(Grid grid, int startRow, int endRow,
       Set<TwoInts> spoilers) {
     if (endRow - startRow == 1) {
       // cool, down to one row
@@ -49,22 +51,20 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     int mid = (endRow - startRow) / 2 + startRow;
 
     // compute the top half
-    Collection<int[]> topPriors = internalAtavise(grid, startRow, mid, null);
+    Collection<int[]> topPriors = internalAtavise(grid, startRow, mid, spoilers);
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> topsByBottom =
         indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
     topPriors = null;
 
     // compute the results for the bottom half
-    Collection<int[]> bottomPriors = internalAtavise(grid, mid, endRow, /*topsByBottom.keySet()*/ null);
+    Collection<int[]> bottomPriors = internalAtavise(grid, mid, endRow, topsByBottom.keySet());
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, int[]>> bottomsByTops =
         indexBy(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
     bottomPriors = null;
 
     // compute the intersection of all tops and bottoms
-    //List<int[]> newSolutions = new ArrayList<int[]>();
-    //Map<FourInts, int[]> newSolutions2 = new HashMap<FourInts, int[]>();
     SolutionLimiter sl = solnLimiterFactory.getSolutionLimiter();
 
     // for each unique bottom in the top set...
@@ -83,6 +83,7 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
             sl.add(merged);
 
             if (sl.isFull()) {
+              System.out.println("hit the hardlimit");
               break OUTER;
             }
           }
@@ -95,8 +96,18 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
 
   static Map<TwoInts, Map<TwoInts, int[]>> indexBy(Collection<int[]> solns, int a, int b, int c, int d) {
     Map<TwoInts, Map<TwoInts, int[]>> indexed = new HashMap<TwoInts, Map<TwoInts, int[]>>();
-
-    for (int[] soln : solns) {
+    List<int[]> sortedSolns = new ArrayList<int[]>(solns);
+    Collections.sort(sortedSolns, new Comparator<int[]>() {
+      @Override public int compare(int[] left, int[] right) {
+        for (int i = 0; i < left.length; i++) {
+          if (left[i] != right[i]) {
+            return Integer.valueOf(left[i]).compareTo(right[i]);
+          }
+        }
+        return 0;
+      }
+    });
+    for (int[] soln : sortedSolns) {
       TwoInts x = new TwoInts(soln[a], soln[b]);
       TwoInts y = new TwoInts(soln[c], soln[d]);
       Map<TwoInts, int[]> ys = indexed.get(x);
@@ -104,7 +115,10 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
         ys = new HashMap<TwoInts, int[]>();
         indexed.put(x, ys);
       }
-      ys.put(y, soln);
+      if (!ys.containsKey(x)) {
+        ys.put(y, soln);
+      }
+
     }
 
     return indexed;

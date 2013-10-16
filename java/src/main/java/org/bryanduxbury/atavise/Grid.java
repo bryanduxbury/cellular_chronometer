@@ -72,9 +72,22 @@ public class Grid {
     }
 
     newCells[0] = newCells[newCells.length - 2];
-    newCells[1] = newCells[newCells.length - 1];
+    newCells[newCells.length - 1] = newCells[1];
 
     return new Grid(newCells, getWidth() + 2);
+  }
+
+  public Grid subgrid(int x1, int y1, int x2, int y2) {
+    int[] newCells = new int[y2-y1+1];
+    int mask = 0;
+    for (int i = x1; i <= x2; i++) {
+      mask |= (1 << i);
+    }
+    for (int y = y1; y <= y2; y++) {
+      newCells[y-y1] = (getCells()[y] & mask) >> x1;
+    }
+
+    return new Grid(newCells, x2-x1+1);
   }
 
   public Grid transpose() {
@@ -87,6 +100,24 @@ public class Grid {
       }
     }
     return new Grid(newCells, getHeight());
+  }
+
+  public String toString() {
+    String ret = "";
+
+    for (int y = 0; y < getHeight(); y++) {
+      if (y != 0) {
+        ret += "\n";
+      }
+      for (int x = 0; x < getWidth(); x++) {
+        if (isset(getCells(), x, y)) {
+          ret += "#";
+        } else {
+          ret += " ";
+        }
+      }
+    }
+    return ret;
   }
 
   private static void set(int[] vector, int x, int y) {
@@ -126,5 +157,16 @@ public class Grid {
     }
 
     return new Grid(result, maxWidth);
+  }
+
+  public String toBitvector() {
+    String ret = "[";
+    for (int y = 0; y < getHeight(); y++) {
+      if (y != 0) {
+        ret += ", ";
+      }
+      ret += getCells()[y];
+    }
+    return ret + "]";
   }
 }

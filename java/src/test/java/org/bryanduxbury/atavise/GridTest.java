@@ -54,4 +54,13 @@ public class GridTest {
     assertEquals(5, g2.getWidth());
     assertTrue(Arrays.equals(new int[]{0, 0, 31, 0, 0}, g2.getCells()));
   }
+
+  @Test
+  public void testSubgrid() {
+    Grid g1 = new Grid(new int[]{0, 0, 31, 0, 0}, 5);
+    Grid g2 = g1.subgrid(1, 1, 3, 3);
+    assertEquals(3, g2.getHeight());
+    assertEquals(3, g2.getWidth());
+    assertTrue(Arrays.equals(new int[]{0, 7, 0}, g2.getCells()));
+  }
 }
