@@ -7,22 +7,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
-import org.bryanduxbury.atavise.solution_filter.HackyTubeFilter;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
+import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
+import org.bryanduxbury.atavise.solution_indexer.UniqueBordersIndexer;
 import org.bryanduxbury.atavise.solution_limiter.Aggressive;
 import org.bryanduxbury.atavise.solution_limiter.HardLimit;
 
 public class Searcher {
 
-  private final HierarchicalDuparcGridAtaviser ataviser;
+  private final HierarchicalDuparcGridAtaviser fastAtaviser;
+  private final HierarchicalDuparcGridAtaviser thoroughAtaviser;
 
   public Searcher() {
-    Aggressive.Factory slf = new Aggressive.Factory(1000000);
-    //HardLimit.Factory slf = new HardLimit.Factory(1000000);
+    Aggressive.Factory aggressive = new Aggressive.Factory(10000000);
+    HardLimit.Factory hard = new HardLimit.Factory(24000000);
     CachingRowAtaviser rowAtaviser =
         new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
-    ataviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, slf);
-    //ataviser = new CachingHDGA(rowAtaviser, slf);
+
+
+    fastAtaviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, aggressive, new UniqueBordersIndexer());
+    thoroughAtaviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, hard, new SimpleIndex());
+
   }
 
   private void search(int numPriors, String gridFilePath) throws IOException {
@@ -75,7 +80,10 @@ public class Searcher {
     if (numPriors == 0) {
       return targetGrid.getCells();
     } else {
-      Collection<int[]> priors = ataviser.atavise(targetGrid);
+      Collection<int[]> priors = fastAtaviser.atavise(targetGrid);
+      //if (priors.size() > 0) {
+      //  priors = thoroughAtaviser.atavise(targetGrid);
+      //}
 
       //try {
       //  PrintWriter pw = new PrintWriter(new FileOutputStream("/Users/duxbury/Development/charlietime/java/priors_dump_java.txt", true));
@@ -83,33 +91,62 @@ public class Searcher {
       //    pw.println(new Grid(prior, targetGrid.getWidth() + 2).toBitvector());
       //  }
       //} catch (FileNotFoundException e) {
-      //  // TODO: generated exception handler
       //  throw new RuntimeException(e);
       //}
 
-
-      //System.out.println(numPriors + " -> " + priors.size());
-      for (int[] prior : priors) {
-        Grid g = new Grid(prior, targetGrid.getWidth()+2);
-        if (!isToroidal(prior)) {
-          //System.out.println("Not toroidal:");
-          //System.out.println(g);
-          continue;
-        }
-
-        //System.out.println("toroidal:");
-        //System.out.println(g);
-        Grid newTargetGrid = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
-        int[] result = find(newTargetGrid, numPriors - 1);
-        if (result != null) {
-          //System.out.println(newTargetGrid);
-          return result;
-        }
-        //System.out.println("... but no prior at level " + numPriors);
+      int[] result = examinePriors(targetGrid, numPriors, priors);
+      if (result == null) {
+        Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
+        thoroughPriors.removeAll(priors);
+        result = examinePriors(targetGrid, numPriors, thoroughPriors);
       }
 
-      return null;
+      //System.out.println(numPriors + " -> " + priors.size());
+      //for (int[] prior : priors) {
+      //  Grid g = new Grid(prior, targetGrid.getWidth()+2);
+      //  if (!isToroidal(prior)) {
+      //    //System.out.println("Not toroidal:");
+      //    //System.out.println(g);
+      //    continue;
+      //  }
+      //
+      //  //System.out.println("toroidal:");
+      //  //System.out.println(g);
+      //  Grid newTargetGrid = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
+      //  int[] result = find(newTargetGrid, numPriors - 1);
+      //  if (result != null) {
+      //    //System.out.println(newTargetGrid);
+      //    return result;
+      //  }
+      //  //System.out.println("... but no prior at level " + numPriors);
+      //}
+
+      return result;
     }
+  }
+
+  private int[] examinePriors(Grid targetGrid, int numPriors, Collection<int[]> priors) {
+    //System.out.println(numPriors + " -> " + priors.size());
+    for (int[] prior : priors) {
+      Grid g = new Grid(prior, targetGrid.getWidth()+2);
+      if (!isToroidal(prior)) {
+        //System.out.println("Not toroidal:");
+        //System.out.println(g);
+        continue;
+      }
+
+      //System.out.println("toroidal:");
+      //System.out.println(g);
+      Grid newTargetGrid = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
+      int[] result = find(newTargetGrid, numPriors - 1);
+      if (result != null) {
+        //System.out.println(newTargetGrid);
+        return result;
+      }
+      //System.out.println("... but no prior at level " + numPriors);
+    }
+
+    return null;
   }
 
   private boolean isToroidal(int[] cells) {

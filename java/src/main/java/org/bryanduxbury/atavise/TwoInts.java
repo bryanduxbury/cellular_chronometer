@@ -4,7 +4,7 @@ public final class TwoInts {
   private final int a;
   private final int b;
 
-  TwoInts(int a, int b) {
+  public TwoInts(int a, int b) {
     this.a = a;
     this.b = b;
   }
