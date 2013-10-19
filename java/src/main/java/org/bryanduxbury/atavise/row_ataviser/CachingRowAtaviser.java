@@ -1,8 +1,9 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.row_ataviser;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bryanduxbury.atavise.util.TwoInts;
 
 public class CachingRowAtaviser implements RowAtaviser {
   private final Map<TwoInts, List<int[]>> cache = new HashMap<TwoInts, List<int[]>>();

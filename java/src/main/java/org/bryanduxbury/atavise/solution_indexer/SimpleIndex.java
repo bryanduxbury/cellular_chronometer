@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.bryanduxbury.atavise.TwoInts;
+import org.bryanduxbury.atavise.util.TwoInts;
 
 public class SimpleIndex implements SolutionIndexer {
   @Override public Map<TwoInts, Map<TwoInts, Collection<int[]>>> index(Collection<int[]> intermediateSolutions, int a, int b, int c, int d) {

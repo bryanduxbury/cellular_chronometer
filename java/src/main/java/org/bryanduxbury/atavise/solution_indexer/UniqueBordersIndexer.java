@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bryanduxbury.atavise.TwoInts;
+import org.bryanduxbury.atavise.util.TwoInts;
 
 public class UniqueBordersIndexer implements SolutionIndexer {
   @Override public Map<TwoInts, Map<TwoInts, Collection<int[]>>> index(Collection<int[]> intermediateSolutions, int a, int b, int c, int d) {

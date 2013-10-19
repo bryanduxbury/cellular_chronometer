@@ -1,4 +1,4 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.row_ataviser;
 
 import java.util.ArrayList;
 import java.util.List;

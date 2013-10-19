@@ -2,6 +2,8 @@ package org.bryanduxbury.atavise;
 
 import java.util.Arrays;
 import java.util.Collection;
+import org.bryanduxbury.atavise.grid_ataviser.HierarchicalDuparcGridAtaviser;
+import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
 import org.bryanduxbury.atavise.solution_limiter.AllSolutions;
 import org.junit.Test;

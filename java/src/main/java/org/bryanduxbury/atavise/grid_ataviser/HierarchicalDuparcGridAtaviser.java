@@ -1,4 +1,4 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.grid_ataviser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.bryanduxbury.atavise.row_ataviser.CachingRowAtaviser;
+import org.bryanduxbury.atavise.Grid;
+import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
+import org.bryanduxbury.atavise.row_ataviser.RowAtaviser;
+import org.bryanduxbury.atavise.util.TwoInts;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_indexer.SolutionIndexer;
 import org.bryanduxbury.atavise.solution_indexer.UniqueBordersIndexer;
@@ -58,8 +63,9 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     //Map<TwoInts, Map<TwoInts, int[]>> topsByBottom =
     //    indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
-    Map<TwoInts, Map<TwoInts, Collection<int[]>>>
-        topsByBottom = solutionIndexer.index(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
+    Map<TwoInts, Map<TwoInts, Collection<int[]>>> topsByBottom =
+        indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
+         //solutionIndexer.index(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
 
 
     topPriors = null;
@@ -68,7 +74,8 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     Collection<int[]> bottomPriors = internalAtavise(grid, mid, endRow, topsByBottom.keySet());
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, Collection<int[]>>> bottomsByTops =
-        solutionIndexer.index(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
+        indexBy(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
+        //solutionIndexer.index(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
     bottomPriors = null;
 
     // compute the intersection of all tops and bottoms
@@ -106,8 +113,9 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     return sl.getSolutions();
   }
 
-  static Map<TwoInts, Map<TwoInts, int[]>> indexBy(Collection<int[]> solns, int a, int b, int c, int d) {
-    Map<TwoInts, Map<TwoInts, int[]>> indexed = new HashMap<TwoInts, Map<TwoInts, int[]>>();
+  static Map<TwoInts, Map<TwoInts, Collection<int[]>>> indexBy(Collection<int[]> solns, int a, int b, int c, int d) {
+    Map<TwoInts, Map<TwoInts, Collection<int[]>>> indexed =
+        new HashMap<TwoInts, Map<TwoInts, Collection<int[]>>>();
     List<int[]> sortedSolns = new ArrayList<int[]>(solns);
     Collections.sort(sortedSolns, new Comparator<int[]>() {
       @Override public int compare(int[] left, int[] right) {
@@ -122,13 +130,13 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
     for (int[] soln : sortedSolns) {
       TwoInts x = new TwoInts(soln[a], soln[b]);
       TwoInts y = new TwoInts(soln[c], soln[d]);
-      Map<TwoInts, int[]> ys = indexed.get(x);
+      Map<TwoInts, Collection<int[]>> ys = indexed.get(x);
       if (ys == null) {
-        ys = new HashMap<TwoInts, int[]>();
+        ys = new HashMap<TwoInts, Collection<int[]>>();
         indexed.put(x, ys);
       }
       if (!ys.containsKey(x)) {
-        ys.put(y, soln);
+        ys.put(y, Collections.singleton(soln));
       }
 
     }

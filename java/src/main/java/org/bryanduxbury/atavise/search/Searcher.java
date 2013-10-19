@@ -1,4 +1,4 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.search;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
+import org.bryanduxbury.atavise.Grid;
+import org.bryanduxbury.atavise.grid_ataviser.HierarchicalDuparcGridAtaviser;
+import org.bryanduxbury.atavise.row_ataviser.CachingRowAtaviser;
+import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
 import org.bryanduxbury.atavise.solution_indexer.UniqueBordersIndexer;
@@ -95,11 +99,11 @@ public class Searcher {
       //}
 
       int[] result = examinePriors(targetGrid, numPriors, priors);
-      if (result == null) {
-        Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
-        thoroughPriors.removeAll(priors);
-        result = examinePriors(targetGrid, numPriors, thoroughPriors);
-      }
+      //if (result == null) {
+      //  Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
+      //  thoroughPriors.removeAll(priors);
+      //  result = examinePriors(targetGrid, numPriors, thoroughPriors);
+      //}
 
       //System.out.println(numPriors + " -> " + priors.size());
       //for (int[] prior : priors) {

@@ -1,4 +1,4 @@
-package org.bryanduxbury.atavise;
+package org.bryanduxbury.atavise.util;
 
 public final class TwoInts {
   private final int a;

@@ -3,7 +3,7 @@ package org.bryanduxbury.atavise.solution_limiter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.bryanduxbury.atavise.FourInts;
+import org.bryanduxbury.atavise.util.FourInts;
 
 public class Aggressive implements SolutionLimiter {
   public static class Factory implements SolutionLimiter.Factory {
