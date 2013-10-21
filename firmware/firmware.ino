@@ -26,8 +26,8 @@ uint32_t *back;
 
 
 void setup() {
-  Timer1.initialize(1);
-  Timer1.attachInterrupt(tickISR, 1);
+  Timer1.initialize(10);
+  Timer1.attachInterrupt(tickISR, 10);
 
   pinMode(9, INPUT);
   digitalWrite(9, HIGH);
@@ -76,7 +76,7 @@ void loop() {
       uint32_t *temp = back;
       back = front;
       front = temp;
-      delay(100);
+      delay(10);
       break;
     } else if (digitalRead(10) == LOW) {
       currentMinute++;
@@ -134,7 +134,7 @@ void loop() {
 void setDisplay(uint32_t* state, uint8_t duty) {
   for (int y = 1; y <= NUM_ROWS; y++) {
     for (int x = 1; x <= NUM_COLS; x++) {
-      if (test32(state, y, x)) {
+      if (TEST32(state, y, x)) {
         plex.setDuty(XY2ORD(x-1, y-1), duty);
       }
     }
