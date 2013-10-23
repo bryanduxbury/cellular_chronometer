@@ -4,59 +4,10 @@
 
 #include "bitvector.h"
 
-#define NUM_ROWS 5
-#define NUM_COLS 25
+#define NUM_ROWS 25
+#define NUM_COLS 5
 
-#define XY2ORD(x, y) ((x) + (y) * NUM_COLS)
-
-
-uint8_t living_neighbors(uint8_t* vect, uint8_t x, uint8_t y);
-
-// using B3/S23 rules
-// inLow + inHigh is a 128-bit bitvector containing the initial state
-// outLow + outHigh are pointers to 128-bit bitvectors to store the result
-void next_generation(uint8_t* inState, uint8_t* outState) {
-  for (int y = 0; y < NUM_ROWS; y++) {
-    for (int x = 0; x < NUM_COLS; x++) {
-      // count living neighbors
-      uint8_t living_count = living_neighbors(inState, x, y);
-
-      if (test(inState, XY2ORD(x,y))) {
-        if (living_count == 2 || living_count == 3) {
-          // cell lives in next iteration
-          set(outState, XY2ORD(x,y));
-        }
-      } else {
-        if (living_count == 3) {
-          // cell is birthed in next iteration
-          set(outState, XY2ORD(x,y));
-        }
-      }
-    }
-  }
-}
-
-uint8_t living_neighbors(uint8_t* vect, uint8_t x, uint8_t y) {
-  uint8_t living_count = 0;
-  for (int dy = -1; dy <= 1; dy++) {
-    for (int dx = -1; dx <= 1; dx++) {
-      if (dx == 0 && dy == 0) {
-        continue;
-      }
-      if (dx + x < 0 || dx + x >= NUM_COLS) {
-        continue;
-      }
-      if (dy + y < 0 || dy + y >= NUM_ROWS) {
-        continue;
-      }
-
-      if (test(vect, XY2ORD(dx + x, dy + y))) {
-        living_count++;
-      }
-    }
-  }
-  return living_count;
-}
+// #define XY2ORD(x, y) ((x) + (y) * NUM_COLS)
 
 // map from set bits to number of bits set for 0-7
 const uint8_t lookup[] = {
@@ -70,57 +21,76 @@ const uint8_t lookup[] = {
   3  // 111
 };
 
-// const uint8_t lookup[] = {
-//   1, // 000
-//   1, // 001
-//   1, // 010
-//   1, // 011
-//   1, // 100
-//   1, // 101
-//   1, // 110
-//   1  // 111
-// };
+#define SURROUNDING_ROW_MASK 7
+#define SAME_ROW_MASK 5
 
-
-const uint32_t mask1 = 7;
-#define MASK1 7
-const uint32_t mask2 = 5;
-#define MASK2 5
-
-// uint32_t scratch[NUM_ROWS+2] = {0}
-
-bool test32(uint32_t *rows, uint8_t rowIdx, uint8_t colIdx) {
-  return (rows[rowIdx] & (((uint32_t)1) << colIdx)) != 0;
+bool test8(uint8_t *rows, uint8_t rowIdx, uint8_t colIdx) {
+  return (rows[rowIdx] & (((uint8_t)1) << colIdx)) != 0;
 }
 
-#define TEST32(rows, rowIdx, colIdx) (((rows)[(rowIdx)] & (((uint32_t)1) << (colIdx))) != 0)
+// #define TEST32(rows, rowIdx, colIdx) (((rows)[(rowIdx)] & (((uint32_t)1) << (colIdx))) != 0)
 
-void set32(uint32_t *rows, uint8_t rowIdx, uint8_t colIdx) {
-  rows[rowIdx] |= (((uint32_t)1) << colIdx);
+void set8(uint8_t *rows, uint8_t rowIdx, uint8_t colIdx) {
+  rows[rowIdx] |= (((uint8_t)1) << colIdx);
 }
 
-#define SET32(rows, rowIdx, colIdx) ((rows)[(rowIdx)] |= (((uint32_t)1) << (colIdx)))
+// #define SET32(rows, rowIdx, colIdx) ((rows)[(rowIdx)] |= (((uint32_t)1) << (colIdx)))
 
-uint8_t do_lookup(uint32_t row, uint8_t colIdx, uint32_t mask) {
+uint8_t do_lookup8(uint8_t row, uint8_t colIdx, uint8_t mask) {
   return lookup[(row >> (colIdx - 1)) & mask];
 }
 
-#define DO_LOOKUP(row, colIdx, mask) (lookup[((row) >> ((colIdx) - 1)) & (mask)])
+// #define DO_LOOKUP(row, colIdx, mask) (lookup[((row) >> ((colIdx) - 1)) & (mask)])
 
-void next_generation32(uint32_t *inRows, uint32_t *outRows) {
-  // calculate living neighbors
+
+// To simulate playing the Game of Life on a toroidal grid, we're going to
+// doctor the input grid such that we can play the regular finite grid GoL
+// and get a toroidal result. We do this by expanding the original grid by one
+// cell in each direction, then copying the top actual row to the new synthetic
+// bottom row, then likewise with the bottom to top and left and right. This 
+// effectively gives the original top, bottom, left, and right rows access to 
+// the proper set of neighbors for the GoL calculation to go forward.
+void make_toroidal(uint8_t* rows) {
+  uint8_t rowmask = 0;
+  // build up the mask we'll use to screen out previous generations' toroidal aliases
+  for (int x = 1; x <= NUM_COLS; x++) {
+    rowmask |= (1 << x);
+  }
+
+  // make each row a "tube" by making the outside (alias) cells match the 
+  // opposite edge's actual cell
   for (int y = 1; y <= NUM_ROWS; y++) {
+    uint8_t temp = rows[y] & rowmask;
+    // copy the first cell to the topmost tubular position
+    temp |= ((rows[y] & 0x02) >> 1) << (NUM_COLS + 1);
+    // copy the last cell to the bottommost tubular position
+    temp |= (rows[y] & (1 << NUM_COLS)) >> (NUM_COLS-1);
+    rows[y] = temp;
+  }
+
+  // finally, join the "ends" of the tube by making alias rows
+  rows[0] = rows[NUM_ROWS];
+  rows[NUM_ROWS+1] = rows[1]; 
+}
+
+void next_generation8(uint8_t *inRows, uint8_t *outRows) {
+  make_toroidal(inRows);
+  memset(outRows, 0, NUM_ROWS+2);
+  for (int y = 1; y <= NUM_ROWS; y++) {
+    uint8_t rowAbove = inRows[y-1];
+    uint8_t rowSame = inRows[y];
+    uint8_t rowBelow = inRows[y+1];
     for (int x = 1; x <= NUM_COLS; x++) {
-      uint8_t living_neighbors = DO_LOOKUP(inRows[y-1], x, MASK1) // row above
-        + DO_LOOKUP(inRows[y], x, MASK2) // same row
-        + DO_LOOKUP(inRows[y+1], x, MASK1); // row below
-      if (TEST32(inRows, y, x)) {
+      uint8_t living_neighbors = do_lookup8(rowAbove, x, SURROUNDING_ROW_MASK)
+        + do_lookup8(rowSame, x, SAME_ROW_MASK)
+        + do_lookup8(rowBelow, x, SURROUNDING_ROW_MASK);
+      if (test8(inRows, y, x)) {
         if (living_neighbors == 2 || living_neighbors == 3) {
-          SET32(outRows, y, x);
+          set8(outRows, y, x);
         }
       } else {
         if (living_neighbors == 3) {
-          SET32(outRows, y, x);
+          set8(outRows, y, x);
         }
       }
     }

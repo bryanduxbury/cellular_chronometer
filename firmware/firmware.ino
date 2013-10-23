@@ -1,14 +1,10 @@
 #include "Charlie.h"
 #include "TimerOne.h"
-// #include "states.cpp"
 #include "life.h"
 #include <avr/pgmspace.h>
+#include "initial_states.h"
 
-uint32_t initialStates[] PROGMEM = {
-  41348846, 62234636, 8673824, 7595532, 4348654,
-  42397422, 54894604, 53762592, 24372748, 43145966
-};
-
+#define XY2LED(x, y) ((x) + (y) * (NUM_ROWS))
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
 
@@ -18,12 +14,11 @@ volatile uint16_t currentMinute = 0;
 volatile uint32_t elapsedMicros = 0;
 
 // the current state of all the cells displayed
-uint32_t display1[7] = {0};
-uint32_t display2[7] = {0};
+uint8_t display1[27] = {0};
+uint8_t display2[27] = {0};
 
-uint32_t *front;
-uint32_t *back;
-
+uint8_t *front;
+uint8_t *back;
 
 void setup() {
   Timer1.initialize(10);
@@ -38,17 +33,18 @@ void setup() {
   // testLeds();
   front = display1;
   back = display2;
-  memcpy_PF32(front+1, initialStates, 5);
+  memcpy(front, initialStates, 27);
+  // memcpy_PF32(front+1, initialStates, 5);
 }
 
 void testLeds() {
   for (int y = 0; y < NUM_ROWS; y++) {
     for (int x = 0; x < NUM_COLS; x++) {
-      plex.setDuty(XY2ORD(x, y), 8);
+      plex.setDuty(XY2LED(x, y), 8);
     }
     delay(500);
     for (int x = 0; x < NUM_COLS; x++) {
-      plex.setDuty(XY2ORD(x, y), 0);
+      plex.setDuty(XY2LED(x, y), 0);
     }
   }
 }
@@ -59,21 +55,14 @@ void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
   }
 }
 
-void memcpy_PF32(uint32_t *dest, uint32_t *pgmSrc, uint8_t count) {
-  for (int i = 0; i < count; i++) {
-    dest[i] = (uint32_t) pgm_read_dword(pgmSrc++);
-  }
-}
-
 void loop() {
   plex.clear();
   setDisplay(front, 4);
-  
+
   while(true) {
     if (digitalRead(9) == LOW) {
-      memset(back, 0, sizeof(display1));
-      next_generation32(front, back);
-      uint32_t *temp = back;
+      next_generation8(front, back);
+      uint8_t *temp = back;
       back = front;
       front = temp;
       delay(10);
@@ -83,7 +72,7 @@ void loop() {
       if (currentMinute == 2) {
         currentMinute = 0;
       }
-      memcpy_PF32(front+1, initialStates + currentMinute * 5, 5);
+      memcpy_PF(front, (uint8_t*)initialStates, currentMinute * 27);
       delay(100);
       break;
     }
@@ -131,11 +120,19 @@ void loop() {
   // }
 }
 
-void setDisplay(uint32_t* state, uint8_t duty) {
+// the display's xy is transposed with respect to the actual grid
+void setDisplay(uint8_t* state, uint8_t duty) {
+  // don't care about the first and last rows, since they're just toroidal 
+  // aliases
   for (int y = 1; y <= NUM_ROWS; y++) {
+    // don't care about the first and last columns, since thye're just toroidal
+    // aliases
     for (int x = 1; x <= NUM_COLS; x++) {
-      if (TEST32(state, y, x)) {
-        plex.setDuty(XY2ORD(x-1, y-1), duty);
+      if (test8(state, y, x)) {
+        // note that we actually transpose x and y here
+        // and also translate the coordinates down one to account for the 
+        // aliases
+        plex.setDuty(XY2LED(y-1, x-1), duty);
       }
     }
   }
