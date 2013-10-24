@@ -2,7 +2,8 @@ package org.bryanduxbury.atavise;
 
 import java.util.Arrays;
 import java.util.Collection;
-import org.bryanduxbury.atavise.grid_ataviser.HierarchicalDuparcGridAtaviser;
+import org.bryanduxbury.atavise.grid_ataviser.Hierarchical;
+import org.bryanduxbury.atavise.grid_ataviser.Hierarchical;
 import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
 import org.bryanduxbury.atavise.solution_limiter.AllSolutions;
@@ -16,8 +17,8 @@ public class HierarchicalDuparcGridAtaviserTest {
   @Test
   public void testAtaviseHorizontalBlinker() {
     int[] grid = new int[]{0,7,0};
-    HierarchicalDuparcGridAtaviser a =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(), new AllSolutions.Factory(),
+    Hierarchical a =
+        new Hierarchical(new IntersectingRowAtaviser(), new AllSolutions.Factory(),
             new SimpleIndex());
     Collection<int[]> results = a.atavise(new Grid(grid, 3));
 
@@ -36,8 +37,8 @@ public class HierarchicalDuparcGridAtaviserTest {
   @Test
   public void testAtaviseVerticalBlinker() {
     int[] grid = new int[]{2,2,2};
-    HierarchicalDuparcGridAtaviser a =
-        new HierarchicalDuparcGridAtaviser(new IntersectingRowAtaviser(), new AllSolutions.Factory(),
+    Hierarchical a =
+        new Hierarchical(new IntersectingRowAtaviser(), new AllSolutions.Factory(),
             new SimpleIndex());
     Collection<int[]> results = a.atavise(new Grid(grid, 3));
 

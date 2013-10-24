@@ -19,14 +19,14 @@ import org.bryanduxbury.atavise.solution_indexer.UniqueBordersIndexer;
 import org.bryanduxbury.atavise.solution_limiter.Aggressive;
 import org.bryanduxbury.atavise.solution_limiter.SolutionLimiter;
 
-public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
+public class Hierarchical implements GridAtaviser {
 
   private final RowAtaviser rowAtaviser;
   private final SolutionLimiter.Factory solnLimiterFactory;
   private final SolutionIndexer solutionIndexer;
 
-  public HierarchicalDuparcGridAtaviser(RowAtaviser rowAtaviser,
-      SolutionLimiter.Factory solnLimiterFactory, SolutionIndexer solutionIndexer) {
+  public Hierarchical(RowAtaviser rowAtaviser, SolutionLimiter.Factory solnLimiterFactory,
+      SolutionIndexer solutionIndexer) {
     this.rowAtaviser = rowAtaviser;
     this.solnLimiterFactory = solnLimiterFactory;
     this.solutionIndexer = solutionIndexer;
@@ -99,7 +99,7 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
                 sl.add(merged);
 
                 if (sl.isFull()) {
-                  System.out.println("hit the hardlimit");
+                  //System.out.println("hit the hardlimit");
                   break OUTER;
                 }
               }
@@ -153,7 +153,7 @@ public class HierarchicalDuparcGridAtaviser implements GridAtaviser {
 
   // benchmarking only!
   public static void main(String[] args) {
-    HierarchicalDuparcGridAtaviser a = new HierarchicalDuparcGridAtaviser(
+    Hierarchical a = new Hierarchical(
         new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter())),
         new Aggressive.Factory(100000), new UniqueBordersIndexer());
     long startTime = System.currentTimeMillis();

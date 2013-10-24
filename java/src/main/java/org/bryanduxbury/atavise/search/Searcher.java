@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import org.bryanduxbury.atavise.Grid;
-import org.bryanduxbury.atavise.grid_ataviser.HierarchicalDuparcGridAtaviser;
+import org.bryanduxbury.atavise.grid_ataviser.CachingHierarchical;
+import org.bryanduxbury.atavise.grid_ataviser.Hierarchical;
 import org.bryanduxbury.atavise.row_ataviser.CachingRowAtaviser;
 import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
@@ -19,18 +21,18 @@ import org.bryanduxbury.atavise.solution_limiter.HardLimit;
 
 public class Searcher {
 
-  private final HierarchicalDuparcGridAtaviser fastAtaviser;
-  private final HierarchicalDuparcGridAtaviser thoroughAtaviser;
+  private final Hierarchical fastAtaviser;
+  private final Hierarchical thoroughAtaviser;
 
   public Searcher() {
-    Aggressive.Factory aggressive = new Aggressive.Factory(10000000);
-    HardLimit.Factory hard = new HardLimit.Factory(24000000);
+    Aggressive.Factory aggressive = new Aggressive.Factory(1000000);
+    HardLimit.Factory hard = new HardLimit.Factory(2500000);
     CachingRowAtaviser rowAtaviser =
         new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
 
 
-    fastAtaviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, aggressive, new UniqueBordersIndexer());
-    thoroughAtaviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, hard, new SimpleIndex());
+    fastAtaviser = new Hierarchical(rowAtaviser, aggressive, new UniqueBordersIndexer());
+    thoroughAtaviser = new Hierarchical(rowAtaviser, hard, new SimpleIndex());
 
   }
 
@@ -72,11 +74,24 @@ public class Searcher {
     //System.out.println(" final --------------------");
     //System.out.println(g);
 
-    File f = new File(gridFilePath + "__back_" + numPriors);
+    File f = new File(gridFilePath + "__farthest_back");
     f.delete();
     PrintWriter pw = new PrintWriter(new FileOutputStream(f));
-    pw.println(Arrays.toString(targetGrid.getCells()));
-    pw.println(Arrays.toString(result));
+    for (int i = 0; i < targetGrid.getHeight(); i++) {
+      pw.print(targetGrid.getCells()[i]);
+      pw.print(", ");
+    }
+    pw.print(" // " + new File(gridFilePath).getName());
+    pw.println();
+
+    for (int i = 0; i < result.length; i++) {
+      pw.print(result[i]);
+      pw.print(", ");
+    }
+
+    pw.print(" // " + new File(gridFilePath).getName() + ", " + numPriors + " priors back");
+
+    pw.println();
     pw.close();
   }
 
@@ -85,45 +100,13 @@ public class Searcher {
       return targetGrid.getCells();
     } else {
       Collection<int[]> priors = fastAtaviser.atavise(targetGrid);
-      //if (priors.size() > 0) {
-      //  priors = thoroughAtaviser.atavise(targetGrid);
-      //}
-
-      //try {
-      //  PrintWriter pw = new PrintWriter(new FileOutputStream("/Users/duxbury/Development/charlietime/java/priors_dump_java.txt", true));
-      //  for (int[] prior : priors) {
-      //    pw.println(new Grid(prior, targetGrid.getWidth() + 2).toBitvector());
-      //  }
-      //} catch (FileNotFoundException e) {
-      //  throw new RuntimeException(e);
-      //}
 
       int[] result = examinePriors(targetGrid, numPriors, priors);
-      //if (result == null) {
-      //  Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
-      //  thoroughPriors.removeAll(priors);
-      //  result = examinePriors(targetGrid, numPriors, thoroughPriors);
-      //}
-
-      //System.out.println(numPriors + " -> " + priors.size());
-      //for (int[] prior : priors) {
-      //  Grid g = new Grid(prior, targetGrid.getWidth()+2);
-      //  if (!isToroidal(prior)) {
-      //    //System.out.println("Not toroidal:");
-      //    //System.out.println(g);
-      //    continue;
-      //  }
-      //
-      //  //System.out.println("toroidal:");
-      //  //System.out.println(g);
-      //  Grid newTargetGrid = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
-      //  int[] result = find(newTargetGrid, numPriors - 1);
-      //  if (result != null) {
-      //    //System.out.println(newTargetGrid);
-      //    return result;
-      //  }
-      //  //System.out.println("... but no prior at level " + numPriors);
-      //}
+      if (result == null && priors.size() > 0) {
+        Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
+        //thoroughPriors.removeAll(new HashSet<int[]>()priors);
+        result = examinePriors(targetGrid, numPriors, thoroughPriors);
+      }
 
       return result;
     }

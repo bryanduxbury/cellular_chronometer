@@ -9,7 +9,7 @@
 //import java.util.Collection;
 //import org.bryanduxbury.atavise.row_ataviser.CachingRowAtaviser;
 //import org.bryanduxbury.atavise.Grid;
-//import org.bryanduxbury.atavise.grid_ataviser.HierarchicalDuparcGridAtaviser;
+//import org.bryanduxbury.atavise.grid_ataviser.Hierarchical;
 //import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 //import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 //import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
@@ -24,8 +24,8 @@
 //  }
 //
 //
-//  private final HierarchicalDuparcGridAtaviser fastAtaviser;
-//  private final HierarchicalDuparcGridAtaviser thoroughAtaviser;
+//  private final Hierarchical fastAtaviser;
+//  private final Hierarchical thoroughAtaviser;
 //
 //  public Maximum() {
 //    Aggressive.Factory aggressive = new Aggressive.Factory(10000000);
@@ -34,8 +34,8 @@
 //        new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
 //
 //
-//    fastAtaviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, aggressive, new UniqueBordersIndexer());
-//    thoroughAtaviser = new HierarchicalDuparcGridAtaviser(rowAtaviser, hard, new SimpleIndex());
+//    fastAtaviser = new Hierarchical(rowAtaviser, aggressive, new UniqueBordersIndexer());
+//    thoroughAtaviser = new Hierarchical(rowAtaviser, hard, new SimpleIndex());
 //
 //  }
 //

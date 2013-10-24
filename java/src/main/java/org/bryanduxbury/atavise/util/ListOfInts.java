@@ -4,9 +4,13 @@ import java.util.Arrays;
 
 public class ListOfInts {
   private final int[] ints;
+  private final int startIdx;
+  private final int endIdx;
 
-  public ListOfInts(int[] ints) {
+  public ListOfInts(int[] ints, int startIdx, int endIdx) {
     this.ints = ints;
+    this.startIdx = startIdx;
+    this.endIdx = endIdx;
   }
 
   @Override
@@ -16,13 +20,28 @@ public class ListOfInts {
 
     ListOfInts that = (ListOfInts) o;
 
-    if (!Arrays.equals(ints, that.ints)) return false;
+    int len = endIdx - startIdx;
+    if (len != that.endIdx - that.startIdx) {
+      return false;
+    }
+
+    for (int i = startIdx, j = that.startIdx; i < endIdx && j < that.endIdx; i++, j++) {
+      if (ints[i] != that.ints[j]) {
+        return false;
+      }
+    }
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return ints != null ? Arrays.hashCode(ints) : 0;
+    int hash = 0;
+    if (ints != null) {
+      for (int i = startIdx; i < endIdx; i++) {
+        hash = 31 * hash + ints[i];
+      }
+    }
+    return hash;
   }
 }
