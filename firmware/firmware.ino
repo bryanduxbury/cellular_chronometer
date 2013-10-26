@@ -33,12 +33,15 @@ void setup() {
   // testLeds();
   front = display1;
   back = display2;
-  memcpy_PF(front + 1, (uint8_t*) initialStates, 25);
-  center(front);
-  // for (int i = 1; i < 27; i++) {
-  //   front[i] = front[i] << 1;
-  // }
-  // memcpy_PF32(front+1, initialStates, 5);
+
+  loadInitialState(front, 0);
+  // memcpy_PF(front + 1, (uint8_t*) initialStates, 25);
+  //   center(front);
+}
+
+void loadInitialState(uint8_t* buffer, uint16_t idx) {
+  memcpy_PF(buffer + 1, (uint8_t*) initialStates + idx * NUM_ROWS, NUM_ROWS);
+  center(buffer);
 }
 
 void center(uint8_t* rows) {
@@ -47,6 +50,7 @@ void center(uint8_t* rows) {
   }
 }
 
+// lights up each row of the display briefly
 void testLeds() {
   for (int y = 0; y < NUM_COLS; y++) {
     for (int x = 0; x < NUM_ROWS; x++) {
@@ -59,7 +63,7 @@ void testLeds() {
   }
 }
 
-// memcpy from progmem to RAM
+// memcpy from PROGMEM to RAM
 void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
   for (int i = 0; i < count; i++) {
     dest[i] = pgm_read_byte(pgmSrc++);
@@ -83,8 +87,9 @@ void loop() {
       if (currentMinute == NUM_STATES) {
         currentMinute = 0;
       }
-      memcpy_PF(front+1, (uint8_t*)initialStates + currentMinute*25, 25);
-      center(front);
+      loadInitialState(front, currentMinute);
+      // memcpy_PF(front+1, (uint8_t*)initialStates + currentMinute*25, 25);
+      // center(front);
       plex.clear();
       setDisplay(front, 4);
       delay(1000);
