@@ -35,8 +35,6 @@ void setup() {
   back = display2;
 
   loadInitialState(front, 0);
-  // memcpy_PF(front + 1, (uint8_t*) initialStates, 25);
-  //   center(front);
 }
 
 void loadInitialState(uint8_t* buffer, uint16_t idx) {
@@ -87,15 +85,14 @@ void loop() {
       if (currentMinute == NUM_STATES) {
         currentMinute = 0;
       }
+
+      while (digitalRead(10) == LOW) {
+        delay(10);
+      }
       loadInitialState(front, currentMinute);
-      // memcpy_PF(front+1, (uint8_t*)initialStates + currentMinute*25, 25);
-      // center(front);
-      plex.clear();
-      setDisplay(front, 4);
-      delay(1000);
       break;
     }
-    delay(10);
+    delay(100);
   }
 
   // uint16_t thisMinute = 0;
