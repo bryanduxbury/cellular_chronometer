@@ -4,7 +4,7 @@
 #include <avr/pgmspace.h>
 #include "initial_states.h"
 
-#define XY2LED(x, y) ((x) + (y) * (NUM_ROWS))
+#define XY2LED(x, y) ((x) + (y) * (25))
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
 
@@ -33,22 +33,33 @@ void setup() {
   // testLeds();
   front = display1;
   back = display2;
-  memcpy(front, initialStates, 27);
+  memcpy_PF(front + 1, (uint8_t*) initialStates, 25);
+  center(front);
+  // for (int i = 1; i < 27; i++) {
+  //   front[i] = front[i] << 1;
+  // }
   // memcpy_PF32(front+1, initialStates, 5);
 }
 
+void center(uint8_t* rows) {
+  for (int i = 0; i < NUM_ROWS + 2; i++) {
+    rows[i] = rows[i] << 1;
+  }
+}
+
 void testLeds() {
-  for (int y = 0; y < NUM_ROWS; y++) {
-    for (int x = 0; x < NUM_COLS; x++) {
-      plex.setDuty(XY2LED(x, y), 8);
+  for (int y = 0; y < NUM_COLS; y++) {
+    for (int x = 0; x < NUM_ROWS; x++) {
+      plex.setDuty(XY2LED(x, y), 4);
     }
-    delay(500);
-    for (int x = 0; x < NUM_COLS; x++) {
+    delay(100);
+    for (int x = 0; x < NUM_ROWS; x++) {
       plex.setDuty(XY2LED(x, y), 0);
     }
   }
 }
 
+// memcpy from progmem to RAM
 void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
   for (int i = 0; i < count; i++) {
     dest[i] = pgm_read_byte(pgmSrc++);
@@ -69,11 +80,14 @@ void loop() {
       break;
     } else if (digitalRead(10) == LOW) {
       currentMinute++;
-      if (currentMinute == 2) {
+      if (currentMinute == NUM_STATES) {
         currentMinute = 0;
       }
-      memcpy_PF(front, (uint8_t*)initialStates, currentMinute * 27);
-      delay(100);
+      memcpy_PF(front+1, (uint8_t*)initialStates + currentMinute*25, 25);
+      center(front);
+      plex.clear();
+      setDisplay(front, 4);
+      delay(1000);
       break;
     }
     delay(10);
