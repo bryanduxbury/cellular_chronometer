@@ -104,8 +104,8 @@ void Charlie::tick() {
     *v2 &= ~currentDefn.vmask2;
   }
   
-  // if tickCount reaches 16, it's time to reset tickCount and move on to the next LED
-  if (tickCount==4) {
+  // if tickCount reaches DUTY_MAX, it's time to reset tickCount and move on to the next LED
+  if (tickCount == DUTY_MAX) {
     tickCount = 0;
 
     // wrap around from end to beginning if necessary

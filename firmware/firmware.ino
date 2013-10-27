@@ -35,6 +35,8 @@ void setup() {
   back = display2;
 
   loadInitialState(front, 0);
+  // setDisplay(front, DUTY_MAX);
+  fadeIn(front, 1000);
 }
 
 void loadInitialState(uint8_t* buffer, uint16_t idx) {
@@ -69,12 +71,11 @@ void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
 }
 
 void loop() {
-  plex.clear();
-  setDisplay(front, 4);
-
   while(true) {
     if (digitalRead(9) == LOW) {
       next_generation8(front, back);
+      crossFade(front, back, 1000);
+
       uint8_t *temp = back;
       back = front;
       front = temp;
@@ -86,10 +87,14 @@ void loop() {
         currentMinute = 0;
       }
 
+      fadeOut(front, 1000);
+      loadInitialState(front, currentMinute);
+      fadeIn(front, 1000);
+
       while (digitalRead(10) == LOW) {
         delay(10);
       }
-      loadInitialState(front, currentMinute);
+
       break;
     }
     delay(100);
@@ -136,12 +141,61 @@ void loop() {
   // }
 }
 
+void fadeOut(uint8_t* current, int duration) {
+  for (uint8_t level = 0; level <= DUTY_MAX; level++) {
+    for (int y = 1; y <= NUM_ROWS; y++) {
+      for (int x = 1; x <= NUM_COLS; x++) {
+        if (test8(current, y, x)) {
+          plex.setDuty(XY2LED(y-1, x-1), DUTY_MAX - level);
+        }
+      }
+    }
+    delay(duration / DUTY_MAX);
+  }
+}
+
+void fadeIn(uint8_t* current, int duration) {
+  for (uint8_t level = 0; level <= DUTY_MAX; level++) {
+    for (int y = 1; y <= NUM_ROWS; y++) {
+      for (int x = 1; x <= NUM_COLS; x++) {
+        if (test8(current, y, x)) {
+          plex.setDuty(XY2LED(y-1, x-1), level);
+        }
+      }
+    }
+    delay(duration / DUTY_MAX);
+  }
+}
+
+
+void crossFade(uint8_t* current, uint8_t* next, int duration) {
+  for (uint8_t level = 0; level <= DUTY_MAX; level++) {
+    for (int y = 1; y <= NUM_ROWS; y++) {
+      for (int x = 1; x <= NUM_COLS; x++) {
+        bool cur = test8(current, y, x);
+        bool nxt = test8(next, y, x);
+        if (cur != nxt) {
+          if (cur) {
+            // this cell died. fade it out.
+            plex.setDuty(XY2LED(y-1, x-1), DUTY_MAX - level);
+          } else {
+            // this cell was born. fade it in.
+            plex.setDuty(XY2LED(y-1, x-1), level);
+          }
+        }
+      }
+    }
+    // fade in/out spans 2 seconds. each level step should take 2s / N steps time.
+    delay(duration / DUTY_MAX);
+  }
+}
+
 // the display's xy is transposed with respect to the actual grid
 void setDisplay(uint8_t* state, uint8_t duty) {
   // don't care about the first and last rows, since they're just toroidal 
   // aliases
   for (int y = 1; y <= NUM_ROWS; y++) {
-    // don't care about the first and last columns, since thye're just toroidal
+    // don't care about the first and last columns, since they're just toroidal
     // aliases
     for (int x = 1; x <= NUM_COLS; x++) {
       if (test8(state, y, x)) {

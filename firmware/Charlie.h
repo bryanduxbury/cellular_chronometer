@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 
+#define DUTY_MAX 16
 
 class Charlie {
  public:
