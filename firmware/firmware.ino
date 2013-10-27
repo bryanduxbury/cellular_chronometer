@@ -4,6 +4,10 @@
 #include <avr/pgmspace.h>
 #include "initial_states.h"
 
+
+#define TICK_USEC 10
+#define USEC_IN_A_MINUTE 60000000
+
 #define XY2LED(x, y) ((x) + (y) * (25))
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
@@ -21,8 +25,8 @@ uint8_t *front;
 uint8_t *back;
 
 void setup() {
-  Timer1.initialize(10);
-  Timer1.attachInterrupt(tickISR, 10);
+  Timer1.initialize(TICK_USEC);
+  Timer1.attachInterrupt(tickISR, TICK_USEC);
 
   pinMode(9, INPUT);
   digitalWrite(9, HIGH);
@@ -30,12 +34,10 @@ void setup() {
   pinMode(10, INPUT);
   digitalWrite(10, HIGH);
 
-  // testLeds();
   front = display1;
   back = display2;
 
   loadInitialState(front, 0);
-  // setDisplay(front, DUTY_MAX);
   fadeIn(front, 1000);
 }
 
@@ -71,6 +73,11 @@ void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
 }
 
 void loop() {
+  // testWithButtonsLoop();
+  advanceTheClockLoop();
+}
+
+void testWithButtonsLoop() {
   while(true) {
     if (digitalRead(9) == LOW) {
       next_generation8(front, back);
@@ -99,46 +106,30 @@ void loop() {
     }
     delay(100);
   }
+}
 
-  // uint16_t thisMinute = 0;
-  // 
-  // uint32_t startMillis = 0;
-  // boolean passedTarget = false;
-  // 
-  // while (true) {
-  //   if (thisMinute == currentMinute) {
-  //     // standard sequence, move forward
-  //     if ((millis() - startMillis) % 1000 == 0) {
-  //       uint64_t newLow, newHigh;
-  //       next_generation(displayLow, displayHigh, &newLow, &newHigh);
-  //       displayLow = newLow;
-  //       displayHigh = newHigh;
-  //       if (displayLow == targetLow[thisMinute] && displayHigh == targetHigh[thisMinute]) {
-  //         passedTarget = true;
-  //       }
-  //     }
-  // 
-  //     // copy display low and high to the actual charlieplex
-  //     plex.clear();
-  //     setDisplay(displayLow, displayHigh, 8);
-  //     if (passedTarget) {
-  //       setDisplay(targetLow[thisMinute], targetHigh[thisMinute], 16);
-  //     }
-  //   } else {
-  //     // blank and startover sequence
-  //     thisMinute = currentMinute;
-  //     passedTarget = false;
-  // 
-  //     startMillis = millis();
-  // 
-  //     plex.clear();
-  //     delay(250);
-  // 
-  //     displayLow = initialLow[thisMinute];
-  //     displayHigh = initialHigh[thisMinute];
-  //     setDisplay(displayLow, displayHigh, 8);
-  //   }
-  // }
+void advanceTheClockLoop() {
+  // which minute is *this loop* displaying right now? we'll use this to detect
+  // when the minute rolls over so we can fade out and load the next minute
+  uint16_t currentMinuteDisplayed = 0;
+
+  // note that all the delaying in this loop comes from the crossFade and 
+  // fadeIn/fadeOut calls.
+  while (true) {
+    if (currentMinuteDisplayed == currentMinute) {
+      next_generation8(front, back);
+      crossFade(front, back, 1000);
+      delay(2000);
+      uint8_t *temp = back;
+      back = front;
+      front = temp;
+    } else {
+      fadeOut(front, 1000);
+      currentMinuteDisplayed = currentMinute;
+      loadInitialState(front, currentMinute);
+      fadeIn(front, 1000);
+    }
+  }
 }
 
 void fadeOut(uint8_t* current, int duration) {
@@ -210,24 +201,16 @@ void setDisplay(uint8_t* state, uint8_t duty) {
 
 void tickISR() {
   // keep track of our time base
-  // elapsedMicros++;
-  // // roll over at 1 minute
-  // if (elapsedMicros == 60000000) {
-  //   currentMinute++;
-  //   elapsedMicros = 0;
-  //   // roll over after 720 minutes
-  //   if (currentMinute == 720) {
-  //     currentMinute = 0;
-  //   }
-  // }
-  
-  // DDRD |= _BV(3);
-  // PORTD |= _BV(0);
-  // 
-  // DDRD &= ~_BV(3);
-  // PORTD &= ~_BV(1);
-  
-  //  PORTB |= 0x20;
+  elapsedMicros += TICK_USEC;
+  // roll over at 1 minute
+  if (elapsedMicros == USEC_IN_A_MINUTE) {
+    currentMinute++;
+    elapsedMicros = 0;
+    // roll over after we run out of states
+    if (currentMinute == NUM_STATES) {
+      currentMinute = 0;
+    }
+  }
+
   plex.tick();
-  //  PORTB &= ~0x20;
 }
