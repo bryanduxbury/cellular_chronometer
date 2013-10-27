@@ -3,3 +3,4 @@
 *.job.*
 profile.html
 java/target
+.DS_Store
