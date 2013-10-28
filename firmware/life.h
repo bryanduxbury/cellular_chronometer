@@ -60,12 +60,10 @@ void make_toroidal(uint8_t* rows) {
   // make each row a "tube" by making the outside (alias) cells match the 
   // opposite edge's actual cell
   for (int y = 1; y <= NUM_ROWS; y++) {
-    uint8_t temp = rows[y] & rowmask;
-    // copy the first cell to the topmost tubular position
-    temp |= ((rows[y] & 0x02) >> 1) << (NUM_COLS + 1);
-    // copy the last cell to the bottommost tubular position
-    temp |= (rows[y] & (1 << NUM_COLS)) >> (NUM_COLS-1);
-    rows[y] = temp;
+    rows[y] = 
+      (rows[y] & rowmask) |
+      ((rows[y] & 0x02) == 0 ? 0 : (1 << (NUM_COLS + 1))) |
+      ((rows[y] & (1 << NUM_COLS)) == 0 ? 0 : 1);
   }
 
   // finally, join the "ends" of the tube by making alias rows
@@ -81,7 +79,8 @@ void next_generation8(uint8_t *inRows, uint8_t *outRows) {
     uint8_t rowSame = inRows[y];
     uint8_t rowBelow = inRows[y+1];
     for (int x = 1; x <= NUM_COLS; x++) {
-      uint8_t living_neighbors = do_lookup8(rowAbove, x, SURROUNDING_ROW_MASK)
+      uint8_t living_neighbors = 
+          do_lookup8(rowAbove, x, SURROUNDING_ROW_MASK)
         + do_lookup8(rowSame, x, SAME_ROW_MASK)
         + do_lookup8(rowBelow, x, SURROUNDING_ROW_MASK);
       if (test8(inRows, y, x)) {
