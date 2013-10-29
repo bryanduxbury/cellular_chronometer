@@ -4,13 +4,24 @@
 #include <avr/pgmspace.h>
 #include "initial_states.h"
 
+// control pins
+#define UP_SW 9
+#define DOWN_SW 10
 
+// for the time base
 #define TICK_USEC 10
 #define USEC_IN_A_MINUTE 60000000
 
 #define XY2LED(x, y) ((x) + (y) * (25))
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
+
+// if this is set to false, the clock will not automatically increment the
+// currentMinute. this is used during the "set time" function
+volatile bool clockRunning = true;
+
+#define STOP_CLOCK() clockRunning = false
+#define START_CLOCK() clockRunning = true
 
 // index of the minute we want to display
 volatile uint16_t currentMinute = 0;
@@ -116,21 +127,71 @@ void advanceTheClockLoop() {
   // note that all the delaying in this loop comes from the crossFade and 
   // fadeIn/fadeOut calls.
   while (true) {
+    // first, see if someone is trying to adjust our time.
+    bool upSwPressed = digitalRead(UP_SW) == LOW;
+    if (upSwPressed) {
+      seekUp();
+    }
+
     if (currentMinuteDisplayed == currentMinute) {
+      // get the successor to this generation
       next_generation8(front, back);
+      // cross fade from this generation to the next one
       crossFade(front, back, 1000);
+      // hold the display steady for a bit
       delay(2000);
+
+      // swap the front and back buffers for the next go around
       uint8_t *temp = back;
       back = front;
       front = temp;
     } else {
+      // fade the current grid to black
       fadeOut(front, 1000);
+      // load the next minute
       currentMinuteDisplayed = currentMinute;
       loadInitialState(front, currentMinute);
+      // fade in the new current
       fadeIn(front, 1000);
     }
   }
 }
+
+// user pressed the "time up" switch. go forward in time until the user is
+// satisfied.
+void seekUp() {
+  // stop the clock from increasing automatically while setting the time.
+  STOP_CLOCK();
+
+  // for the first 10 seconds of holding the up button, go up slowly at about
+  // 1 min / sec
+  for (int i = 0; i < 10 && digitalRead(UP_SW) == LOW; i++) {
+    incrementMinute();
+    // TODO: get the next target state and show it
+    delay(1000);
+  }
+  
+  // for the rest of the time the button is held, go up quickly at about
+  // 5 min / sec
+  while (digitalRead(UP_SW) == LOW) {
+    incrementMinute();
+    // TODO: get the next target state and show it
+    delay(200);
+  }
+
+  // user has released the button. get back into normal operation mode.
+  // TODO: need to do anything here?
+  START_CLOCK();
+}
+
+void incrementMinute() {
+  currentMinute++;
+  if (currentMinute == NUM_STATES) {
+    currentMinute = 0;
+  }
+}
+
+// display effects
 
 void fadeOut(uint8_t* current, int duration) {
   for (uint8_t level = 0; level <= DUTY_MAX; level++) {
@@ -157,7 +218,6 @@ void fadeIn(uint8_t* current, int duration) {
     delay(duration / DUTY_MAX);
   }
 }
-
 
 void crossFade(uint8_t* current, uint8_t* next, int duration) {
   for (uint8_t level = 0; level <= DUTY_MAX; level++) {
@@ -200,15 +260,13 @@ void setDisplay(uint8_t* state, uint8_t duty) {
 }
 
 void tickISR() {
-  // keep track of our time base
-  elapsedMicros += TICK_USEC;
-  // roll over at 1 minute
-  if (elapsedMicros == USEC_IN_A_MINUTE) {
-    currentMinute++;
-    elapsedMicros = 0;
-    // roll over after we run out of states
-    if (currentMinute == NUM_STATES) {
-      currentMinute = 0;
+  if (clockRunning) {
+    // keep track of our time base
+    elapsedMicros += TICK_USEC;
+    // roll over at 1 minute
+    if (elapsedMicros == USEC_IN_A_MINUTE) {
+      elapsedMicros = 0;
+      incrementMinute();
     }
   }
 
