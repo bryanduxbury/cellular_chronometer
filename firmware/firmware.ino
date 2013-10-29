@@ -137,9 +137,10 @@ void advanceTheClockLoop() {
   // fadeIn/fadeOut calls.
   while (true) {
     // first, see if someone is trying to adjust our time.
-    bool upSwPressed = digitalRead(UP_SW) == LOW;
-    if (upSwPressed) {
+    if (digitalRead(UP_SW) == LOW) {
       seekUp();
+    } else if (digitalRead(DOWN_SW) == LOW) {
+      seekDown();
     }
 
     if (currentMinuteDisplayed == currentMinute) {
@@ -171,31 +172,45 @@ void advanceTheClockLoop() {
 void seekUp() {
   uint16_t minute = currentMinute;
 
-  // for the first 10 seconds of holding the up button, go up slowly at about
-  // 1 min / sec
-  for (int i = 0; i < 10 && digitalRead(UP_SW) == LOW; i++) {
+  // the first 10 minutes forward go at slightly faster than 1 min/sec.
+  // after the first 10, we switch into fast mode and go 10 min/sec.
+  // note that the counter (i) is not used for loop termination.
+  for (int i = 0; digitalRead(UP_SW) == LOW; i++) {
     minute++;
     if (minute == NUM_STATES) {
       minute = 0;
     }
     fastDisplayMinute(front, minute);
-    delay(750);
-  }
-
-  // for the rest of the time the button is held, go up quickly at about
-  // 5 min / sec
-  while (digitalRead(UP_SW) == LOW) {
-    minute++;
-    if (minute == NUM_STATES) {
-      minute = 0;
-    }
-    fastDisplayMinute(front, minute);
-    delay(100);
+    // variable delay
+    delay(i < 10 ? 750 : 100);
   }
 
   // user has released the button. get back into normal operation mode.
   currentMinute = minute;
 }
+
+// user pressed the "time down" switch. go backward in time until the user is
+// satisfied.
+void seekDown() {
+  uint16_t minute = currentMinute;
+
+  // the first 10 minutes forward go at slightly faster than 1 min/sec.
+  // after the first 10, we switch into fast mode and go 10 min/sec.
+  // note that the counter (i) is not used for loop termination.
+  for (int i = 0; digitalRead(UP_SW) == LOW; i++) {
+    minute--;
+    if (minute == 0) {
+      minute = NUM_STATES - 1;
+    }
+    fastDisplayMinute(front, minute);
+    // variable delay
+    delay(i < 10 ? 750 : 100);
+  }
+
+  // user has released the button. get back into normal operation mode.
+  currentMinute = minute;
+}
+
 
 void incrementMinute() {
   currentMinute++;
@@ -284,7 +299,7 @@ void fastDisplayMinute(uint8_t* buffer, uint16_t idx) {
 
   memcpy_PF(buffer + 15, digitGlyphs + 3 * (minute / 10), 3);
   memcpy_PF(buffer + 20, digitGlyphs + 3 * (minute % 10), 3);
-  
+
   center(buffer);
   plex.clear();
   setDisplay(buffer, DUTY_MAX);
