@@ -3,6 +3,7 @@
 #include "life.h"
 #include <avr/pgmspace.h>
 #include "initial_states.h"
+#include "glyphs.h"
 
 // control pins
 #define UP_SW 9
@@ -15,13 +16,6 @@
 #define XY2LED(x, y) ((x) + (y) * (25))
 
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
-
-// if this is set to false, the clock will not automatically increment the
-// currentMinute. this is used during the "set time" function
-volatile bool clockRunning = true;
-
-#define STOP_CLOCK() clockRunning = false
-#define START_CLOCK() clockRunning = true
 
 // index of the minute we want to display
 volatile uint16_t currentMinute = 0;
@@ -184,9 +178,8 @@ void seekUp() {
     if (minute == NUM_STATES) {
       minute = 0;
     }
-    loadTargetState(minute);
-    setDisplay(front, DUTY_MAX);
-    delay(1000);
+    fastDisplayMinute(front, minute);
+    delay(750);
   }
 
   // for the rest of the time the button is held, go up quickly at about
@@ -196,9 +189,8 @@ void seekUp() {
     if (minute == NUM_STATES) {
       minute = 0;
     }
-    loadTargetState(minute);
-    setDisplay(front, DUTY_MAX);
-    delay(200);
+    fastDisplayMinute(front, minute);
+    delay(100);
   }
 
   // user has released the button. get back into normal operation mode.
@@ -280,15 +272,31 @@ void setDisplay(uint8_t* state, uint8_t duty) {
   }
 }
 
+void fastDisplayMinute(uint8_t* buffer, uint16_t idx) {
+  memset(buffer, 0, 27);
+  int hour = idx / 60;
+  int minute = idx % 60;
+
+  memcpy_PF(buffer + 2, digitGlyphs + 3 * (hour / 10), 3);
+  memcpy_PF(buffer + 7, digitGlyphs + 3 * (hour % 10), 3);
+
+  buffer[12] = 10;
+
+  memcpy_PF(buffer + 15, digitGlyphs + 3 * (minute / 10), 3);
+  memcpy_PF(buffer + 20, digitGlyphs + 3 * (minute % 10), 3);
+  
+  center(buffer);
+  plex.clear();
+  setDisplay(buffer, DUTY_MAX);
+}
+
 void tickISR() {
-  if (clockRunning) {
-    // keep track of our time base
-    elapsedMicros += TICK_USEC;
-    // roll over at 1 minute
-    if (elapsedMicros == USEC_IN_A_MINUTE) {
-      elapsedMicros = 0;
-      incrementMinute();
-    }
+  // keep track of our time base
+  elapsedMicros += TICK_USEC;
+  // roll over at 1 minute
+  if (elapsedMicros == USEC_IN_A_MINUTE) {
+    elapsedMicros = 0;
+    incrementMinute();
   }
 
   plex.tick();
