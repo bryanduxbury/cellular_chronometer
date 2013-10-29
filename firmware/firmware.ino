@@ -274,7 +274,7 @@ void setDisplay(uint8_t* state, uint8_t duty) {
 
 void fastDisplayMinute(uint8_t* buffer, uint16_t idx) {
   memset(buffer, 0, 27);
-  int hour = idx / 60;
+  int hour = (idx / 60) + 1;
   int minute = idx % 60;
 
   memcpy_PF(buffer + 2, digitGlyphs + 3 * (hour / 10), 3);
