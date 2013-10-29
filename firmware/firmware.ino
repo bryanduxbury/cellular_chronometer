@@ -93,39 +93,7 @@ void memcpy_PF(uint8_t *dest, uint8_t *pgmSrc, uint8_t count) {
 }
 
 void loop() {
-  // testWithButtonsLoop();
   advanceTheClockLoop();
-}
-
-void testWithButtonsLoop() {
-  while(true) {
-    if (digitalRead(9) == LOW) {
-      next_generation8(front, back);
-      crossFade(front, back, 1000);
-
-      uint8_t *temp = back;
-      back = front;
-      front = temp;
-      delay(10);
-      break;
-    } else if (digitalRead(10) == LOW) {
-      currentMinute++;
-      if (currentMinute == NUM_STATES) {
-        currentMinute = 0;
-      }
-
-      fadeOut(front, 1000);
-      loadInitialState(front, currentMinute);
-      fadeIn(front, 1000);
-
-      while (digitalRead(10) == LOW) {
-        delay(10);
-      }
-
-      break;
-    }
-    delay(100);
-  }
 }
 
 void advanceTheClockLoop() {
