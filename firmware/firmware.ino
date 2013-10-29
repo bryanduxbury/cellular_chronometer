@@ -57,6 +57,21 @@ void loadInitialState(uint8_t* buffer, uint16_t idx) {
   center(buffer);
 }
 
+void loadTargetState(uint16_t idx) {
+  loadInitialState(front, idx);
+  int count = loadNumPriors(idx);
+  for (int i = 0; i < count; i++) {
+    next_generation8(front, back);
+    uint8_t* temp = front;
+    front = back;
+    back = temp;
+  }
+}
+
+uint8_t loadNumPriors(uint16_t idx) {
+  return pgm_read_byte(generationsBack + idx);
+}
+
 void center(uint8_t* rows) {
   for (int i = 0; i < NUM_ROWS + 2; i++) {
     rows[i] = rows[i] << 1;
@@ -160,28 +175,34 @@ void advanceTheClockLoop() {
 // user pressed the "time up" switch. go forward in time until the user is
 // satisfied.
 void seekUp() {
-  // stop the clock from increasing automatically while setting the time.
-  STOP_CLOCK();
+  uint16_t minute = currentMinute;
 
   // for the first 10 seconds of holding the up button, go up slowly at about
   // 1 min / sec
   for (int i = 0; i < 10 && digitalRead(UP_SW) == LOW; i++) {
-    incrementMinute();
-    // TODO: get the next target state and show it
+    minute++;
+    if (minute == NUM_STATES) {
+      minute = 0;
+    }
+    loadTargetState(minute);
+    setDisplay(front, DUTY_MAX);
     delay(1000);
   }
-  
+
   // for the rest of the time the button is held, go up quickly at about
   // 5 min / sec
   while (digitalRead(UP_SW) == LOW) {
-    incrementMinute();
-    // TODO: get the next target state and show it
+    minute++;
+    if (minute == NUM_STATES) {
+      minute = 0;
+    }
+    loadTargetState(minute);
+    setDisplay(front, DUTY_MAX);
     delay(200);
   }
 
   // user has released the button. get back into normal operation mode.
-  // TODO: need to do anything here?
-  START_CLOCK();
+  currentMinute = minute;
 }
 
 void incrementMinute() {
