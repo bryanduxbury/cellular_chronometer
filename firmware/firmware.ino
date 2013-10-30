@@ -179,14 +179,6 @@ void seekDown() {
   currentMinute = minute;
 }
 
-
-void incrementMinute() {
-  currentMinute++;
-  if (currentMinute == NUM_STATES) {
-    currentMinute = 0;
-  }
-}
-
 // display effects
 
 void fadeOut(uint8_t* current, int duration) {
@@ -280,7 +272,10 @@ void tickISR() {
   // roll over at 1 minute
   if (elapsedMicros == USEC_IN_A_MINUTE) {
     elapsedMicros = 0;
-    incrementMinute();
+    currentMinute++;
+    if (currentMinute == NUM_STATES) {
+      currentMinute = 0;
+    }
   }
 
   plex.tick();
