@@ -165,11 +165,11 @@ void seekDown() {
   // the first 10 minutes forward go at slightly faster than 1 min/sec.
   // after the first 10, we switch into fast mode and go 10 min/sec.
   // note that the counter (i) is not used for loop termination.
-  for (int i = 0; digitalRead(UP_SW) == LOW; i++) {
-    minute--;
+  for (int i = 0; digitalRead(DOWN_SW) == LOW; i++) {
     if (minute == 0) {
-      minute = NUM_STATES - 1;
+      minute = NUM_STATES;
     }
+    minute--;
     fastDisplayMinute(front, minute);
     // variable delay
     delay(i < 10 ? 750 : 100);
