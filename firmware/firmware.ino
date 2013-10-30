@@ -15,7 +15,7 @@
 
 #define XY2LED(x, y) ((x) + (y) * (25))
 
-Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4);
+Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4, 125);
 
 // index of the minute we want to display
 volatile uint16_t currentMinute = 0;
@@ -33,11 +33,11 @@ void setup() {
   Timer1.initialize(TICK_USEC);
   Timer1.attachInterrupt(tickISR, TICK_USEC);
 
-  pinMode(9, INPUT);
-  digitalWrite(9, HIGH);
+  pinMode(UP_SW, INPUT);
+  digitalWrite(UP_SW, HIGH);
 
-  pinMode(10, INPUT);
-  digitalWrite(10, HIGH);
+  pinMode(DOWN_SW, INPUT);
+  digitalWrite(DOWN_SW, HIGH);
 
   front = display1;
   back = display2;

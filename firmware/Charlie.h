@@ -3,14 +3,15 @@
 
 #include "Arduino.h"
 
-#define DUTY_MAX 8
+#define DUTY_MAX 10
 
 class Charlie {
  public:
   Charlie(volatile uint8_t *directionReg1, volatile uint8_t *valueReg1,
           uint8_t startBit1, uint8_t numPins1,
           volatile uint8_t *directionReg2, volatile uint8_t *valueReg2,
-          uint8_t startBit2, uint8_t numPins2);
+          uint8_t startBit2, uint8_t numPins2,
+          uint8_t cycleMax);
 
   void setDuty(int highPin, int lowPin, uint8_t duty);
   void setDuty(int ledNum, uint8_t duty);
@@ -25,7 +26,6 @@ class Charlie {
     uint8_t dmask2;
     uint8_t vmask2;
     volatile uint8_t duty;
-    // volatile uint8_t pending_duty;
   };
 
   volatile uint8_t *d1;
@@ -40,6 +40,7 @@ class Charlie {
 
   LedDefn* ledDefns;
   uint8_t numLEDs;
+  uint8_t cycle_max;
 };
 
 #endif

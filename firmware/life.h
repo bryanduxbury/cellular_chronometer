@@ -2,12 +2,8 @@
 #ifndef __LIFE_H__
 #define __LIFE_H__
 
-#include "bitvector.h"
-
 #define NUM_ROWS 25
 #define NUM_COLS 5
-
-// #define XY2ORD(x, y) ((x) + (y) * NUM_COLS)
 
 // map from set bits to number of bits set for 0-7
 const uint8_t lookup[] = {
@@ -28,19 +24,13 @@ bool test8(uint8_t *rows, uint8_t rowIdx, uint8_t colIdx) {
   return (rows[rowIdx] & (((uint8_t)1) << colIdx)) != 0;
 }
 
-// #define TEST32(rows, rowIdx, colIdx) (((rows)[(rowIdx)] & (((uint32_t)1) << (colIdx))) != 0)
-
 void set8(uint8_t *rows, uint8_t rowIdx, uint8_t colIdx) {
   rows[rowIdx] |= (((uint8_t)1) << colIdx);
 }
 
-// #define SET32(rows, rowIdx, colIdx) ((rows)[(rowIdx)] |= (((uint32_t)1) << (colIdx)))
-
 uint8_t do_lookup8(uint8_t row, uint8_t colIdx, uint8_t mask) {
   return lookup[(row >> (colIdx - 1)) & mask];
 }
-
-// #define DO_LOOKUP(row, colIdx, mask) (lookup[((row) >> ((colIdx) - 1)) & (mask)])
 
 
 // To simulate playing the Game of Life on a toroidal grid, we're going to
@@ -68,7 +58,7 @@ void make_toroidal(uint8_t* rows) {
 
   // finally, join the "ends" of the tube by making alias rows
   rows[0] = rows[NUM_ROWS];
-  rows[NUM_ROWS+1] = rows[1]; 
+  rows[NUM_ROWS+1] = rows[1];
 }
 
 void next_generation8(uint8_t *inRows, uint8_t *outRows) {

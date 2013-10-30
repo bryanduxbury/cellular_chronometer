@@ -1,14 +1,17 @@
 #include "Charlie.h"
 
-Charlie::Charlie(volatile uint8_t *directionReg1, 
+Charlie::Charlie(volatile uint8_t *directionReg1,
                 volatile uint8_t *valueReg1,
-                uint8_t startBit1, 
+                uint8_t startBit1,
                 uint8_t numPins1,
-                volatile uint8_t *directionReg2, 
+                volatile uint8_t *directionReg2,
                 volatile uint8_t *valueReg2,
-                uint8_t startBit2, 
-                uint8_t numPins2) 
+                uint8_t startBit2,
+                uint8_t numPins2,
+                uint8_t cycleMax)
 {
+  cycle_max = cycleMax;
+
   d1 = directionReg1;
   v1 = valueReg1;
 
@@ -92,28 +95,31 @@ Charlie::Charlie(volatile uint8_t *directionReg1,
 }
 
 void Charlie::tick() {
+  LedDefn currentDefn;
+
   // increment the tick count
   tickCount++;
 
   // check if the current LED has reached the limit of it's duty cycle
-  LedDefn currentDefn = ledDefns[curLED];
   if (curDuty == tickCount) {
+    // need to retrieve the ledDefn now so that we can turn it off!
+    currentDefn = ledDefns[curLED];
     *d1 &= ~currentDefn.dmask1;
     *v1 &= ~currentDefn.vmask1;
     *d2 &= ~currentDefn.dmask2;
     *v2 &= ~currentDefn.vmask2;
   }
-  
+
   // if tickCount reaches DUTY_MAX, it's time to reset tickCount and move on to the next LED
   if (tickCount == DUTY_MAX) {
     tickCount = 0;
 
     // wrap around from end to beginning if necessary
     curLED++;
-    if (curLED == numLEDs) {
+    if (curLED == cycle_max) {
       curLED = 0;
     }
-    
+
     // turn on the next LED unless its duty is 0
     currentDefn = ledDefns[curLED];
     // copy the target duty into the current duty. this prevents a race condition that can cause 
