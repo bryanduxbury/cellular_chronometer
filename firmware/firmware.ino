@@ -250,6 +250,8 @@ void setDisplay(uint8_t* state, uint8_t duty) {
         // and also translate the coordinates down one to account for the 
         // aliases
         plex.setDuty(XY2LED(y-1, x-1), duty);
+      } else {
+        plex.setDuty(XY2LED(y-1, x-1), 0);
       }
     }
   }
@@ -260,16 +262,15 @@ void fastDisplayMinute(uint8_t* buffer, uint16_t idx) {
   int hour = (idx / 60) + 1;
   int minute = idx % 60;
 
-  memcpy_PF(buffer + 2, digitGlyphs + 3 * (hour / 10), 3);
-  memcpy_PF(buffer + 7, digitGlyphs + 3 * (hour % 10), 3);
+  memcpy_PF(buffer + 3, digitGlyphs + 3 * (hour / 10), 3);
+  memcpy_PF(buffer + 8, digitGlyphs + 3 * (hour % 10), 3);
 
-  buffer[12] = 10;
+  buffer[13] = 10;
 
-  memcpy_PF(buffer + 15, digitGlyphs + 3 * (minute / 10), 3);
-  memcpy_PF(buffer + 20, digitGlyphs + 3 * (minute % 10), 3);
+  memcpy_PF(buffer + 16, digitGlyphs + 3 * (minute / 10), 3);
+  memcpy_PF(buffer + 21, digitGlyphs + 3 * (minute % 10), 3);
 
   center(buffer);
-  plex.clear();
   setDisplay(buffer, DUTY_MAX);
 }
 
