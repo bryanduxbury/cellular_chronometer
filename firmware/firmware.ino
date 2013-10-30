@@ -51,37 +51,11 @@ void loadInitialState(uint8_t* buffer, uint16_t idx) {
   center(buffer);
 }
 
-void loadTargetState(uint16_t idx) {
-  loadInitialState(front, idx);
-  int count = loadNumPriors(idx);
-  for (int i = 0; i < count; i++) {
-    next_generation8(front, back);
-    uint8_t* temp = front;
-    front = back;
-    back = temp;
-  }
-}
-
-uint8_t loadNumPriors(uint16_t idx) {
-  return pgm_read_byte(generationsBack + idx);
-}
-
+// convenience function for shifting all the elements in the row vector up a bit,
+// used to prepare to make the rows toroidal
 void center(uint8_t* rows) {
   for (int i = 0; i < NUM_ROWS + 2; i++) {
     rows[i] = rows[i] << 1;
-  }
-}
-
-// lights up each row of the display briefly
-void testLeds() {
-  for (int y = 0; y < NUM_COLS; y++) {
-    for (int x = 0; x < NUM_ROWS; x++) {
-      plex.setDuty(XY2LED(x, y), 4);
-    }
-    delay(100);
-    for (int x = 0; x < NUM_ROWS; x++) {
-      plex.setDuty(XY2LED(x, y), 0);
-    }
   }
 }
 
