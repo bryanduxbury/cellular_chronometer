@@ -47,7 +47,7 @@ void setup() {
 }
 
 void loadInitialState(uint8_t* buffer, uint16_t idx) {
-  memcpy_PF(buffer + 1, (uint8_t*) initialStates + idx * NUM_ROWS, NUM_ROWS);
+  memcpy_PF(buffer + 1, initialStates + idx * NUM_ROWS, NUM_ROWS);
   center(buffer);
 }
 
