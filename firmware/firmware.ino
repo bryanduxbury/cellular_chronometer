@@ -11,7 +11,6 @@
 
 // for the time base
 #define TICK_USEC 10
-#define USEC_IN_A_MINUTE 60000000
 
 #define XY2LED(x, y) ((x) + (y) * (25))
 
@@ -19,8 +18,6 @@ Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4, 125);
 
 // index of the minute we want to display
 volatile uint16_t currentMinute = 0;
-// number of microseconds elapsed since our last minute switch
-volatile uint32_t elapsedMicros = 0;
 
 // the current state of all the cells displayed
 uint8_t display1[27] = {0};
@@ -75,9 +72,23 @@ void advanceTheClockLoop() {
   // when the minute rolls over so we can fade out and load the next minute
   uint16_t currentMinuteDisplayed = 0;
 
+  uint32_t lastMillis = millis();
+
   // note that all the delaying in this loop comes from the crossFade and 
   // fadeIn/fadeOut calls.
   while (true) {
+    // check if 60000 ms have elapsed, and it's time to advance the minute
+    uint32_t now = millis();
+    if (now - lastMillis >= 60000) {
+      currentMinute++;
+      if (currentMinute == NUM_STATES) {
+        currentMinute = 0;
+      }
+      // note, we move forward my 60000 ms, not by setting last to now, since 
+      // we want a fixed 60000 ms change, not 60000 ms from right now.
+      lastMillis += 60000;
+    }
+
     // first, see if someone is trying to adjust our time.
     if (digitalRead(UP_SW) == LOW) {
       seekUp();
@@ -241,16 +252,5 @@ void fastDisplayMinute(uint8_t* buffer, uint16_t idx) {
 }
 
 void tickISR() {
-  // keep track of our time base
-  elapsedMicros += TICK_USEC;
-  // roll over at 1 minute
-  if (elapsedMicros == USEC_IN_A_MINUTE) {
-    elapsedMicros = 0;
-    currentMinute++;
-    if (currentMinute == NUM_STATES) {
-      currentMinute = 0;
-    }
-  }
-
   plex.tick();
 }
