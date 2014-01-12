@@ -8,7 +8,7 @@ pcb_t = 1.2;
 pcb_h = 25;
 pcb_w = 100;
 
-cord_r = 4.8/2;
+cord_r = 4.5/2;
 
 switch_distance_from_center = 25;
 switch_height = 8.5;
