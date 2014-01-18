@@ -238,4 +238,4 @@ module assembled() {
 
 }
 
-assembled();
+rotate([0, 0, 360 * $t]) assembled();
