@@ -3,6 +3,7 @@
 
 t = 3;
 l = 0.005 * 25.4;
+o = 0.002 * 25.4;
 
 pcb_t = 1.2;
 pcb_h = 25;
@@ -86,7 +87,7 @@ module pcba_support() {
 
     for (x=[-1,1], y=[-1,1]) {
       translate([(support_d/2 - t/2) * x, (support_h / 2 + t/2) * y, 0]) 
-        square(size=[t+l, t+l], center=true);
+        square(size=[t+l+o, t+l], center=true);
     }
   }
 }
@@ -163,7 +164,7 @@ module side() {
 
       for (x=[-1,1], y=[-1,1]) {
         translate([((d-2*t)/2) * y, (h/2 - 2 * t - t/2) * x, 0])
-          square(size=[2*t+l, t+l], center=true);
+          square(size=[2*t+l, t+l+o], center=true);
       }
     }
 
@@ -175,16 +176,16 @@ module side() {
 module topbottom() {
   assign(base_height = d - 2 * t + l)
   assign(base_width = w - 2 * t + l)
-  difference() {
+  !difference() {
     union() {
       square(size=[base_width, base_height], center=true);
       for (x=[-1,1], y=[-1,1]) {
         translate([(w/2 - 4 * t - t/2) * x, ((d-2*t)/2) * y, 0]) 
-          square(size=[t+l, 2*t+l], center=true);
+          square(size=[t+l+o, 2*t+l], center=true);
       }
       for (x=[-1,1]) {
         translate([(w/2-t) * x, 0, 0]) 
-          square(size=[2*t+l, (base_height - 2 * t)+l], center=true);
+          square(size=[2*t+l, (base_height - 2 * t)+l+o], center=true);
       }
     }
 
@@ -201,7 +202,6 @@ module button_flange() {
     _triangle(10+2);
     circle(r=3.4/2, $fn=36);
   }
-  
 }
 
 module button() {
@@ -233,9 +233,6 @@ module assembled() {
   for (z=[-1,1]) {
     translate([0, 0, (h/2-t/2)*z]) _a() topbottom();
   }
-  
-  
-
 }
 
 rotate([0, 0, 360 * $t]) assembled();
