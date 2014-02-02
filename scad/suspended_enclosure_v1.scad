@@ -3,7 +3,7 @@
 
 t = 2.8;
 l = 0.005 * 25.4;
-o = 0.002 * 25.4;
+o = 0.001 * 25.4;
 
 pcb_t = 1.2;
 pcb_h = 25;
@@ -75,19 +75,23 @@ module pcba_support() {
   union() {
     difference() {
       square(size=[support_d+l, support_h], center=true);
-      square(size=[pcb_t-l, pcb_h-l], center=true);
+      square(size=[pcb_t, pcb_h], center=true);
       for (d=[-1,1]) {
         translate([support_d/2 * d, 0, 0]) 
           _elipse2d((support_d - pcb_t - 2 * t)/2, (support_h - 3*t) / 2, $fn=72);
 
         translate([0, support_h/2 * d, 0]) 
-          _elipse2d((support_d - 2*t)/2-l/2, (support_h - 2*t - pcb_h) / 2, $fn=72);
+          difference(){
+            _elipse2d((support_d - 2*t)/2-l/2, (support_h - 2*t - pcb_h) / 2, $fn=72);
+            translate([0, t/4*-d, 0]) square(size=[support_d, t/2+l], center=true);
+          }
+          
       }
     }
 
     for (x=[-1,1], y=[-1,1]) {
       translate([(support_d/2 - t/2) * x, (support_h / 2 + t/2) * y, 0]) 
-        square(size=[t+l+o, t+l], center=true);
+        square(size=[t+l, t+l], center=true);
     }
   }
 }
@@ -199,8 +203,8 @@ module topbottom() {
 
 module button_flange() {
   difference() {
-    _triangle(10+2);
-    circle(r=3.4/2, $fn=36);
+    _triangle(10+4);
+    // circle(r=3.4/2, $fn=36);
   }
 }
 
