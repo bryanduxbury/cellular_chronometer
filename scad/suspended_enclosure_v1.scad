@@ -1,7 +1,7 @@
 // TODO: add front to back screw holes
 
 
-t = 3;
+t = 2.8;
 l = 0.005 * 25.4;
 o = 0.002 * 25.4;
 
@@ -176,7 +176,7 @@ module side() {
 module topbottom() {
   assign(base_height = d - 2 * t + l)
   assign(base_width = w - 2 * t + l)
-  !difference() {
+  difference() {
     union() {
       square(size=[base_width, base_height], center=true);
       for (x=[-1,1], y=[-1,1]) {
