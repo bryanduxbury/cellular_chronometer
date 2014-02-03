@@ -1,6 +1,3 @@
-// TODO: add front to back screw holes
-
-
 t = 2.8;
 l = 0.005 * 25.4;
 o = 0.001 * 25.4;
@@ -12,19 +9,15 @@ pcb_w = 100;
 cord_r = 4.5/2;
 
 switch_distance_from_center = 25;
+// TODO: this number doesn't appear to match the PCBA! remeasure.
 switch_height = 8.5;
 
 w = 100+6*t;
 h = 50;
 d = 2 * (pcb_t / 2 + switch_height + 2 * t);
 
-
-
 feet_h = 3;
 feet_w = t*2;
-
-
-function polar(r, theta) = [cos(theta) * r, sin(theta) * r];
 
 module _elipse2d(rx, ry) {
   scale([rx, ry, 1]) circle(r=1);
@@ -59,7 +52,7 @@ module pcba_mockup() {
     translate([x * (switch_distance_from_center), pcb_t/2+switch_height/2, 0]) 
       cube(size=[6, switch_height, 6], center=true);
   }
-  
+
   assign(delta = (pcb_w - 5) / 24)
   translate([0, -pcb_t/2 - 1/2, 0]) {
     for (x=[-12:12], y=[-2:2]) {
@@ -112,8 +105,6 @@ module _frontback_base() {
         _elipse2d((full_w - feet_w*2 - cord_r*2)/2, feet_h, $fn=120);
     }
 
-    
-
     for (x=[-1,1], y=[-1,1]) {
       translate([(w/2-t/2) * x, (h/2-2*t-t/2) * y, 0]) 
         square(size=[t-l, t-l], center=true);
@@ -145,11 +136,11 @@ module back() {
       }
 
       translate([switch_distance_from_center, 0, 0]) 
-        rotate([0, 0, 180]) _triangle(10);
+        rotate([0, 0, 270]) _triangle(10);
       translate([-switch_distance_from_center, 0, 0]) 
-        rotate([0, 0, 0]) _triangle(10);
+        rotate([0, 0, 90]) _triangle(10);
     }
-    
+
     // round out the corners of the cord slot
     for (x=[-1,1]) {
       translate([(cord_r + t/4) * x, -full_h/2 + t/4, 0]) 
@@ -204,7 +195,6 @@ module topbottom() {
 module button_flange() {
   difference() {
     _triangle(10+4);
-    // circle(r=3.4/2, $fn=36);
   }
 }
 
@@ -221,9 +211,9 @@ module assembled() {
   pcba_mockup();
 
   translate([switch_distance_from_center, d/2 - t/2, 0]) 
-    rotate([-90, 180, 0]) _button_assembly();
+    rotate([-90, 270, 0]) _button_assembly();
   translate([-switch_distance_from_center, d/2 - t/2, 0]) 
-    rotate([-90, 0, 0]) _button_assembly();
+    rotate([-90, 90, 0]) _button_assembly();
 
   for (x=[-1,1]) {
     translate([(pcb_w / 2 + 0.5) * x, 0, 0]) 
