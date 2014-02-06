@@ -9,8 +9,7 @@ pcb_w = 100;
 cord_r = 4.5/2;
 
 switch_distance_from_center = 25;
-// TODO: this number doesn't appear to match the PCBA! remeasure.
-switch_height = 8.5;
+switch_height = 7.3;
 
 w = 100+6*t;
 h = 50;
@@ -78,8 +77,8 @@ module pcba_support() {
             _elipse2d((support_d - 2*t)/2-l/2, (support_h - 2*t - pcb_h) / 2, $fn=72);
             translate([0, t/4*-d, 0]) square(size=[support_d, t/2+l], center=true);
           }
-          
       }
+      translate([0, pcb_h/2, 0]) circle(r=pcb_t/2, $fn=36);
     }
 
     for (x=[-1,1], y=[-1,1]) {
@@ -192,6 +191,13 @@ module topbottom() {
   }
 }
 
+module bottom() {
+  difference() {
+    topbottom();
+    translate([0, d/2 - t/2, 0]) circle(r=cord_r, $fn=36);
+  }
+}
+
 module button_flange() {
   difference() {
     _triangle(10+4);
@@ -224,8 +230,11 @@ module assembled() {
   translate([0, -d/2+t/2, 0]) rotate([90, 0, 0]) _a() front();
   translate([0, d/2-t/2, 0]) rotate([90, 0, 180]) _a() back();
 
-  for (z=[-1,1]) {
+  for (z=[1]) {
     translate([0, 0, (h/2-t/2)*z]) _a() topbottom();
+  }
+  for (z=[-1]) {
+    translate([0, 0, (h/2-t/2)*z]) _a() bottom();
   }
 }
 
