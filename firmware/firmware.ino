@@ -17,7 +17,7 @@
 Charlie plex(&DDRD, &PORTD, 0, 8, &DDRC, &PORTC, 0, 4, 125);
 
 // index of the minute we want to display
-volatile uint16_t currentMinute = 0;
+volatile uint16_t currentMinute = 660;
 
 // the current state of all the cells displayed
 uint8_t display1[27] = {0};
@@ -39,8 +39,9 @@ void setup() {
   front = display1;
   back = display2;
 
-  loadInitialState(front, 0);
+  loadInitialState(front, 660);
   fadeIn(front, 1000);
+  delay(2000);
 }
 
 void loadInitialState(uint8_t* buffer, uint16_t idx) {
@@ -70,7 +71,7 @@ void loop() {
 void advanceTheClockLoop() {
   // which minute is *this loop* displaying right now? we'll use this to detect
   // when the minute rolls over so we can fade out and load the next minute
-  uint16_t currentMinuteDisplayed = 0;
+  uint16_t currentMinuteDisplayed = 660;
 
   uint32_t lastMillis = millis();
 
@@ -116,6 +117,8 @@ void advanceTheClockLoop() {
       loadInitialState(front, currentMinute);
       // fade in the new current
       fadeIn(front, 1000);
+      // hold the display steady for a bit
+      delay(2000);
     }
   }
 }
@@ -157,7 +160,7 @@ void seekDown() {
     minute--;
     fastDisplayMinute(front, minute);
     // variable delay
-    delay(i < 10 ? 750 : 50);
+    delay(i < 10 ? 500 : 100);
   }
 
   // user has released the button. get back into normal operation mode.
