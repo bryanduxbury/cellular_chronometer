@@ -4,55 +4,8 @@
     <list default="true" id="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" name="Default" comment="" />
     <ignored path="atavise.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/RowAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381415681914" ignored="false" />
-    <file path="/IntersectingRowAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381694431146" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/all-protos/target/generated-sources/protobuf/java/com/squareup/protos/refinery/common/Common.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381982697745" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/refinery/apps/src/main/java/com/squareup/refinery/apps/sawmill/service/LogCreateLiterConverter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381967094652" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/refinery/batmobile/util/pom.xml" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381414740549" ignored="false" />
-    <file path="/Dummy.txt" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382461540805" ignored="false" />
-    <file path="/fragment.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382921192316" ignored="false" />
-    <file path="/IntersectingRowAtaviserTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382148581487" ignored="false" />
-    <file path="/GridAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381639908949" ignored="false" />
-    <file path="/HierarchicalDuparcGridAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382110733755" ignored="false" />
-    <file path="/HierarchicalDuparcGridAtaviserTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381901032740" ignored="false" />
-    <file path="/SolutionFilter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381554543355" ignored="false" />
-    <file path="/TubularRowFilter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381554914598" ignored="false" />
-    <file path="/TubularRowFilterTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381555044928" ignored="false" />
-    <file path="/RetainAll.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381555186184" ignored="false" />
-    <file path="/SolutionLimiter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381590393445" ignored="false" />
-    <file path="/AllSolutions.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381590504813" ignored="false" />
-    <file path="/HardLimit.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381590820332" ignored="false" />
-    <file path="/Aggressive.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381591079370" ignored="false" />
-    <file path="/FourInts.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381640112349" ignored="false" />
-    <file path="/TwoInts.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381608740285" ignored="false" />
-    <file path="/Searcher.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382306334248" ignored="false" />
-    <file path="/Grid.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381726312991" ignored="false" />
-    <file path="/GridTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381679839137" ignored="false" />
-    <file path="/CachingRowAtaviser.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381644286465" ignored="false" />
-    <file path="/a.dummy" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381645485965" ignored="false" />
-    <file path="/HackyTubeFilter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381700647321" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/samsa/consumer/forwarder/pom.xml" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381796319188" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/feeds/jooq-feeds/pom.xml" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381796319188" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/refinery/samsa-consumer/.hoist/cron/crontab" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381871931126" ignored="false" />
-    <file path="/crontab" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381863480169" ignored="false" />
-    <file path="/CachingHDGA.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381901010215" ignored="false" />
-    <file path="/SolutionIndexer.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381899681576" ignored="false" />
-    <file path="/SimpleIndex.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381900367782" ignored="false" />
-    <file path="/UniqueBordersIndexer.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382022414995" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/refinery/apps/src/main/java/com/squareup/refinery/apps/sawmill/converters/CardLinkFailedResponse.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381967094652" ignored="false" />
-    <file path="/CardLinkFailedResponse.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381964725662" ignored="false" />
-    <file path="/LogCreateLiterConverter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381961114278" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/refinery/apps/src/test/java/com/squareup/refinery/apps/sawmill/converters/CardLinkFailedResponseTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381967094652" ignored="false" />
-    <file path="/CardLinkFailedResponseTest.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381965182483" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/all-protos/target/generated-sources/protobuf/java/com/squareup/protos/ledger/Ledger.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381967094652" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/all-protos/target/checkstyle-checker.xml" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381967094652" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/all-protos/target/checkstyle-result.xml" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381967094652" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/all-protos/target/generated-sources/protobuf/java/com/squareup/protos/franklin/events/Events.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1381982697745" ignored="false" />
-    <file path="$PROJECT_DIR$/../../java/refinery/apps/src/main/java/com/squareup/refinery/apps/cascading_example/FranklinExample.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382053549689" ignored="false" />
-    <file path="/Maximum.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382145373354" ignored="false" />
-    <file path="/ListOfInts.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382148127157" ignored="false" />
-    <file path="/CachingHierarchical.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382148186316" ignored="false" />
-    <file path="/DeadEdgeFilter.java" changelist="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" time="1382158166570" ignored="false" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +20,8 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+    <ui_properties converted="true" />
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
         <option name="NOTIFY_UNCAUGHT" value="true" />
@@ -103,26 +57,7 @@
         <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
       </breakpoint>
     </breakpoint_any>
-    <exception_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint class_name="java.lang.ArrayIndexOutOfBoundsException" package_name="java.lang">
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </exception_breakpoints>
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
       <breakpoint url="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java" line="46" class="org.bryanduxbury.atavise.HierarchicalDuparcGridAtaviserTest" package="org.bryanduxbury.atavise">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -169,9 +104,26 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <breakpoint_rules />
-    <ui_properties />
+    <exception_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
+      <breakpoint class_name="java.lang.ArrayIndexOutOfBoundsException" package_name="java.lang">
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </exception_breakpoints>
+    <breakpoint_rules converted="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -179,38 +131,49 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Searcher.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Searcher.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Searcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="52" selection-start="1150" selection-end="1150" vertical-scroll-proportion="-2.3638968">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="2175">
+              <caret line="112" column="9" selection-start-line="108" selection-start-column="8" selection-end-line="112" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IntersectingRowAtaviserTest.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="IntersectingRowAtaviserTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/row_ataviser/IntersectingRowAtaviserTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="45" selection-start="45" selection-end="45" vertical-scroll-proportion="0.0">
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1350">
+              <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+              <folding>
+                <element signature="e#1968#1969#0" expanded="false" />
+                <element signature="e#2033#2034#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Hierarchical.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Hierarchical.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/Hierarchical.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="30" selection-start="4439" selection-end="4439" vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1107" max-vertical-offset="2595">
+              <caret line="108" column="28" selection-start-line="108" selection-start-column="28" selection-end-line="108" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CachingHierarchical.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java">
+      <file leaf-file-name="MinGrowthAtaviser.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/MinGrowthAtaviser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="2" selection-start="871" selection-end="871" vertical-scroll-proportion="0.0">
-              <folding />
+            <state vertical-scroll-proportion="0.41114983" vertical-offset="1594" max-vertical-offset="2655">
+              <caret line="124" column="9" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4512#4809#0" expanded="true" />
+                <element signature="e#4808#4809#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -223,31 +186,48 @@
     </FindUsagesManager>
   </component>
   <component name="IdeDocumentHistory">
-    <option name="changedFiles">
+    <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/SimpleIndex.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/CachingHDGA.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/UniqueBordersIndexer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/Searcher.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Maximum.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/ListOfInts.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/row_ataviser/CachingRowAtaviser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/HierarchicalDuparcGridAtaviser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/util/ListOfInts.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/IntersectingRowAtaviserTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/Hierarchical.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_filter/DeadEdgeFilter.java" />
+        <option value="$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/row_ataviser/IntersectingRowAtaviserTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/SolutionLimiter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/HardLimit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/Aggressive.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/AllSolutions.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Searcher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/MinGrowthAtaviser.java" />
       </list>
     </option>
   </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="22" />
+    <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="874" />
+    <option name="height" value="873" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Code style issues</id>
+          </State>
+          <State>
+            <id>Probable bugs</id>
+          </State>
+        </expanded-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -263,7 +243,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -365,7 +345,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="atavise" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="row_ataviser" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -617,7 +609,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="copyright" />
+    <property name="options.lastSelected" value="preferences.keymap" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
@@ -628,6 +620,9 @@
     <property name="dynamic.classpath" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/atavise.ipr" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
+    <property name="LayoutCode.rearrangeEntriesJava" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -645,6 +640,7 @@
   </component>
   <component name="RunManager" selected="Application.Searcher">
     <configuration default="false" name="Hierarchical" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.grid_ataviser.Hierarchical" />
       <option name="VM_PARAMETERS" value="-Xmx2048m" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -664,9 +660,10 @@
       <method />
     </configuration>
     <configuration default="false" name="Searcher" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="org.bryanduxbury.atavise.search.Searcher" />
       <option name="VM_PARAMETERS" value="-Xmx6000m" />
-      <option name="PROGRAM_PARAMETERS" value="7 ../rb/patterns/narrow/displayset/01_00.txt" />
+      <option name="PROGRAM_PARAMETERS" value="5 ../rb/patterns/narrow/displayset/01_00.txt" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -685,10 +682,12 @@
       </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Profile " />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="false" name="GridTest.testNextGeneration" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="java" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -717,6 +716,7 @@
       <method />
     </configuration>
     <configuration default="false" name="GridTest.testMakeToroidal" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="java" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -745,6 +745,7 @@
       <method />
     </configuration>
     <configuration default="false" name="GridTest.testSubgrid" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="java" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -772,12 +773,6 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
-      <option name="PROGRAM_PARAMETERS" />
-      <method />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -786,7 +781,110 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -813,20 +911,8 @@
       <listeners />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
@@ -838,26 +924,6 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
       <method />
     </configuration>
     <list size="5">
@@ -882,226 +948,380 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" myUseAcceleration="nothing">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b6adb27b-cff8-4d5f-9cd5-f032a67f99eb" name="Default" comment="" />
       <created>1381330858639</created>
+      <option name="number" value="Default" />
       <updated>1381330858639</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="874" extended-state="1" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39920425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964131" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25124377" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24930556" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39920425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="CHECK_NEW_TODO" value="true" />
     <option name="myTodoPanelSettings">
-      <value>
-        <are-packages-shown value="false" />
-        <are-modules-shown value="false" />
-        <flatten-packages value="false" />
-        <is-autoscroll-to-source value="false" />
-      </value>
+      <TodoPanelSettings />
     </option>
-    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
-    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
-    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
-    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
-    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
-    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
-    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
-    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
-    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
-    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
-    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
-    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
-    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
-    <option name="LIMIT_HISTORY" value="true" />
-    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
-    <option name="UPDATE_FILTER_SCOPE_NAME" />
-    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
-    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
-    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
-    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
-    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
-    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
-    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
-    <option name="ACTIVE_VCS_NAME" />
-    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
-    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
-    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
-    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
-    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java</url>
+          <line>46</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/GridTest.java</url>
+          <line>60</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_filter/TubularRowFilter.java</url>
+          <line>12</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
+      <default-breakpoints>
+        <breakpoint type="java-exception">
+          <log-expression disabled="true" expression="&#13;&#13;JAVA" />
+          <properties />
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="4" />
     </breakpoint-manager>
+    <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Searcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="2" selection-start="871" selection-end="871" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_filter/TubularRowFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="464" selection-end="464" vertical-scroll-proportion="0.29809725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/Grid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="46" selection-start="2004" selection-end="2004" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3319#3327#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/SolutionIndexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="34" selection-start="179" selection-end="179" vertical-scroll-proportion="0.12396694">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="29" selection-start="1244" selection-end="1244" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/GridAtaviser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="44" selection-start="164" selection-end="164" vertical-scroll-proportion="0.10330579">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/util/ListOfInts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="16" selection-start="977" selection-end="977" vertical-scroll-proportion="0.85348505">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Maximum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="33" selection-start="0" selection-end="4645" vertical-scroll-proportion="0.6273115">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/util/TwoInts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="9" selection-start="125" selection-end="125" vertical-scroll-proportion="0.020661157">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/row_ataviser/CachingRowAtaviser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="13" selection-start="505" selection-end="505" vertical-scroll-proportion="0.26859504">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/SimpleIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="47" selection-start="802" selection-end="802" vertical-scroll-proportion="0.29453015">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/UniqueBordersIndexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="2" selection-start="871" selection-end="871" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="2160">
+          <caret line="28" column="52" selection-start-line="28" selection-start-column="52" selection-end-line="28" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/row_ataviser/IntersectingRowAtaviserTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="45" selection-start="45" selection-end="45" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1260">
+          <caret line="0" column="45" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
+          <folding>
+            <element signature="e#1968#1969#0" expanded="false" />
+            <element signature="e#2033#2034#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/Hierarchical.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="2415">
+          <caret line="102" column="30" selection-start-line="102" selection-start-column="30" selection-end-line="102" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="480">
+          <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="24" column="2" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_filter/TubularRowFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29809725" vertical-offset="0" max-vertical-offset="0">
+          <caret line="12" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/Grid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="74" column="46" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#3319#3327#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/SolutionIndexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12396694" vertical-offset="0" max-vertical-offset="0">
+          <caret line="6" column="34" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/HierarchicalDuparcGridAtaviserTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="38" column="29" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/util/ListOfInts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.85348505" vertical-offset="0" max-vertical-offset="0">
+          <caret line="44" column="16" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Maximum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6273115" vertical-offset="0" max-vertical-offset="0">
+          <caret line="61" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/util/TwoInts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.020661157" vertical-offset="0" max-vertical-offset="0">
+          <caret line="6" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/row_ataviser/CachingRowAtaviser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26859504" vertical-offset="0" max-vertical-offset="0">
+          <caret line="16" column="13" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/SimpleIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29453015" vertical-offset="0" max-vertical-offset="0">
+          <caret line="18" column="47" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_indexer/UniqueBordersIndexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/src.zip!/java/util/Comparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33247423" vertical-offset="1557" max-vertical-offset="7620">
+          <caret line="149" column="8" selection-start-line="149" selection-start-column="8" selection-end-line="149" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/row_ataviser/IntersectingRowAtaviser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1196" max-vertical-offset="2100">
+          <caret line="95" column="36" selection-start-line="95" selection-start-column="36" selection-end-line="95" selection-end-column="36" />
+          <folding>
+            <element signature="e#576#577#0" expanded="false" />
+            <element signature="e#616#617#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_filter/HackyTubeFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/solution_filter/TubularRowFilterTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/SolutionLimiter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.038659792" vertical-offset="0" max-vertical-offset="776">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/GridAtaviser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.077319585" vertical-offset="0" max-vertical-offset="776">
+          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/CachingHierarchical.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27061856" vertical-offset="0" max-vertical-offset="776">
+          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/row_ataviser/RowAtaviser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.077319585" vertical-offset="0" max-vertical-offset="776">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/org/bryanduxbury/atavise/row_ataviser/IntersectingRowAtaviserTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1350">
+          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+          <folding>
+            <element signature="e#1968#1969#0" expanded="false" />
+            <element signature="e#2033#2034#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="375">
+          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/HardLimit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="18" column="20" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
+          <folding>
+            <element signature="e#884#885#0" expanded="true" />
+            <element signature="e#906#907#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/Aggressive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="645">
+          <caret line="44" column="33" selection-start-line="44" selection-start-column="33" selection-end-line="44" selection-end-column="33" />
+          <folding>
+            <element signature="e#1205#1206#0" expanded="true" />
+            <element signature="e#1256#1257#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/solution_limiter/AllSolutions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+          <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/Hierarchical.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="30" selection-start="4439" selection-end="4439" vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1107" max-vertical-offset="2595">
+          <caret line="108" column="28" selection-start-line="108" selection-start-column="28" selection-end-line="108" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/search/Searcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="52" selection-start="1150" selection-end="1150" vertical-scroll-proportion="-2.3638968">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1080" max-vertical-offset="2175">
+          <caret line="112" column="9" selection-start-line="108" selection-start-column="8" selection-end-line="112" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/bryanduxbury/atavise/grid_ataviser/MinGrowthAtaviser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41114983" vertical-offset="1594" max-vertical-offset="2655">
+          <caret line="124" column="9" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4512#4809#0" expanded="true" />
+            <element signature="e#4808#4809#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
-

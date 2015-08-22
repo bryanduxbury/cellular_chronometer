@@ -2,6 +2,7 @@ package org.bryanduxbury.atavise.solution_limiter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class HardLimit implements SolutionLimiter {
   public static class Factory implements SolutionLimiter.Factory {
@@ -15,7 +16,7 @@ public class HardLimit implements SolutionLimiter {
       return new HardLimit(hardLimit);
     }
   }
-  private final Collection<int[]> solns;
+  private final List<int[]> solns;
   private final int hardLimit;
 
   public HardLimit(int hardLimit) {
@@ -31,7 +32,7 @@ public class HardLimit implements SolutionLimiter {
     return solns.size() >= hardLimit;
   }
 
-  @Override public Collection<int[]> getSolutions() {
+  @Override public List<int[]> getSolutions() {
     return solns;
   }
 }

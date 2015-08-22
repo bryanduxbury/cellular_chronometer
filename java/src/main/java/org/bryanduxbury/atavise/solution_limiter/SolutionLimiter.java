@@ -1,6 +1,6 @@
 package org.bryanduxbury.atavise.solution_limiter;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface SolutionLimiter {
   public interface Factory {
@@ -9,5 +9,5 @@ public interface SolutionLimiter {
 
   public void add(int[] intermediateSolution);
   public boolean isFull();
-  public Collection<int[]> getSolutions();
+  public List<int[]> getSolutions();
 }

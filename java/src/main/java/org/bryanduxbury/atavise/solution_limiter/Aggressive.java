@@ -1,7 +1,8 @@
 package org.bryanduxbury.atavise.solution_limiter;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.bryanduxbury.atavise.util.FourInts;
 
@@ -40,7 +41,7 @@ public class Aggressive implements SolutionLimiter {
     return map.size() >= hardLimit;
   }
 
-  @Override public Collection<int[]> getSolutions() {
-    return map.values();
+  @Override public List<int[]> getSolutions() {
+    return new ArrayList<int[]>(map.values());
   }
 }

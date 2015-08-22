@@ -10,18 +10,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import org.bryanduxbury.atavise.Grid;
 import org.bryanduxbury.atavise.grid_ataviser.CachingHierarchical;
+import org.bryanduxbury.atavise.grid_ataviser.GridAtaviser;
 import org.bryanduxbury.atavise.grid_ataviser.Hierarchical;
+import org.bryanduxbury.atavise.grid_ataviser.MinGrowthAtaviser;
 import org.bryanduxbury.atavise.row_ataviser.CachingRowAtaviser;
 import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
 import org.bryanduxbury.atavise.solution_indexer.UniqueBordersIndexer;
 import org.bryanduxbury.atavise.solution_limiter.Aggressive;
+import org.bryanduxbury.atavise.solution_limiter.AllSolutions;
 import org.bryanduxbury.atavise.solution_limiter.HardLimit;
 
 public class Searcher {
 
-  private final Hierarchical fastAtaviser;
+  private final GridAtaviser fastAtaviser;
   private final Hierarchical thoroughAtaviser;
 
   public Searcher() {
@@ -31,7 +34,8 @@ public class Searcher {
         new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
 
 
-    fastAtaviser = new Hierarchical(rowAtaviser, aggressive, new UniqueBordersIndexer());
+//    fastAtaviser = new Hierarchical(rowAtaviser, aggressive, new UniqueBordersIndexer());
+    fastAtaviser = new MinGrowthAtaviser(rowAtaviser, new AllSolutions.Factory());
     thoroughAtaviser = new Hierarchical(rowAtaviser, hard, new SimpleIndex());
 
   }
@@ -58,21 +62,21 @@ public class Searcher {
   private void writeResult(Grid targetGrid, int[] result, String gridFilePath, int numPriors)
       throws FileNotFoundException {
 
-    //Grid g = new Grid(result, targetGrid.getWidth()).transpose();
-    //for (int i = 0; i < numPriors; i++) {
-    //  System.out.println(" start ------------------- ");
-    //  System.out.println(g);
-    //  g = g.makeToroidal();
-    //  System.out.println(" toroided ------------------- ");
-    //  System.out.println(g);
-    //  g = g.nextGeneration();
-    //  System.out.println(" next ------------------- ");
-    //  System.out.println(g);
-    //  g = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
-    //}
-    //
-    //System.out.println(" final --------------------");
-    //System.out.println(g);
+    Grid g = new Grid(result, targetGrid.getWidth()).transpose();
+    for (int i = 0; i < numPriors; i++) {
+      System.out.println(" start ------------------- ");
+      System.out.println(g);
+      g = g.makeToroidal();
+      System.out.println(" toroided ------------------- ");
+      System.out.println(g);
+      g = g.nextGeneration();
+      System.out.println(" next ------------------- ");
+      System.out.println(g);
+      g = g.subgrid(1, 1, g.getWidth() - 2, g.getHeight() - 2);
+    }
+
+    System.out.println(" final --------------------");
+    System.out.println(g);
 
     File f = new File(gridFilePath + "__farthest_back");
     f.delete();
@@ -102,11 +106,11 @@ public class Searcher {
       Collection<int[]> priors = fastAtaviser.atavise(targetGrid);
 
       int[] result = examinePriors(targetGrid, numPriors, priors);
-      if (result == null && priors.size() > 0) {
-        Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
-        //thoroughPriors.removeAll(new HashSet<int[]>()priors);
-        result = examinePriors(targetGrid, numPriors, thoroughPriors);
-      }
+//      if (result == null && priors.size() > 0) {
+//        Collection<int[]> thoroughPriors = thoroughAtaviser.atavise(targetGrid);
+//        //thoroughPriors.removeAll(new HashSet<int[]>()priors);
+//        result = examinePriors(targetGrid, numPriors, thoroughPriors);
+//      }
 
       return result;
     }

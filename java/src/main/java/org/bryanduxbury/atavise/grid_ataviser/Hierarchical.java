@@ -40,34 +40,22 @@ public class Hierarchical implements GridAtaviser {
   protected Collection<int[]> internalAtavise(Grid grid, int startRow, int endRow,
       Set<TwoInts> spoilers) {
     if (endRow - startRow == 1) {
-      // cool, down to one row
-      // row-atavise it
-      List<int[]> rowPriors = rowAtaviser.atavise(grid.getWidth() + 2, grid.getCells()[startRow] << 1);
-      if (spoilers != null) {
-        List<int[]> filtered = new ArrayList<int[]>();
-        for (int[] prior : rowPriors) {
-          if (spoilers.contains(new TwoInts(prior[0], prior[1]))) {
-            filtered.add(prior);
-          }
-        }
-        rowPriors = filtered;
-      }
-      return rowPriors;
+      return ataviseRow(grid, grid.getCells()[startRow], spoilers);
     }
+    return divideAndAtavise(grid, startRow, endRow, spoilers);
+  }
 
+  private Collection<int[]> divideAndAtavise(Grid grid, int startRow, int endRow, Set<TwoInts> spoilers) {
     // compute the midpoint for recursing
     int mid = (endRow - startRow) / 2 + startRow;
 
     // compute the top half
     Collection<int[]> topPriors = internalAtavise(grid, startRow, mid, spoilers);
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
-    //Map<TwoInts, Map<TwoInts, int[]>> topsByBottom =
-    //    indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
     Map<TwoInts, Map<TwoInts, Collection<int[]>>> topsByBottom =
         indexBy(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
-         //solutionIndexer.index(topPriors, mid - startRow, mid - startRow + 1, 0, 1);
 
-
+    // null out to help with GC
     topPriors = null;
 
     // compute the results for the bottom half
@@ -75,9 +63,15 @@ public class Hierarchical implements GridAtaviser {
     // index the results by the bottom-most rows (while uniqueing by the topmost rows)
     Map<TwoInts, Map<TwoInts, Collection<int[]>>> bottomsByTops =
         indexBy(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
-        //solutionIndexer.index(bottomPriors, 0, 1, endRow - mid, endRow - mid + 1);
+
+    // null out to help with GC
     bottomPriors = null;
 
+    // compute all the LH and RH solutions that are cross-compatible
+    return getCompatibleSolutions(topsByBottom, bottomsByTops);
+  }
+
+  private Collection<int[]> getCompatibleSolutions(Map<TwoInts, Map<TwoInts, Collection<int[]>>> topsByBottom, Map<TwoInts, Map<TwoInts, Collection<int[]>>> bottomsByTops) {
     // compute the intersection of all tops and bottoms
     SolutionLimiter sl = solnLimiterFactory.getSolutionLimiter();
 
@@ -105,12 +99,30 @@ public class Hierarchical implements GridAtaviser {
               }
             }
           }
-
         }
       }
     }
 
     return sl.getSolutions();
+  }
+
+  private Collection<int[]> ataviseRow(Grid grid, int row, Set<TwoInts> spoilers) {
+    // cool, down to one row
+    // row-atavise it
+    List<int[]> rowPriors = rowAtaviser.atavise(grid.getWidth() + 2, row << 1);
+
+    // filter row prior states against previously provided "spoilers" -- we know the row priors have to match the
+    // spoilers to be possible solutions.
+    if (spoilers != null) {
+      List<int[]> filtered = new ArrayList<int[]>();
+      for (int[] prior : rowPriors) {
+        if (spoilers.contains(new TwoInts(prior[0], prior[1]))) {
+          filtered.add(prior);
+        }
+      }
+      rowPriors = filtered;
+    }
+    return rowPriors;
   }
 
   static Map<TwoInts, Map<TwoInts, Collection<int[]>>> indexBy(Collection<int[]> solns, int a, int b, int c, int d) {

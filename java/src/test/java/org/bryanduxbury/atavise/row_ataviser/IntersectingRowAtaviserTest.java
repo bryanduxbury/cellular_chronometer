@@ -1,14 +1,12 @@
 package org.bryanduxbury.atavise.row_ataviser;
 
-import java.util.Arrays;
-import java.util.List;
-import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
 import org.bryanduxbury.atavise.solution_filter.SolutionFilter;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import java.util.Arrays;
+import java.util.List;
+
+import static junit.framework.Assert.*;
 
 public class IntersectingRowAtaviserTest {
   @Test

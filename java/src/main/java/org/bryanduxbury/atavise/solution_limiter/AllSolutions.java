@@ -2,6 +2,7 @@ package org.bryanduxbury.atavise.solution_limiter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class AllSolutions implements SolutionLimiter {
   public static class Factory implements SolutionLimiter.Factory {
@@ -10,7 +11,7 @@ public class AllSolutions implements SolutionLimiter {
     }
   }
 
-  private final Collection<int[]> solutions;
+  private final List<int[]> solutions;
   public AllSolutions() {
     solutions = new ArrayList<int[]>();
   }
@@ -23,7 +24,7 @@ public class AllSolutions implements SolutionLimiter {
     return false;
   }
 
-  @Override public Collection<int[]> getSolutions() {
+  @Override public List<int[]> getSolutions() {
     return solutions;
   }
 }
