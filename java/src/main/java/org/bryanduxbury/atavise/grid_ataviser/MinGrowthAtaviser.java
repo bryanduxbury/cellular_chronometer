@@ -47,6 +47,7 @@ public class MinGrowthAtaviser implements GridAtaviser {
 
       // put the merged, mutual solutions back into the rowGroups array in place of the old pair
       rowGroups.add(minGroupIdx, mutual);
+      System.err.println();
     }
 
     return rowGroups.get(0);
@@ -115,17 +116,17 @@ public class MinGrowthAtaviser implements GridAtaviser {
 
     // first, sort all the input solutions. this makes next step faster.
     List<int[]> sortedSolns = new ArrayList<int[]>(solns);
-    Collections.sort(sortedSolns, new Comparator<int[]>() {
-      @Override
-      public int compare(int[] left, int[] right) {
-        for (int i = 0; i < left.length; i++) {
-          if (left[i] != right[i]) {
-            return Integer.valueOf(left[i]).compareTo(right[i]);
-          }
-        }
-        return 0;
-      }
-    });
+//    Collections.sort(sortedSolns, new Comparator<int[]>() {
+//      @Override
+//      public int compare(int[] left, int[] right) {
+//        for (int i = 0; i < left.length; i++) {
+//          if (left[i] != right[i]) {
+//            return Integer.valueOf(left[i]).compareTo(right[i]);
+//          }
+//        }
+//        return 0;
+//      }
+//    });
 
     // index all the sorted solutions first by a + b, then keep at most one solution with each unique c + d.
     for (int[] soln : sortedSolns) {
@@ -163,11 +164,13 @@ public class MinGrowthAtaviser implements GridAtaviser {
     int minSum = rowGroups.get(0).size() + rowGroups.get(1).size();
     for (int i = 1; i < rowGroups.size() - 2; i++) {
       int sum = rowGroups.get(i).size() + rowGroups.get(i + 1).size();
+      System.err.println("[" + i + "," + (i+1) + "]: " + sum);
       if (sum < minSum) {
         minIdx = i;
         minSum = sum;
       }
     }
+    System.err.println("Selected [" + minIdx + "," + (minIdx+1) + "]: " + minSum);
     return minIdx;
   }
 }
