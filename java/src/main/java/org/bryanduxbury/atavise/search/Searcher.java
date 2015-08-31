@@ -9,12 +9,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import org.bryanduxbury.atavise.Grid;
-import org.bryanduxbury.atavise.grid_ataviser.CachingHierarchical;
-import org.bryanduxbury.atavise.grid_ataviser.GridAtaviser;
-import org.bryanduxbury.atavise.grid_ataviser.Hierarchical;
-import org.bryanduxbury.atavise.grid_ataviser.MinGrowthAtaviser;
+import org.bryanduxbury.atavise.grid_ataviser.*;
 import org.bryanduxbury.atavise.row_ataviser.CachingRowAtaviser;
 import org.bryanduxbury.atavise.row_ataviser.IntersectingRowAtaviser;
+import org.bryanduxbury.atavise.solution_filter.RandomSample;
+import org.bryanduxbury.atavise.solution_filter.RetainAll;
 import org.bryanduxbury.atavise.solution_filter.TubularRowFilter;
 import org.bryanduxbury.atavise.solution_indexer.SimpleIndex;
 import org.bryanduxbury.atavise.solution_indexer.UniqueBordersIndexer;
@@ -25,19 +24,21 @@ import org.bryanduxbury.atavise.solution_limiter.HardLimit;
 public class Searcher {
 
   private final GridAtaviser fastAtaviser;
-  private final Hierarchical thoroughAtaviser;
+//  private final Hierarchical thoroughAtaviser;
 
   public Searcher() {
     Aggressive.Factory aggressive = new Aggressive.Factory(1000000);
     HardLimit.Factory hard = new HardLimit.Factory(2500000);
-    CachingRowAtaviser rowAtaviser =
-        new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
+//    CachingRowAtaviser rowAtaviser =
+//        new CachingRowAtaviser(new IntersectingRowAtaviser(new TubularRowFilter()));
 
+      CachingRowAtaviser rowAtaviser =
+        new CachingRowAtaviser(new IntersectingRowAtaviser(new RandomSample(0.75)));
 
 //    fastAtaviser = new Hierarchical(rowAtaviser, aggressive, new UniqueBordersIndexer());
-    fastAtaviser = new MinGrowthAtaviser(rowAtaviser, new AllSolutions.Factory());
-    thoroughAtaviser = new Hierarchical(rowAtaviser, hard, new SimpleIndex());
-
+//    fastAtaviser = new MinGrowthAtaviser(rowAtaviser, new AllSolutions.Factory());
+//    thoroughAtaviser = new Hierarchical(rowAtaviser, hard, new SimpleIndex());
+      fastAtaviser = new RowSplittingAtaviser(new AllSolutions.Factory(), rowAtaviser, 5);
   }
 
   private void search(int numPriors, String gridFilePath) throws IOException {

@@ -77,6 +77,14 @@ public class Grid {
     return new Grid(newCells, getWidth() + 2);
   }
 
+  /**
+   * Get a subgrid from this grid in the rect defined by [x1, y1] -> [x2, y2]. Coordinates are inclusive!
+   * @param x1
+   * @param y1
+   * @param x2
+   * @param y2
+   * @return
+   */
   public Grid subgrid(int x1, int y1, int x2, int y2) {
     int[] newCells = new int[y2-y1+1];
     int mask = 0;

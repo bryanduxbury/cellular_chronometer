@@ -78,7 +78,7 @@ public class IntersectingRowAtaviser implements RowAtaviser {
         }
       }
 
-      System.err.println(newSolutions.size() + " partial solutions computed so far");
+//      System.err.println(newSolutions.size() + " partial solutions computed so far");
       solutions = newSolutions;
     }
 

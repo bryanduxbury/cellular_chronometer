@@ -68,6 +68,7 @@ public class MinGrowthAtaviser implements GridAtaviser {
     SolutionLimiter sl = solnLimiterFactory.getSolutionLimiter();
 
     // for each unique bottom in the top set...
+    int count = 0;
     OUTER:
     for (Map.Entry<TwoInts, Map<TwoInts, Collection<int[]>>> top : topsByBottom.entrySet()) {
       // ... get the set of matching solutions in the bottom set ...
@@ -83,6 +84,9 @@ public class MinGrowthAtaviser implements GridAtaviser {
                 // ... add a new solution to the result set
                 int[] merged = merge(leftleft, rightright);
                 sl.add(merged);
+                if (count % 1000000 == 0) {
+                  System.err.print(".");
+                }
 
                 if (sl.isFull()) {
                   //System.out.println("hit the hardlimit");
@@ -94,6 +98,7 @@ public class MinGrowthAtaviser implements GridAtaviser {
         }
       }
     }
+    System.err.println();
 
     return sl.getSolutions();
   }
@@ -114,22 +119,8 @@ public class MinGrowthAtaviser implements GridAtaviser {
     Map<TwoInts, Map<TwoInts, Collection<int[]>>> indexed =
       new HashMap<TwoInts, Map<TwoInts, Collection<int[]>>>();
 
-    // first, sort all the input solutions. this makes next step faster.
-    List<int[]> sortedSolns = new ArrayList<int[]>(solns);
-//    Collections.sort(sortedSolns, new Comparator<int[]>() {
-//      @Override
-//      public int compare(int[] left, int[] right) {
-//        for (int i = 0; i < left.length; i++) {
-//          if (left[i] != right[i]) {
-//            return Integer.valueOf(left[i]).compareTo(right[i]);
-//          }
-//        }
-//        return 0;
-//      }
-//    });
-
     // index all the sorted solutions first by a + b, then keep at most one solution with each unique c + d.
-    for (int[] soln : sortedSolns) {
+    for (int[] soln : solns) {
       TwoInts matchKey = new TwoInts(soln[matchIdx1], soln[matchIdx2]);
       TwoInts uniqueKey = new TwoInts(soln[uniqIdx1], soln[uniqIdx2]);
 
@@ -162,6 +153,7 @@ public class MinGrowthAtaviser implements GridAtaviser {
   private int getMinPairIdx(List<List<int[]>> rowGroups) {
     int minIdx = 0;
     int minSum = rowGroups.get(0).size() + rowGroups.get(1).size();
+    System.err.println("[0,1]: " + minSum);
     for (int i = 1; i < rowGroups.size() - 2; i++) {
       int sum = rowGroups.get(i).size() + rowGroups.get(i + 1).size();
       System.err.println("[" + i + "," + (i+1) + "]: " + sum);

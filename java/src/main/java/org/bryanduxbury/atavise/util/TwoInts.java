@@ -28,4 +28,12 @@ public final class TwoInts {
     result = 31 * result + b;
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "TwoInts{" +
+      "a=" + a +
+      ", b=" + b +
+      '}';
+  }
 }
